@@ -6,11 +6,13 @@ const User = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true
+        required: true,
+        minLength: 6,
     },
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     address: {
         type: String,
@@ -18,7 +20,8 @@ const User = new mongoose.Schema({
     },
     token: {
         type: String,
-        required: false
+        required: false,
+        unique: true
     },
     phone: {
         type: String,
@@ -31,4 +34,4 @@ const User = new mongoose.Schema({
     },
 }, { timestamps: true });
 
-export default mongoose.model("users", User);
+export default mongoose.model("User", User);

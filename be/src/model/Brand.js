@@ -10,4 +10,4 @@ const Brand = new mongoose.Schema({
     },
 }, { timestamps: true });
 
-export default mongoose.model("brands", Brand);
+export default mongoose.model("Brand", Brand);

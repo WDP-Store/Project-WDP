@@ -2,23 +2,27 @@ import mongoose from "mongoose";
 const Product = new mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: true,
     },
     price: {
         type: Number,
-        required: true
+        required: true,
+        min: 0
     },
     originalPrice: {
         type: Number,
-        required: true
+        required: true,
+        min: 0,
     },
     categoryId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Category",
         required: true
     },
     brandId: {
-        type: String,
-        required: false
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Brand",
+        require: true,
     },
     featured: {
         type: Boolean,
@@ -27,7 +31,8 @@ const Product = new mongoose.Schema({
     },
     year: {
         type: Number,
-        required: true
+        required: true,
+        min: 1000,
     },
     status: {
         type: Boolean,
@@ -48,8 +53,8 @@ const Product = new mongoose.Schema({
     },
     images: {
         type: [String],
-        required: false
+        required: true
     },
 }, { timestamps: true });
 
-export default mongoose.model("products", Product);
+export default mongoose.model("Product", Product);

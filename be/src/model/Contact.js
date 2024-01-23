@@ -12,6 +12,7 @@ const Contact = new mongoose.Schema({
     status: {
         type: String,
         required: true,
+        enum: ['New', 'Read'],
         default: 'New',
     },
     phone: {
@@ -24,4 +25,4 @@ const Contact = new mongoose.Schema({
     },
 }, { timestamps: true });
 
-export default mongoose.model("contacts", Contact);
+export default mongoose.model("Contact", Contact);

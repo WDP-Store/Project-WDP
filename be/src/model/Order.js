@@ -2,12 +2,13 @@ import mongoose from "mongoose";
 const moment = require('moment');
 const Order = new mongoose.Schema({
     userId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
         required: true
     },
     name: {
         type: String,
-        required: true
+        required: true,
     },
     phone: {
         type: String,
@@ -19,7 +20,8 @@ const Order = new mongoose.Schema({
     },
     totalAmount: {
         type: Number,
-        required: true
+        required: true,
+        min: 0,
     },
     date: {
         type: Date,
@@ -27,7 +29,8 @@ const Order = new mongoose.Schema({
         default: moment().format(),
     },
     statusId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Status",
         required: true
     },
     productList: [
@@ -68,4 +71,4 @@ const Order = new mongoose.Schema({
     ]
 }, { timestamps: true });
 
-export default mongoose.model("orders", Order);
+export default mongoose.model("Order", Order);

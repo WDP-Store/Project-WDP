@@ -1,12 +1,14 @@
 import mongoose from "mongoose";
 const Feedback = new mongoose.Schema({
     userId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
         required: true
     },
     productId: {
-        type: String,
-        required: true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Product",
+        require: true,
     },
     rating: {
         type: Number,
@@ -18,4 +20,4 @@ const Feedback = new mongoose.Schema({
     },
 }, { timestamps: true });
 
-export default mongoose.model("feedbacks", Feedback);
+export default mongoose.model("Feedback", Feedback);

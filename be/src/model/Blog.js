@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
 const Blog = new mongoose.Schema({
     categoryId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Category",
         required: true
     },
     title: {
@@ -18,4 +19,4 @@ const Blog = new mongoose.Schema({
     },
 }, { timestamps: true });
 
-export default mongoose.model("blogs", Blog);
+export default mongoose.model("Blog", Blog);
