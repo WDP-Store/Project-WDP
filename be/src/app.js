@@ -1,5 +1,6 @@
 import express from "express";
 import * as dotenv from 'dotenv';
+import use from "cors";
 import connect from "./config/connect.js"
 import route from './routes/index.js';
 // .env
