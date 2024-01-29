@@ -1,15 +1,20 @@
 import express from "express";
 import * as dotenv from 'dotenv';
-import use from "cors";
+import cors from "cors";
 import connect from "./config/connect.js"
 import route from './routes/index.js';
+const app = express();
 // .env
 dotenv.config();
 
 // default port = 9999
 const port = process.env.PORT || 8888;
 
-const app = express();
+//support call api FE -> BE
+app.use(cors());  
+
+//middleware
+app.use(express.json());
 
 route(app);
 

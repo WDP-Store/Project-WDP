@@ -1,7 +1,10 @@
-import asyncHandler from "../util/asyncHandler.js";
-import UserRepository from "../repositories/user.js";
-export default {
-    getAll: asyncHandler(async (req, res) => {
-        await UserRepository.getAll(req, res);
-    })
+import {userRepository} from "../repositories/index.js";
+
+const getAll = async (req, res) => {
+    const users = await userRepository.getAll(req, res);
+    console.log("users", users);
+};
+
+export default{
+    getAll,
 }

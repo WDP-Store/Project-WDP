@@ -1,15 +1,16 @@
 
-import users from "../model/User.js";
-class UserRepository {
-    async getAll(req, res) {
-        try {
-            const test = await users.find();
-            
-        } catch (error) {
-           console.log("");
-        }
-    }
-    
-}
+import user from "../model/User.js";
 
-export default new UserRepository();
+const  getAll =async (req, res)=>{
+    try {
+        const test = await user.find();
+        return test;
+    } catch (error) {
+        console.log("");
+    }
+}
+    
+
+export default {
+    getAll,
+};
