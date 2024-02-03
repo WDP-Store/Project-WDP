@@ -69,10 +69,7 @@ const Profile = () => {
                 <strong>Role:</strong> {currentUser.role}
               </p>
               <button onClick={handleEdit}>Edit</button>
-              <Link
-                style={{ marginLeft: "70px" }}
-                to={`/changePassword/${userData.email}`}
-              >
+              <Link style={{ marginLeft: "70px" }} to={`/changePassword/${userData.email}`}>
                 Change Password
               </Link>
             </>

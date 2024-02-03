@@ -4,7 +4,7 @@ import Container from "react-bootstrap/Container";
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { Col, Form, Row, Table } from 'react-bootstrap';
-import Paginate from '../admin/components/Paginate';
+import Paginate from '../components/Paginate';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Badge from 'react-bootstrap/Badge';
 import Modal from 'react-bootstrap/Modal';
@@ -13,7 +13,7 @@ import { AiFillCaretRight } from "react-icons/ai";
 import { date } from "yup";
 
 
-export default function MyOrder() {
+export default function Orders() {
 
   const [orders, setOrders] = useState([]); //fetched orders
   const [status, setStatus] = useState([]); //fetched status
@@ -21,7 +21,6 @@ export default function MyOrder() {
   const effectBadge = ["warning", "warning", "primary", "success", "danger"]; // each status has it badge
   const colorBadge = ["#9ea954db", "#9ea954db", "#3876a9", "#248e5cd6", "#7c3c3cd6"];  // each status has it color
   const [currentDetail, setCurrentDetail] = useState([]);
-  const user = JSON.parse(sessionStorage.getItem("data"));
 
   //for filtering
   const [statusFilter, setStatusFilter] = useState('')
@@ -78,7 +77,7 @@ export default function MyOrder() {
   )
 
   const filterOrder = (page) => {
-    var url = (`http://localhost:9999/order/?_sort=id&_order=desc&userId=${user.email}`);
+    var url = (`http://localhost:9999/order/?_sort=id&_order=desc`);
 
     if (fromDate === '' && toDate === '') url += `&_page=${page}&_limit=10`;
 
@@ -112,9 +111,37 @@ export default function MyOrder() {
       .catch((err) => toast.error(err));
   }
 
+  // useEffect(() => {  //date filtering
+  //     if(fromDate !== ''){
+  //       let temp = [...orders];
+  //       temp = temp.filter((o) => (new Date(o.date)) >= (new Date(fromDate)));
+  //       setOrders(temp);
+  //       console.log(temp)
+  //     }
+  //     if(toDate !== ''){
+  //       let temp = [...orders];
+  //       temp = temp.filter((o) => new Date(o.date) <= new Date(toDate));
+  //       setOrders(temp);
+  //     }
+  // }, [fromDate, toDate]
+  // )
+
+  const updateStatus = (value, index, id) => {   //index is index of orders in orders useState , id is its order id
+    fetch('http://localhost:9999/order/' + id, {
+      method: 'PUT',
+      body: JSON.stringify({
+        ...orders[index],
+        statusId: Number(value)
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    }).then(setRefresh(!refresh))
+  }
+
   return (
-    <Container lg={10}>
-      <h3 className="mt-2">My orders</h3>
+    <Col lg={10}>
+      <h3 className="mt-2">Orders</h3>
       <Row className='my-4'>
         <Col xs={6} md={2}>
           <InputGroup className="mb-3">
@@ -194,6 +221,20 @@ export default function MyOrder() {
                 <div className="col-4">
 
                 </div>
+                <div className="col-3">
+                  <InputGroup>
+                    <InputGroup.Text>
+                      Change status
+                    </InputGroup.Text>
+                    <Form.Select value={o.statusId} onChange={(e) => updateStatus(e.target.value, index, o.id)}>
+                      {status?.map((s) =>
+                        <option key={s.id} value={s.id}>
+                          {s.name}
+                        </option>
+                      )}
+                    </Form.Select>
+                  </InputGroup>
+                </div>
               </Card.Header>
               <Card.Body className="row m-1" style={{ background: "white" }}>
                 <Card.Title className="col-3">
@@ -272,6 +313,6 @@ export default function MyOrder() {
           </Card>
         </Modal.Body>
       </Modal>
-    </Container>
+    </Col>
   )
 }
