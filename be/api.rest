@@ -1,0 +1,48 @@
+GET http://localhost:3000/posts
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSmltIiwiaWF0IjoxNjcwOTI0MDY3LCJleHAiOjE2NzA5MjQwODJ9.hsPHh8jffJAvYXATWdT9wewNTBAlPdNYU7aX_SM0Dlc
+###
+
+GET http://localhost:9999/products
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSmltIiwiaWF0IjoxNjcwOTIwNjA4fQ.3Cx0VFMpe90eGD4Te9_pZ8EGH1lzjTm7F0S5gCcDoiw"
+}   
+
+###
+POST http://localhost:9999/products
+Content-Type: application/json
+
+{
+    "name": "iPhone 13 Pro Max",
+    "price": 1099.99,
+    "originalPrice": 900.25,
+    "categoryId": "65b5205fc73b4cedee28eafe",
+    "brand": "65b5208ec73b4cedee28eb04",
+    "featured": false,
+    "year": 2022,
+    "status": true,
+    "detail": "<p><br></p><table><tbody><tr><td><div>Display</div></td><td><div>6.7-inch Super Retina XDR display with ProMotion technology</div></td></tr><tr><td><div>Processor</div></td><td><div>A15 Bionic chip with 6-core CPU, 5-core GPU</div></td></tr><tr><td><div>RAM</div></td><td><div>8GB</div></td></tr><tr><td><div>Storage</div></td><td><div>512GB</div></td></tr><tr><td><div>Rear camera</div></td><td><div>12MP Wide Camera + 12MP Ultra Wide Camera + 12MP Telephoto Camera</div></td></tr><tr><td><div>Front camera</div></td><td><div>12MP TrueDepth front camera with Portrait mode, Night mode, Deep Fusion, and HDR Dolby Vision recording</div></td></tr><tr><td><div>Battery life</div></td><td><div>6000mAh (typical) battery capacity.</div></td></tr></tbody></table>",
+    "describe": "The iPhone 13 Pro Max is the latest addition to Apple's iPhone lineup. It is the largest and most advanced iPhone ever created by Apple. The phone features a stunning 6.68-inch OLED display with a resolution of 2778 x 1284 pixels at 458 PPI. The display is protected by Ceramic Shield, which is tougher than any smartphone glass.\n\nThe iPhone 13 Pro Max is powered by the A15 Bionic chip, which is the fastest chip ever in a smartphone. The chip features a 6-core CPU and a 5-core GPU, which delivers up to 50% faster graphics performance than any other smartphone.\n\nThe phone features an all-new Ultra Wide camera with autofocus which enables macro photography natively on iPhone, a new Wide camera, and a new Telephoto camera with increased 3x optical zoom. The camera system also features Night mode and Deep Fusion technology, which allows you to take stunning photos even in low light conditions.\n\nThe iPhone 13 Pro Max is available in five colors: Alpine Green, Silver, Gold, Graphite, and Sierra Blue. The phone is also available in three storage options: 128GB, 256GB, and 512GB.\n\nThe phone runs on iOS 15, which is the latest version of Apple's mobile operating system. iOS 15 introduces new features such as Focus mode, Live Text, and FaceTime enhancements. The phone also features MagSafe technology for faster wireless charging and better alignment.\n\nThe iPhone 13 Pro Max is water-resistant with an IP68 rating. It can withstand being submerged in up to six meters of water for up to thirty minutes. The phone also features Face ID for secure authentication and Apple Pay for contactless payments.\n\nIn conclusion, the iPhone 13 Pro Max is a powerful and advanced smartphone that offers an incredible user experience. With its stunning display, powerful A15 Bionic chip, and advanced camera system, it is the perfect phone for anyone who wants the best of the best.",
+    "color": [
+    "Lumious White",
+    "Ocean blue",
+    "Phantom black",
+    "Space green"
+    ],
+    "images": [
+    "https://res.cloudinary.com/dck2nnfja/image/upload/v1688444875/products/1/iphone-13-starlight-1-600x600_klfjjt.jpg",
+    "https://res.cloudinary.com/dck2nnfja/image/upload/v1688445151/products/1/iphone-13-xanh-1_kvgbxy.jpg",
+    "https://res.cloudinary.com/dck2nnfja/image/upload/v1688444194/products/1/iphone-13-1-2_eiogf7.jpg",
+    "https://res.cloudinary.com/dck2nnfja/image/upload/v1688444129/products/1/iphone-13-xanh-glr-1_qcftmv.jpg",
+    "https://res.cloudinary.com/dck2nnfja/image/upload/v1688444226/products/1/iphone-13-1-3_wv8efd.jpg"
+    ]
+}
+
+###
+DELETE http://localhost:9999/logout
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSmltIiwiaWF0IjoxNjcwOTIwNjA4fQ.3Cx0VFMpe90eGD4Te9_pZ8EGH1lzjTm7F0S5gCcDoiw"
+}   

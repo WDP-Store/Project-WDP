@@ -1,7 +1,7 @@
 
 import user from "../model/User.js";
 
-const  getAll =async (req, res)=>{
+const getAll = async (req, res) => {
     try {
         const test = await user.find();
         return test;
@@ -9,7 +9,7 @@ const  getAll =async (req, res)=>{
         console.log("");
     }
 }
-    
+
 
 export default {
     getAll,
