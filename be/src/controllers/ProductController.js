@@ -5,7 +5,7 @@ import { productRepository } from '../repositories/index.js';
 
 const findAll = async (req, res) => {
   try {
-    const data = await productRepository.findAll();
+    const data = await productRepository.findAll(req, res);
 
     res.status(200).json(data)
   } catch (error) {

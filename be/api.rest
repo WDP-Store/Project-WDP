@@ -46,3 +46,18 @@ Content-Type: application/json
 {
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSmltIiwiaWF0IjoxNjcwOTIwNjA4fQ.3Cx0VFMpe90eGD4Te9_pZ8EGH1lzjTm7F0S5gCcDoiw"
 }   
+###
+GET http://localhost:9999/products
+content-type: application/json
+
+###
+GET http://localhost:9999/brands
+content-type: application/json
+
+###
+GET http://localhost:9999/categories
+content-type: application/json
+
+###
+GET http://localhost:9999/users
+content-type: application/json
