@@ -1,0 +1,15 @@
+###
+GET http://localhost:9999/products
+content-type: application/json
+
+###
+GET http://localhost:9999/brands
+content-type: application/json
+
+###
+GET http://localhost:9999/categories
+content-type: application/json
+
+###
+GET http://localhost:9999/users
+content-type: application/json
