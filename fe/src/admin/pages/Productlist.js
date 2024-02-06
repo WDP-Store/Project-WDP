@@ -102,12 +102,8 @@ const Productlist = () => {
     axios
       .delete(`http://localhost:9999/products/${productId}`)
       .then((res) => {
-        if (res.ok) {
-          fetchProducts(currentPage);
-          toast.success("Product deleted successfully");
-        } else {
-          toast.error("Failed to delete product");
-        }
+        fetchProducts(currentPage);
+        toast.success("Product deleted successfully");
       })
       .catch((error) => {
         toast.error(error.message);
@@ -120,12 +116,8 @@ const Productlist = () => {
         status: !status,
       })
       .then((res) => {
-        if (res.ok) {
-          fetchProducts(currentPage);
-          toast.success("Change status successfully");
-        } else {
-          toast.error("Failed to change status");
-        }
+        fetchProducts(currentPage);
+        toast.success("Change status successfully");
       })
       .catch((error) => {
         toast.error(error.message);
@@ -158,12 +150,8 @@ const Productlist = () => {
         featured: !featured,
       })
       .then((res) => {
-        if (res.ok) {
-          fetchProducts(currentPage);
-          toast.success("Change feature successfully");
-        } else {
-          toast.error("Failed to change feature");
-        }
+        fetchProducts(currentPage);
+        toast.success("Change feature successfully");
       })
       .catch((error) => {
         toast.error(error.message);
@@ -259,9 +247,11 @@ const Productlist = () => {
                 <td>$ {p.price}</td>
                 <td>$ {p.originalPrice}</td>
                 <td>
-                  {categories.map((c) => (c._id == p.categoryId ? c.name : ""))}
+                  {p.category?.name || ''}
                 </td>
-                <td>{brands.map((b) => (b._id == p.brand ? b.name : ""))}</td>
+                <td>
+                  {p.brand?.name || ''}
+                </td>
                 <td className="text-center">
                   {p.status === true ? (
                     <Badge

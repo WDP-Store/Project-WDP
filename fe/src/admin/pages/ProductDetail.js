@@ -28,8 +28,6 @@ const ProductDetail = () => {
   useEffect(() => {
     axios(`http://localhost:9999/feedbacks?product=${id}`)
       .then((res) => {
-        console.log('feedback')
-        console.log(res.data.docs)
         setFeedbacks(res.data?.docs);
       })
       .catch((err) => toast.error(err));
@@ -192,12 +190,10 @@ const ProductDetail = () => {
               <h3 id="review">Reviews</h3>
               <div className="review-inner-wrapper">
                 {feedbacks.map((f) => (
-                  <div className="reviews mt-4 review-head">
+                  <div key={f._id} className="reviews mt-4 review-head">
                     <div className="review">
                       <div className="d-flex gap-10 align-items-center">
-                        <h6 className="mb-0">
-                          {users.map((u) => (u._id == f.user._id ? u.name : ""))}
-                        </h6>
+                        <h6 className="mb-0">{f.user.name}</h6>
                         <ReactStars
                           count={5}
                           size={24}

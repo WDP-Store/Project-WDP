@@ -10,6 +10,7 @@ const findAll = async (req, res) => {
     if (name) query.name = { $regex: name, $options: "i" };
 
     const data = await Product.paginate(query, {
+      populate: ['category', 'brand'],
       page: page || 1,
       limit: 2,
       sort: {
@@ -26,7 +27,7 @@ const findAll = async (req, res) => {
 
 const findOne = async (id) => {
   try {
-    const result = await Product.findById(id).populate("category");
+    const result = await Product.findById(id).populate(["category", "brand"]);
 
     return result;
   } catch (error) {

@@ -5,8 +5,8 @@ const feedbackRouter = express.Router();
 
 feedbackRouter.get("/", feedbackController.findAll);
 feedbackRouter.get("/:id", feedbackController.findOne);
-feedbackRouter.patch("/", feedbackController.update);
-feedbackRouter.delete("/", feedbackController.deleteFeedback);
+feedbackRouter.patch("/:id", feedbackController.update);
+feedbackRouter.delete("/:id", feedbackController.deleteFeedback);
 feedbackRouter.post("/", feedbackController.create);
 
 export default feedbackRouter;
