@@ -1,11 +1,13 @@
 import mongoose from "mongoose";
+import mongoosePaginate from 'mongoose-paginate-v2'
+
 const Feedback = new mongoose.Schema({
-    userId: {
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true
     },
-    productId: {
+    product: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Product",
         require: true,
@@ -19,5 +21,7 @@ const Feedback = new mongoose.Schema({
         required: false
     },
 }, { timestamps: true });
+
+Feedback.plugin(mongoosePaginate);
 
 export default mongoose.model("Feedback", Feedback);

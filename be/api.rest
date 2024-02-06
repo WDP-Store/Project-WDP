@@ -1,13 +1,6 @@
-GET http://localhost:3000/posts
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSmltIiwiaWF0IjoxNjcwOTI0MDY3LCJleHAiOjE2NzA5MjQwODJ9.hsPHh8jffJAvYXATWdT9wewNTBAlPdNYU7aX_SM0Dlc
 ###
-
 GET http://localhost:9999/products
 Content-Type: application/json
-
-{
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSmltIiwiaWF0IjoxNjcwOTIwNjA4fQ.3Cx0VFMpe90eGD4Te9_pZ8EGH1lzjTm7F0S5gCcDoiw"
-}   
 
 ###
 POST http://localhost:9999/products
@@ -46,9 +39,6 @@ Content-Type: application/json
 {
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSmltIiwiaWF0IjoxNjcwOTIwNjA4fQ.3Cx0VFMpe90eGD4Te9_pZ8EGH1lzjTm7F0S5gCcDoiw"
 }   
-###
-GET http://localhost:9999/products
-content-type: application/json
 
 ###
 GET http://localhost:9999/brands
@@ -60,4 +50,8 @@ content-type: application/json
 
 ###
 GET http://localhost:9999/users
+content-type: application/json
+
+###
+GET http://localhost:9999/feedbacks
 content-type: application/json

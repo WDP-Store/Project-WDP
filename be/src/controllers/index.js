@@ -3,6 +3,7 @@ import productController from "./ProductController.js";
 import authController from "./AuthController.js";
 import brandController from "./BrandController.js";
 import categoryController from "./CategoryController.js";
+import feedbackController from "./FeedbackController.js";
 
 export {
     userController,
@@ -10,4 +11,5 @@ export {
     productController,
     brandController,
     categoryController,
+    feedbackController,
 }

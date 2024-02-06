@@ -1,15 +1,15 @@
-import Product from "../model/Product.js";
+import Feedback from "../model/Feedback.js";
 
 const findAll = async (req, res) => {
   try {
-    const { page, status, category, name } = req.query;
+    const { page, product, rating } = req.query;
 
     const query = {};
-    if (status !== undefined) query.status = status === "true";
-    if (category) query.category = category;
-    if (name) query.name = { $regex: name, $options: "i" };
+    if (product) query.product = product;
+    if (rating) query.rating = rating;
 
-    const data = await Product.paginate(query, {
+    const data = await Feedback.paginate(query, {
+      populate: ['user', 'product'],
       page: page || 1,
       limit: 2,
       sort: {
@@ -26,7 +26,7 @@ const findAll = async (req, res) => {
 
 const findOne = async (id) => {
   try {
-    const result = await Product.findById(id).populate("category");
+    const result = await Feedback.findById(id);
 
     return result;
   } catch (error) {
@@ -37,7 +37,7 @@ const findOne = async (id) => {
 
 const create = async (product) => {
   try {
-    const result = await Product.create(product);
+    const result = await Feedback.create(product);
 
     return result;
   } catch (error) {
@@ -48,7 +48,7 @@ const create = async (product) => {
 
 const update = async (id, product) => {
   try {
-    const result = await Product.findByIdAndUpdate(id, product);
+    const result = await Feedback.findByIdAndUpdate(id, product);
 
     return result;
   } catch (error) {
@@ -57,9 +57,9 @@ const update = async (id, product) => {
   }
 };
 
-const deleteProduct = async (id) => {
+const deleteFeedback = async (id) => {
   try {
-    const result = await Product.findByIdAndDelete(id).populate("category");
+    const result = await Feedback.findByIdAndDelete(id).populate("category");
 
     return result;
   } catch (error) {
@@ -73,5 +73,5 @@ export default {
   findAll,
   findOne,
   update,
-  deleteProduct,
+  deleteFeedback,
 };
