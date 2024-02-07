@@ -32,18 +32,8 @@ const productSchema = yup.object({
     .positive("Must be a positive value")
     .integer()
     .min(1900),
-  categoryId: yup
-    .number()
-    .typeError("Must be a number")
-    .required("This field is required")
-    .positive("Must be a positive value")
-    .integer("Must be an integer"),
-  brand: yup
-    .number()
-    .typeError("Must be a number")
-    .required("This field is required")
-    .positive("Must be a positive value")
-    .integer("Must be an integer"),
+  category: yup.string().required("This field is required"),
+  brand: yup.string().required("This field is required"),
   describe: yup.string().required("This field is required"),
   detail: yup.string().required("This field is required"),
   product: yup
@@ -68,7 +58,7 @@ const initialValues = {
   name: "",
   price: "",
   originalPrice: "",
-  categoryId: "",
+  category: "",
   brand: "",
   year: "",
   featured: false,
@@ -101,22 +91,24 @@ const AddProduct = () => {
   });
 
   useEffect(() => {
-    fetch(`http://localhost:9999/brands`)
-      .then((res) => res.json())
-      .then((json) => {
+    axios
+      .get("http://localhost:9999/brands")
+      .then((res) => res.data)
+      .then((data) => {
         const br = [];
-        json.map((j) => br.push({ value: j.id, label: j.name }));
+        data.map((j) => br.push({ value: j._id, label: j.name }));
         setBrands(br);
       });
   }, []);
 
   useEffect(() => {
-    fetch(`http://localhost:9999/categories`)
-      .then((res) => res.json())
-      .then((json) => {
-        const cate = [];
-        json.map((j) => cate.push({ value: j.id, label: j.name }));
-        setCategories(cate);
+    axios
+      .get("http://localhost:9999/categories")
+      .then((res) => res.data)
+      .then((data) => {
+        const c = [];
+        data.map((j) => c.push({ value: j._id, label: j.name }));
+        setCategories(c);
       });
   }, []);
 
@@ -169,7 +161,7 @@ const AddProduct = () => {
       name,
       price,
       originalPrice,
-      categoryId,
+      category,
       brand,
       featured,
       status,
@@ -179,13 +171,12 @@ const AddProduct = () => {
     } = values;
     const { color, images } = product;
 
-    fetch(`http://localhost:9999/products`, {
-      method: "POST",
-      body: JSON.stringify({
+    axios
+      .post(`http://localhost:9999/products`, {
         name,
         price: Number(price),
         originalPrice: Number(originalPrice),
-        categoryId,
+        category,
         brand,
         year: Number(year),
         featured,
@@ -194,16 +185,37 @@ const AddProduct = () => {
         describe,
         color,
         images,
-      }),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    })
+      })
       .then(() => {
         toast.success("Create product successfully");
         navigate("/admin/product");
       })
       .catch(() => toast.error("Something went wrong!"));
+    // fetch(`http://localhost:9999/products`, {
+    //   method: "POST",
+    //   body: JSON.stringify({
+    //     name,
+    //     price: Number(price),
+    //     originalPrice: Number(originalPrice),
+    //     category,
+    //     brand,
+    //     year: Number(year),
+    //     featured,
+    //     status,
+    //     detail,
+    //     describe,
+    //     color,
+    //     images,
+    //   }),
+    //   headers: {
+    //     "Content-type": "application/json; charset=UTF-8",
+    //   },
+    // })
+    //   .then(() => {
+    //     toast.success("Create product successfully");
+    //     navigate("/admin/product");
+    //   })
+    //   .catch(() => toast.error("Something went wrong!"));
   };
 
   return (
@@ -230,7 +242,7 @@ const AddProduct = () => {
       )}
       <Row>
         <Col>
-          <h3 className="mt-2 text-center">Create new product</h3>
+          <h3 className="mt-3">Create new product</h3>
           <Formik initialValues={initialValues} onSubmit={formik.handleSubmit}>
             {({ values }) => (
               <Form>
@@ -288,16 +300,16 @@ const AddProduct = () => {
                           .includes(input.toLowerCase())
                       }
                       options={categories}
-                      name="categoryId"
+                      name="category"
                       onChange={(value) =>
-                        formik.setFieldValue("categoryId", Number(value))
+                        formik.setFieldValue("category", value)
                       }
-                      onBlur={formik.handleBlur("categoryId")}
-                      value={formik.values?.categoryId}
+                      onBlur={formik.handleBlur("category")}
+                      value={formik.values?.category}
                     />
-                    {formik.touched.categoryId && (
+                    {formik.touched.category && (
                       <span className="text-danger">
-                        {formik.errors.categoryId}
+                        {formik.errors.category}
                       </span>
                     )}
                   </Col>
@@ -316,9 +328,7 @@ const AddProduct = () => {
                       }
                       options={brands}
                       name="brand"
-                      onChange={(value) =>
-                        formik.setFieldValue("brand", Number(value))
-                      }
+                      onChange={(value) => formik.setFieldValue("brand", value)}
                       onBlur={formik.handleBlur("brand")}
                       value={formik.values?.brand}
                     />

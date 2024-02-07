@@ -3,6 +3,7 @@ import { Badge, Button, Col, Form, Row, Table } from "react-bootstrap";
 import { toast } from "react-toastify";
 import Paginate from "../components/Paginate";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import Swal from "sweetalert2";
 
 const Productlist = () => {
@@ -16,22 +17,28 @@ const Productlist = () => {
   const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
-    fetch(`http://localhost:9999/brands`)
-      .then((res) => res.json())
-      .then((json) => setBrands(json));
+    axios
+      .get("http://localhost:9999/brands")
+      .then((res) => res.data)
+      .then((data) => {
+        setBrands(data);
+      });
   }, []);
 
   useEffect(() => {
-    fetch(`http://localhost:9999/categories`)
-      .then((res) => res.json())
-      .then((json) => setCategories(json));
+    axios
+      .get("http://localhost:9999/categories")
+      .then((res) => res.data)
+      .then((data) => {
+        setCategories(data);
+      });
   }, []);
 
   const fetchProducts = (page) => {
-    let url = `http://localhost:9999/products/?_sort=id&_order=desc&_page=${page}&_limit=10`;
+    let url = `http://localhost:9999/products?page=${page}`;
 
     if (nameSearch) {
-      url += `&name_like=${nameSearch}`;
+      url += `&name=${nameSearch}`;
     }
 
     if (statusFilter) {
@@ -39,16 +46,18 @@ const Productlist = () => {
     }
 
     if (categoryId) {
-      url += `&categoryId=${categoryId}`;
+      url += `&category=${categoryId}`;
     }
 
-    fetch(url)
+    console.log("url");
+    console.log(url);
+    axios(url)
       .then((res) => {
-        const totalCount = res.headers.get("X-Total-Count");
-        setTotalPages(Math.ceil(totalCount / 10));
-        return res.json();
+        console.log("res");
+        console.log(res);
+        setTotalPages(res.data.totalPages);
+        setProducts(res.data.docs);
       })
-      .then((json) => setProducts(json))
       .catch((err) => toast.error(err));
   };
 
@@ -90,16 +99,11 @@ const Productlist = () => {
   };
 
   const deleteProduct = (productId) => {
-    fetch(`http://localhost:9999/products/${productId}`, {
-      method: "DELETE",
-    })
+    axios
+      .delete(`http://localhost:9999/products/${productId}`)
       .then((res) => {
-        if (res.ok) {
-          fetchProducts(currentPage);
-          toast.success("Product deleted successfully");
-        } else {
-          toast.error("Failed to delete product");
-        }
+        fetchProducts(currentPage);
+        toast.success("Product deleted successfully");
       })
       .catch((error) => {
         toast.error(error.message);
@@ -107,45 +111,47 @@ const Productlist = () => {
   };
 
   const changeStatus = (productId, status) => {
-    fetch(`http://localhost:9999/products/${productId}`, {
-      method: "PATCH",
-      body: JSON.stringify({
+    axios
+      .patch(`http://localhost:9999/products/${productId}`, {
         status: !status,
-      }),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    })
+      })
       .then((res) => {
-        if (res.ok) {
-          fetchProducts(currentPage);
-          toast.success("Change status successfully");
-        } else {
-          toast.error("Failed to change status");
-        }
+        fetchProducts(currentPage);
+        toast.success("Change status successfully");
       })
       .catch((error) => {
         toast.error(error.message);
       });
+    // fetch(`http://localhost:9999/products/${productId}`, {
+    //   method: "PATCH",
+    //   body: JSON.stringify({
+    //     status: !status,
+    //   }),
+    //   headers: {
+    //     "Content-type": "application/json; charset=UTF-8",
+    //   },
+    // })
+    //   .then((res) => {
+    //     if (res.ok) {
+    //       fetchProducts(currentPage);
+    //       toast.success("Change status successfully");
+    //     } else {
+    //       toast.error("Failed to change status");
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     toast.error(error.message);
+    //   });
   };
 
   const changeFeatured = (productId, featured) => {
-    fetch(`http://localhost:9999/products/${productId}`, {
-      method: "PATCH",
-      body: JSON.stringify({
+    axios
+      .patch(`http://localhost:9999/products/${productId}`, {
         featured: !featured,
-      }),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    })
+      })
       .then((res) => {
-        if (res.ok) {
-          fetchProducts(currentPage);
-          toast.success("Change feature successfully");
-        } else {
-          toast.error("Failed to change feature");
-        }
+        fetchProducts(currentPage);
+        toast.success("Change feature successfully");
       })
       .catch((error) => {
         toast.error(error.message);
@@ -183,11 +189,11 @@ const Productlist = () => {
           <Form.Select
             aria-label="category"
             value={categoryId}
-            onChange={(e) => setCategoryId(Number(e.target.value))}
+            onChange={(e) => setCategoryId(e.target.value)}
           >
             <option value="">Select category</option>
             {categories.map((c) => (
-              <option key={c.id} value={c.id}>
+              <option key={c._id} value={c._id}>
                 {c.name}
               </option>
             ))}
@@ -224,8 +230,8 @@ const Productlist = () => {
               return nameMatches;
             })
             .map((p) => (
-              <tr key={p.id}>
-                <td>{p.id}</td>
+              <tr key={p._id}>
+                <td>{p._id}</td>
                 <td>
                   <img
                     style={{
@@ -240,16 +246,14 @@ const Productlist = () => {
                 </td>
                 <td>$ {p.price}</td>
                 <td>$ {p.originalPrice}</td>
-                <td>
-                  {categories.map((c) => (c.id == p.categoryId ? c.name : ""))}
-                </td>
-                <td>{brands.map((b) => (b.id == p.brand ? b.name : ""))}</td>
+                <td>{p.category?.name || ""}</td>
+                <td>{p.brand?.name || ""}</td>
                 <td className="text-center">
                   {p.status === true ? (
                     <Badge
                       bg="primary"
                       style={{ cursor: "pointer" }}
-                      onClick={() => changeStatus(p.id, p.status)}
+                      onClick={() => changeStatus(p._id, p.status)}
                     >
                       Active
                     </Badge>
@@ -257,7 +261,7 @@ const Productlist = () => {
                     <Badge
                       bg="warning"
                       style={{ cursor: "pointer" }}
-                      onClick={() => changeStatus(p.id, p.status)}
+                      onClick={() => changeStatus(p._id, p.status)}
                     >
                       Inactive
                     </Badge>
@@ -268,7 +272,7 @@ const Productlist = () => {
                     <Badge
                       bg="primary"
                       style={{ cursor: "pointer" }}
-                      onClick={() => changeFeatured(p.id, p.featured)}
+                      onClick={() => changeFeatured(p._id, p.featured)}
                     >
                       Yes
                     </Badge>
@@ -276,7 +280,7 @@ const Productlist = () => {
                     <Badge
                       bg="warning"
                       style={{ cursor: "pointer" }}
-                      onClick={() => changeFeatured(p.id, p.featured)}
+                      onClick={() => changeFeatured(p._id, p.featured)}
                     >
                       No
                     </Badge>
@@ -284,21 +288,21 @@ const Productlist = () => {
                 </td>
                 <td className="text-center">
                   <Button variant="primary">
-                    <Link className="text-white" to={"/admin/product/" + p.id}>
+                    <Link className="text-white" to={"/admin/product/" + p._id}>
                       View
                     </Link>
                   </Button>
                   <Button variant="primary" className="mx-2">
                     <Link
                       className="text-white"
-                      to={"/admin/product/edit/" + p.id}
+                      to={"/admin/product/edit/" + p._id}
                     >
                       Edit
                     </Link>
                   </Button>
                   <Button
                     variant="danger"
-                    onClick={() => handleDeleteProduct(p.id)}
+                    onClick={() => handleDeleteProduct(p._id)}
                   >
                     Delete
                   </Button>
