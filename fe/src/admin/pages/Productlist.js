@@ -160,7 +160,7 @@ const Productlist = () => {
 
   return (
     <Col lg={12}>
-      <h3 className="mt-2">Contacts List</h3>
+      <h3 className="mt-2 text-center">Products List</h3>
       <Row className="my-4">
         <Col xs={12} md={4}>
           <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
@@ -246,12 +246,8 @@ const Productlist = () => {
                 </td>
                 <td>$ {p.price}</td>
                 <td>$ {p.originalPrice}</td>
-                <td>
-                  {p.category?.name || ''}
-                </td>
-                <td>
-                  {p.brand?.name || ''}
-                </td>
+                <td>{p.category?.name || ""}</td>
+                <td>{p.brand?.name || ""}</td>
                 <td className="text-center">
                   {p.status === true ? (
                     <Badge
