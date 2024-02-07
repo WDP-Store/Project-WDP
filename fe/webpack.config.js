@@ -1,14 +1,14 @@
-const path = require('path');
+const path = require("path");
 
 module.exports = {
-  entry: './src/index.js', // Update with your entry file path
+  entry: "./src/index.js", // Update with your entry file path
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
+    path: path.resolve(__dirname, "dist"),
+    filename: "bundle.js",
   },
   resolve: {
     fallback: {
-      "crypto": require.resolve("crypto-browserify")
+      crypto: require.resolve("crypto-browserify"),
     },
   },
   module: {
@@ -19,23 +19,16 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader',
+          loader: "babel-loader",
           options: {
-            presets: ['@babel/preset-env'],
+            presets: ["@babel/preset-env"],
           },
         },
       },
     ],
   },
   devServer: {
-    contentBase: path.resolve(__dirname, 'dist'),
+    contentBase: path.resolve(__dirname, "dist"),
     port: 3000, // Update with your desired port number
   },
 };
-
-
-
-
-
-
-
