@@ -23,10 +23,11 @@ import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import { ToastContainer } from "react-toastify";
 import { AppRouter } from "./routes/router";
+import MessengerCustomerChat from 'react-messenger-customer-chat';
 function App() {
   return (
     <>
-      <ToastContainer theme='colored' position='top-center'></ToastContainer>
+      <ToastContainer theme="colored" position="top-center"></ToastContainer>
       {/* <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout />}>
@@ -53,6 +54,11 @@ function App() {
         </Routes>
       </BrowserRouter> */}
       <AppRouter />
+      <MessengerCustomerChat
+        pageId="61556173384943"
+        appId="329527983419602"
+        htmlRef="<REF_STRING>"
+      />
     </>
   );
 }
