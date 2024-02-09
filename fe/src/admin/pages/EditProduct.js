@@ -30,23 +30,8 @@ const productSchema = yup.object({
     .typeError("Must be a number")
     .required("This field is required")
     .positive("Must be a positive value"),
-<<<<<<< HEAD
-  categoryId: yup
-    .number()
-    .typeError("Must be a number")
-    .required("This field is required")
-    .positive("Must be a positive value")
-    .integer("Must be an integer"),
-  brand: yup
-    .number()
-    .typeError("Must be a number")
-    .required("This field is required")
-    .positive("Must be a positive value")
-    .integer("Must be an integer"),
-=======
   category: yup.string().required("This field is required"),
   brand: yup.string().required("This field is required"),
->>>>>>> 3349baf7460c346ff51ae3f2b56d01836c358335
   describe: yup.string().required("This field is required"),
   detail: yup.string().required("This field is required"),
   product: yup.array().of(
@@ -65,11 +50,7 @@ const initialValues = {
   name: "",
   price: "",
   originalPrice: "",
-<<<<<<< HEAD
-  categoryId: "",
-=======
   category: "",
->>>>>>> 3349baf7460c346ff51ae3f2b56d01836c358335
   brand: "",
   year: "",
   featured: false,
@@ -93,58 +74,36 @@ const EditProduct = () => {
   const { id } = useParams();
 
   useEffect(() => {
-<<<<<<< HEAD
-    fetch(`http://localhost:9999/products/${id}`)
-      .then((res) => res.json())
-=======
     axios(`http://localhost:9999/products/${id}`)
       .then((res) => {
         return res.data;
       })
->>>>>>> 3349baf7460c346ff51ae3f2b56d01836c358335
       .then((json) => {
         setProduct(json);
         const {
           name,
           price,
           originalPrice,
-<<<<<<< HEAD
-          categoryId,
-=======
           category,
->>>>>>> 3349baf7460c346ff51ae3f2b56d01836c358335
           brand,
           featured,
           status,
           detail,
           describe,
           year,
-<<<<<<< HEAD
-          color,
-          images,
-=======
->>>>>>> 3349baf7460c346ff51ae3f2b56d01836c358335
         } = json;
         formik.setFieldValue("name", name);
         formik.setFieldValue("price", price);
         formik.setFieldValue("originalPrice", originalPrice);
-<<<<<<< HEAD
-        formik.setFieldValue("categoryId", categoryId);
-        formik.setFieldValue("brand", brand);
-=======
         formik.setFieldValue("category", category._id);
         formik.setFieldValue("brand", brand._id);
->>>>>>> 3349baf7460c346ff51ae3f2b56d01836c358335
         formik.setFieldValue("year", year);
         formik.setFieldValue("featured", featured);
         formik.setFieldValue("status", status);
         formik.setFieldValue("detail", detail);
         formik.setFieldValue("describe", describe);
-<<<<<<< HEAD
-=======
         // formik.setFieldValue("color", color);
         // formik.setFieldValue("images", images);
->>>>>>> 3349baf7460c346ff51ae3f2b56d01836c358335
       });
   }, []);
 
@@ -164,33 +123,17 @@ const EditProduct = () => {
   });
 
   useEffect(() => {
-<<<<<<< HEAD
-    fetch(`http://localhost:9999/brands`)
-      .then((res) => res.json())
-      .then((json) => {
-        const br = [];
-        json.map((j) => br.push({ value: j.id, label: j.name }));
-=======
     axios
       .get("http://localhost:9999/brands")
       .then((res) => res.data)
       .then((data) => {
         const br = [];
         data.map((j) => br.push({ value: j._id, label: j.name }));
->>>>>>> 3349baf7460c346ff51ae3f2b56d01836c358335
         setBrands(br);
       });
   }, []);
 
   useEffect(() => {
-<<<<<<< HEAD
-    fetch(`http://localhost:9999/categories`)
-      .then((res) => res.json())
-      .then((json) => {
-        const cate = [];
-        json.map((j) => cate.push({ value: j.id, label: j.name }));
-        setCategories(cate);
-=======
     axios
       .get("http://localhost:9999/categories")
       .then((res) => res.data)
@@ -198,7 +141,6 @@ const EditProduct = () => {
         const c = [];
         data.map((j) => c.push({ value: j._id, label: j.name }));
         setCategories(c);
->>>>>>> 3349baf7460c346ff51ae3f2b56d01836c358335
       });
   }, []);
 
@@ -252,11 +194,7 @@ const EditProduct = () => {
       name,
       price,
       originalPrice,
-<<<<<<< HEAD
-      categoryId,
-=======
       category,
->>>>>>> 3349baf7460c346ff51ae3f2b56d01836c358335
       brand,
       featured,
       status,
@@ -264,11 +202,8 @@ const EditProduct = () => {
       describe,
       year,
     } = values;
-<<<<<<< HEAD
-=======
     console.log("savecate")
     console.log(category)
->>>>>>> 3349baf7460c346ff51ae3f2b56d01836c358335
     let c, i;
     if (p) {
       const { color, images } = p;
@@ -279,22 +214,12 @@ const EditProduct = () => {
       i = [...product.images];
     }
 
-<<<<<<< HEAD
-    fetch(`http://localhost:9999/products/${id}`, {
-      method: "PATCH",
-      body: JSON.stringify({
-        name,
-        price: Number(price),
-        originalPrice: Number(originalPrice),
-        categoryId,
-=======
     axios
       .patch(`http://localhost:9999/products/${id}`, {
         name,
         price: Number(price),
         originalPrice: Number(originalPrice),
         category,
->>>>>>> 3349baf7460c346ff51ae3f2b56d01836c358335
         brand,
         year: Number(year),
         featured,
@@ -303,15 +228,7 @@ const EditProduct = () => {
         describe,
         color: c,
         images: i,
-<<<<<<< HEAD
-      }),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    })
-=======
       })
->>>>>>> 3349baf7460c346ff51ae3f2b56d01836c358335
       .then(() => {
         toast.success("Update product successfully");
         navigate("/admin/product");
@@ -344,26 +261,6 @@ const EditProduct = () => {
     const images = product.images;
     color.splice(index, 1);
     images.splice(index, 1);
-<<<<<<< HEAD
-    fetch(`http://localhost:9999/products/${id}`, {
-      method: "PATCH",
-      body: JSON.stringify({
-        color,
-        images,
-      }),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    })
-      .then((res) => {
-        fetch(`http://localhost:9999/products/${id}`)
-          .then((res) => res.json())
-          .then((json) => {
-            setProduct(json);
-            toast.success("Delete successfully");
-          });
-      })
-=======
 
     setIsLoading(true);
     axios
@@ -376,7 +273,6 @@ const EditProduct = () => {
         setIsLoading(false);
         toast.success("Delete successfully");
       })
->>>>>>> 3349baf7460c346ff51ae3f2b56d01836c358335
       .catch((error) => {
         toast.error(error.message);
       });
@@ -406,11 +302,7 @@ const EditProduct = () => {
       )}
       <Row>
         <Col>
-<<<<<<< HEAD
           <h3 className="mt-2 text-center">Create new product</h3>
-=======
-          <h3 className="mt-3">Create new product</h3>
->>>>>>> 3349baf7460c346ff51ae3f2b56d01836c358335
           <Formik initialValues={initialValues} onSubmit={formik.handleSubmit}>
             {({ values }) => (
               <Form>
@@ -468,18 +360,6 @@ const EditProduct = () => {
                           .includes(input.toLowerCase())
                       }
                       options={categories}
-<<<<<<< HEAD
-                      name="categoryId"
-                      onChange={(value) =>
-                        formik.setFieldValue("categoryId", Number(value))
-                      }
-                      onBlur={formik.handleBlur("categoryId")}
-                      value={formik.values?.categoryId}
-                    />
-                    {formik.touched.categoryId && (
-                      <span className="text-danger">
-                        {formik.errors.categoryId}
-=======
                       name="category"
                       onChange={(value) =>
                         formik.setFieldValue("category", value)
@@ -490,7 +370,6 @@ const EditProduct = () => {
                     {formik.touched.category && (
                       <span className="text-danger">
                         {formik.errors.category}
->>>>>>> 3349baf7460c346ff51ae3f2b56d01836c358335
                       </span>
                     )}
                   </Col>
@@ -509,13 +388,7 @@ const EditProduct = () => {
                       }
                       options={brands}
                       name="brand"
-<<<<<<< HEAD
-                      onChange={(value) =>
-                        formik.setFieldValue("brand", Number(value))
-                      }
-=======
                       onChange={(value) => formik.setFieldValue("brand", value)}
->>>>>>> 3349baf7460c346ff51ae3f2b56d01836c358335
                       onBlur={formik.handleBlur("brand")}
                       value={formik.values?.brand}
                     />
