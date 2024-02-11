@@ -9,9 +9,10 @@ import { useParams } from "react-router-dom";
 import ProductItem from "../components/ProductItem";
 import Swal from "sweetalert2";
 import { CartContext } from '../components/CartContext'
+import axios from "axios";
 
 const SingleProduct = () => {
-  const {cartQuantity ,setCartQuantity} = useContext(CartContext)
+  const { cartQuantity, setCartQuantity } = useContext(CartContext)
   const { id } = useParams();
   const [products, setProducts] = useState([]);
   const [relatedProducts, setRelatedProduct] = useState([]);
@@ -21,7 +22,8 @@ const SingleProduct = () => {
   const [quantity, setQuantity] = useState(1);
   const [brands, setBrands] = useState([]); //brands
   const { images } = products;
-  const [wishlist, setWishList] = useState([]);
+  const [wishlist, setWishList] = useState({});
+  const [isWish, setIsWish] = useState(false);
 
   useEffect( //fetch product data by id
     () => {
@@ -35,15 +37,13 @@ const SingleProduct = () => {
               .then(json => {
                 const result = json.slice(0, 4); //get just 4 products for relative products
                 setRelatedProduct(result);
-              }
-              );
+              });
           }
         );
 
       fetch(`http://localhost:9999/brands`)
         .then(res => res.json())
         .then(json => setBrands(json));
-
     }, [id]
   );
 
@@ -60,61 +60,71 @@ const SingleProduct = () => {
     () => {
       if (JSON.parse(sessionStorage.getItem("data"))) {
         const user = JSON.parse(sessionStorage.getItem("data"));
-        fetch(`http://localhost:9999/wishLists/?userId=` + user.email)
-          .then(res => res.json())
+        axios
+          .get(`http://localhost:9999/wishlists?user=` + user._id)
+          .then((res) => res.data)
           .then(json => {
             setWishList(json)
-          }
-          );
+          });
       }
     }, []
   );
 
+  useEffect(() => {
+    axios
+      .get(`http://localhost:9999/wishlists?product=${id}&user=65c6e0400a9390c33d67b2c1`)
+      .then((res) => res.data.docs[0])
+      .then((data) => {
+        setWishList(data);
+      });
+  }, [isWish]);
+
   //wish list:
   const addToWishList = () => {
-    if (JSON.parse(sessionStorage.getItem("data"))) { //if user is logged in
-      if (wishlist.some(w => w.productId == id)) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Failed',
-          text: 'You have already added this item to wishlist',
-        })
-      } else {
-        fetch('http://localhost:9999/wishLists', { //add new item to json
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            userId: JSON.parse(sessionStorage.getItem("data")).email,
-            productId: id
-          })
-        })
-        wishlist.push({ //update the useState wishlist to prevent duplication
-          productId: id
-        })
-        Swal.fire({
-          icon: 'success',
-          title: 'Added',
-          text: 'Added item to wishlist',
-        })
-      }
-    } else { //not logged in
+    // if (JSON.parse(sessionStorage.getItem("data"))) { //if user is logged in
+    if (wishlist?.product._id == id) {
       Swal.fire({
         icon: 'error',
-        title: 'Not logged in',
-        text: 'Log in to save this product along with your account',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        cancelButtonText: "Cancel",
-        confirmButtonText: 'Login'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          window.location = "/login";
-        }
+        title: 'Failed',
+        text: 'You have already added this item to wishlist',
       })
+    } else {
+      axios
+        .post(`http://localhost:9999/wishlists`, {
+          // user: JSON.parse(sessionStorage.getItem("data"))._id,
+          user: "65c6e0400a9390c33d67b2c1",
+          product: id
+        }).then(() => {
+          setIsWish(true)
+          Swal.fire({
+            icon: 'success',
+            title: 'Added',
+            text: 'Added item to wishlist',
+          })
+        }).catch((e) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Failed',
+            text: `Failed to add wishlist ${e}`,
+          })
+        })
     }
+    // } else { //not logged in
+    //   Swal.fire({
+    //     icon: 'error',
+    //     title: 'Not logged in',
+    //     text: 'Log in to save this product along with your account',
+    //     showCancelButton: true,
+    //     confirmButtonColor: '#3085d6',
+    //     cancelButtonColor: '#d33',
+    //     cancelButtonText: "Cancel",
+    //     confirmButtonText: 'Login'
+    //   }).then((result) => {
+    //     if (result.isConfirmed) {
+    //       window.location = "/login";
+    //     }
+    //   })
+    // }
   }
   //session cart :
   const [cart, setCart] = useState([]);
@@ -146,7 +156,7 @@ const SingleProduct = () => {
               title: 'Added',
               text: 'Added item to cart',
             })
-            setCartQuantity(cartQuantity+1)
+            setCartQuantity(cartQuantity + 1)
           }
         }
         sessionStorage.setItem("cart", JSON.stringify(sessionCart));

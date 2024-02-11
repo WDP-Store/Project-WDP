@@ -3,6 +3,27 @@ GET http://localhost:9999/products
 Content-Type: application/json
 
 ###
+GET http://localhost:9999/products/65bfb0d71e2ddb10f515e626
+Content-Type: application/json
+
+###
+GET http://localhost:9999/wishlists
+Content-Type: application/json
+
+###
+GET http://localhost:9999/wishlists?product=65c6e0400a9390c33d67b2c1&user=65c6e0400a9390c33d67b2c1
+Content-Type: application/json
+
+###
+POST http://localhost:9999/wishlists
+Content-Type: application/json
+
+{
+    "user": "65c6e0400a9390c33d67b2c1",
+    "product": "65bfb0d71e2ddb10f515e626"
+}
+
+###
 POST http://localhost:9999/products
 Content-Type: application/json
 

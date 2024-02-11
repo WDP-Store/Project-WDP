@@ -57,8 +57,7 @@ const OurStore = () => {
       .then((data) => {
         setCategories(data);
       });
-  }, []
-  );
+  }, []);
 
   useEffect(() => {
     axios
@@ -67,8 +66,7 @@ const OurStore = () => {
       .then((data) => {
         setBrands(data);
       });
-  }, []
-  );
+  }, []);
 
   var currentYear = new Date().getFullYear();
   const years = [currentYear--, currentYear--, currentYear--, currentYear--];

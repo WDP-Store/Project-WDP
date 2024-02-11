@@ -19,9 +19,6 @@ const findAll = async (req, res) => {
     if (name_s) sort = { name: name_s };
     if (featured_s) sort = { featured: featured_s };
 
-    console.log("featured_s")
-    console.log(sort)
-
     const data = await Product.paginate(query, {
       populate: ['category', 'brand'],
       page: page || 1,
