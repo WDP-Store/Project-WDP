@@ -24,7 +24,8 @@ const productSchema = yup.object({
     .required("This field is required")
     .positive("Must be a positive value")
     .integer()
-    .min(1900),
+    .min(1900)
+    .max(new Date().getFullYear()),
   originalPrice: yup
     .number()
     .typeError("Must be a number")

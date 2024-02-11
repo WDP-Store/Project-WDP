@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { BsLinkedin, BsGithub, BsYoutube, BsInstagram } from "react-icons/bs";
 import newsletter from "../images/newsletter.png";
-import {BsFire} from "react-icons/bs";
+import { BsFire } from "react-icons/bs";
 
 const Footer = () => {
   return (
@@ -89,7 +89,7 @@ const Footer = () => {
             <div className="col-12">
               <p className="text-center mb-0 text-white">
                 &copy; {new Date().getFullYear()} Copyright:{' '}
-                Made with <BsFire style={{ marginBottom: 0 }} size="20px" /> by group 3 FER201 from FPT University
+                Made with <BsFire style={{ marginBottom: 0 }} size="20px" /> by group 4 SDN from FPT University
               </p>
             </div>
           </div>
