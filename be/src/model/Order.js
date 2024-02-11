@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const moment = require('moment');
 const Order = new mongoose.Schema({
-    userId: {
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true
@@ -28,14 +28,14 @@ const Order = new mongoose.Schema({
         required: true,
         default: moment().format(),
     },
-    statusId: {
+    status: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Status",
         required: true
     },
     productList: [
         {
-            productId: {
+            product: {
                 type: String,
                 required: true
             },
@@ -43,11 +43,11 @@ const Order = new mongoose.Schema({
                 type: String,
                 required: true
             },
-            categoryId: {
+            category: {
                 type: String,
                 required: true
             },
-            brandId: {
+            brand: {
                 type: String,
                 required: true
             },
