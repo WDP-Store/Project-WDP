@@ -8,21 +8,26 @@ import Form from 'react-bootstrap/Form';
 import * as formik from 'formik';
 import * as yup from 'yup';
 import Swal from "sweetalert2";
+import axios from 'axios'
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const states = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"];
 const Checkout = () => {
-  const [cart, setCart] = useState(JSON.parse(sessionStorage.getItem("cart")));
+  const navigate = useNavigate();
+  const [cart, setCart] = useState(JSON.parse(localStorage.getItem("cart")));
   const [products, setProducts] = useState([]);
   const [subTotal, setSubTotal] = useState(0);
-  const [user, setUser] = useState(JSON.parse(sessionStorage.getItem("data")));
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("data")) || { _id: "65c6e0400a9390c33d67b2c1", name: "abc", phone: "098" });
   const [order, setOrder] = useState([]);
   const { Formik } = formik;
 
   const schema = yup.object().shape({
     fullName: yup.string().required(),
-    address: yup.string().required(),
+    detailAddress: yup.string().required(),
     city: yup.string().required(),
     zipcode: yup.string().required(),
+    paymentMethod: yup.mixed().oneOf(["COD", "VNPAY"]).required(),
     phone: yup.number().required().typeError('Phone must contain only numbers')
   });
 
@@ -33,49 +38,33 @@ const Checkout = () => {
         temp += Number(p.price) * cart[index].quantity
       )
       setSubTotal(temp.toFixed(2)); //update subtotal each time cart changes
-    }, [cart, products]
-  )
-
-
-  // useEffect(() => {
-  //   fetch(`https://restcountries.com/v3.1/all?fields=name`)
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setCountryList(data);
-  //       var temp = [...countryList];
-  //       temp.sort((a, b) => a.name.common.localeCompare(b.name.common));
-  //       setCountryList(temp);
-  //     });
-  // }, []);
-
+    }, [cart, products])
 
   useEffect(() => {
     Promise.all(  //wait for all of the fetch requests to complete before updating the state with the fetched data.
       cart.map((c) => {
-        return fetch(`http://localhost:9999/products/` + c.productId)
-          .then((res) => res.json())
-          .then((json) => {
+        return axios
+          .get(`http://localhost:9999/products/${c.product}`)
+          .then((res) => res.data)
+          .then(json => {
             json.index = c.id;  // index of products will match cart id
             return json;
           });
       })
     ).then((data) => {
       setProducts(data);
-      //console.log(cart);
-    }
-    );
+    });
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:9999/users/" + user.email)
-      .then(res => res.json())
-      .then(json => setUser(json))
-  }, []
-  )
+    axios
+      .get(`http://localhost:9999/users/${user._id}`)
+      .then((res) => setUser(res.data))
+  }, [])
 
   useEffect(() => {
     setOrder({ //preset the order information based on user's information
-      userId: user.id,
+      user: user._id,
       name: user.name ?? '',
       phone: user.phone ?? '',
       address: {
@@ -87,10 +76,10 @@ const Checkout = () => {
       },
       productList:
         products.map((p, index) => ({
-          productId: p.id,
+          productId: p._id,
           productName: p.name,
-          categoryId : p.categoryId,
-          brandId : p.brand,
+          category: p.category.name,
+          brand: p.brand.name,
           quantity: Number(cart[index].quantity),
           color: cart[index].color,
           unitPrice: Number(p.price),
@@ -98,65 +87,62 @@ const Checkout = () => {
         })),
       totalAmount: Number(subTotal),
       date: new Date(),
-      statusId: Number(1)
+      status: "65c9987222000fd0245fe3e4"
     })
-  }, [user, products, subTotal]
-  )
-
-  // const inputInfo = (value, attr) => {
-  //   if (attr === "phone" || attr === "name") {
-  //     setOrder({
-  //       ...order,
-  //       [attr]: value
-  //     })
-  //   }
-  //   else {
-  //     setOrder({
-  //       ...order,
-  //       address: {
-  //         ...order.address,
-  //         [attr]: value
-  //       }
-  //     })
-  //   }
-  // }
+  }, [user, products, subTotal])
 
   const checkOut = (values) => { //change the order preset by value that inputed from form
     var temp = {
       ...order,
       name: values.fullName,
       phone: values.phone,
+      paymentMethod: values.paymentMethod,
       address: {
         ...order.address,
-        address: values.address,
+        detailAddress: values.detailAddress,
         city: values.city,
         state: values.state,
         zipcode: values.zipcode
       }
     }
+    console.log("temp")
+    console.log(temp)
 
-    fetch('http://localhost:9999/order', {
-      method: 'POST',
-      body: JSON.stringify(
-        temp
-      ),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-    })
-    Swal.fire({
-      title: 'Order created !',
-      icon: 'success',
-      confirmButtonColor: '#3085d6',
-    })
+    if (temp.paymentMethod === "VNPAY") {
+      axios
+        .post(`http://localhost:9999/orders/create-payment-url`, temp)
+        .then((res1) => {
+          const urlParams = new URLSearchParams(res1.data.url);
+          const vnpOrderInfo = urlParams.get('vnp_OrderInfo');
+
+          axios
+            .post(`http://localhost:9999/orders`, {
+              ...temp,
+              orderVnpayId: vnpOrderInfo
+            })
+            .then((res2) => {
+              window.location.replace(res1.data.url);
+            })
+            .catch(() => toast.error("Something went wrong!"))
+        })
+        .catch((e) => {
+          toast.error("Something went wrong!")
+        });
+    } else {
+      axios
+        .post(`http://localhost:9999/orders`, temp)
+        .then(() => {
+          localStorage.removeItem('cart')
+          toast.success("Order created!")
+          navigate('/myOrder')
+        })
+        .catch(() => toast.error("Something went wrong!"));
+    }
   }
 
   useEffect(() => {
     console.log(order)
-  }, [order]
-
-  )
-
+  }, [order])
 
   return (
     <>
@@ -207,10 +193,11 @@ const Checkout = () => {
                 enableReinitialize={true}
                 initialValues={{
                   fullName: user.name,
-                  address: user.address?.detailAddress,
+                  detailAddress: user.address?.detailAddress,
                   city: user.address?.city,
                   state: "Alabama",
                   zipcode: user.address?.zipcode,
+                  paymentMethod: "",
                   phone: user.phone,
                 }}
               >
@@ -252,7 +239,7 @@ const Checkout = () => {
                     <div className="col-6">
                       <InputGroup className="mb-3">
                         <InputGroup.Text>
-                          Phone (+1)
+                          Phone
                         </InputGroup.Text>
                         <Form.Control
                           type="text"
@@ -277,17 +264,17 @@ const Checkout = () => {
                         </InputGroup.Text>
                         <Form.Control
                           type="text"
-                          name="address"
-                          placeholder="Address"
+                          name="detailAddress"
+                          placeholder="Detail Address"
                           className="form-control"
-                          value={values.address}
+                          value={values.detailAddress}
                           required
                           onChange={handleChange}
-                          isValid={touched.address && !errors.address}
-                          isInvalid={!!errors.address}
+                          isValid={touched.detailAddress && !errors.detailAddress}
+                          isInvalid={!!errors.detailAddress}
                         />
                         <Form.Control.Feedback type="invalid">
-                          {errors.address}
+                          {errors.detailAddress}
                         </Form.Control.Feedback>
                       </InputGroup>
 
@@ -342,6 +329,35 @@ const Checkout = () => {
                         />
                         <Form.Control.Feedback type="invalid">
                           {errors.zipcode}
+                        </Form.Control.Feedback>
+                      </InputGroup>
+
+                    </div>
+                    <div className="flex-grow-1">
+                      <InputGroup className="mb-3">
+                        <Form.Check
+                          id='paymentMethodCOD'
+                          name="paymentMethod"
+                          type='radio'
+                          label="COD"
+                          value="COD"
+                          checked={values.paymentMethod === "COD"}
+                          onChange={handleChange}
+                          isInvalid={!!errors.paymentMethod && touched.paymentMethod}
+                        />
+                        <Form.Check
+                          id='paymentMethodVnpay'
+                          name="paymentMethod"
+                          type='radio'
+                          className="mx-3"
+                          label="Vnpay"
+                          value="VNPAY"
+                          checked={values.paymentMethod === "VNPAY"}
+                          onChange={handleChange}
+                          isInvalid={!!errors.paymentMethod && touched.paymentMethod}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.paymentMethod}
                         </Form.Control.Feedback>
                       </InputGroup>
 

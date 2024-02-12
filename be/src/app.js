@@ -4,6 +4,8 @@ import cors from "cors";
 import helmet from "helmet";
 import connect from "./config/connect.js"
 import route from './routes/index.js';
+import cookieParser from "cookie-parser";
+
 const app = express();
 // .env
 dotenv.config();
@@ -14,6 +16,7 @@ const port = process.env.PORT || 8888;
 //support call api FE -> BE
 app.use(cors());
 app.use(helmet());
+app.use(cookieParser());
 
 //middleware
 app.use(express.json());

@@ -9,7 +9,7 @@ import cross from "../images/cross.svg";
 
 const Wishlist = () => {
   const [wishlist, setWishList] = useState([]);
-  const user = JSON.parse(sessionStorage.getItem("data")) || { _id: "65c6e0400a9390c33d67b2c1" };
+  const user = JSON.parse(localStorage.getItem("data")) || { _id: "65c6e0400a9390c33d67b2c1" };
 
   useEffect(
     () => {

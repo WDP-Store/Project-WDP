@@ -6,12 +6,12 @@ import { CartContext } from '../components/CartContext'
 
 // Create provider tat use in intier page
 function LayoutProvider({ children }) {
-  if(!sessionStorage.getItem("cart")) sessionStorage.setItem("cart", JSON.stringify([]));
-  const [cartQuantity, setCartQuantity] = useState(JSON.parse(sessionStorage.getItem("cart")).length);
+  if (!localStorage.getItem("cart")) localStorage.setItem("cart", JSON.stringify([]));
+  const [cartQuantity, setCartQuantity] = useState(JSON.parse(localStorage.getItem("cart")).length);
 
 
   return (
-    <CartContext.Provider value={{ cartQuantity, setCartQuantity}}>
+    <CartContext.Provider value={{ cartQuantity, setCartQuantity }}>
       {children}
     </CartContext.Provider>
   );

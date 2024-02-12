@@ -1,5 +1,29 @@
 import mongoose from "mongoose";
-const moment = require('moment');
+import moment from 'moment';
+
+const AddressSchema = new mongoose.Schema({
+    country: {
+        type: String,
+        required: true,
+    },
+    state: {
+        type: String,
+        required: true,
+    },
+    city: {
+        type: String,
+        required: true,
+    },
+    detailAddress: {
+        type: String,
+        required: true,
+    },
+    zipcode: {
+        type: String,
+        required: true,
+    }
+})
+
 const Order = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
@@ -15,7 +39,7 @@ const Order = new mongoose.Schema({
         required: true
     },
     address: {
-        type: String,
+        type: AddressSchema,
         required: true
     },
     totalAmount: {
@@ -28,6 +52,20 @@ const Order = new mongoose.Schema({
         required: true,
         default: moment().format(),
     },
+    paymentMethod: {
+        type: String,
+        required: true,
+        enum: ['COD', 'VNPAY'],
+    },
+    orderVnpayId: {
+        type: String,
+        required: false,
+    },
+    isPaid: {
+        type: Boolean,
+        required: true,
+        default: false,
+    },
     status: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Status",
@@ -35,7 +73,7 @@ const Order = new mongoose.Schema({
     },
     productList: [
         {
-            product: {
+            productId: {
                 type: String,
                 required: true
             },

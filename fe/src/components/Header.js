@@ -25,7 +25,7 @@ const Header = () => {
 
   useEffect(() => {
     if (isLogged) {
-      fetch("http://localhost:9999/users/" + JSON.parse(sessionStorage.getItem("data")).email)
+      fetch("http://localhost:9999/users/" + JSON.parse(localStorage.getItem("data")).email)
         .then(res => res.json())
         .then(json => setThisUser(json))
     }
@@ -34,8 +34,8 @@ const Header = () => {
 
 
   const handleLogout = () => {
-    sessionStorage.removeItem('data')
-    sessionStorage.removeItem('cart') //remove cart 
+    localStorage.removeItem('data')
+    localStorage.removeItem('cart') //remove cart 
     toast.success("Successfully logged out!")
     navigate('/login')
   }
@@ -123,7 +123,7 @@ const Header = () => {
                     </Link>
                     <div id="function-box-header">
                       <Link
-                         to={`/profile/${currentUser.email}`}
+                        to={`/profile/${currentUser.email}`}
                         className="d-flex align-items-center gap-10 text-white link-user-header-function"
                       >
                         <BiUser className="m-0" />My profile

@@ -6,7 +6,7 @@ import { Button, Col, Form, Row } from "react-bootstrap";
 
 export default function Dashboard() {
   const Currentdate = new Date(); //current date
-  const monthNames = [
+  const monthLabels = [
     "January",
     "February",
     "March",
@@ -24,7 +24,6 @@ export default function Dashboard() {
   //for query statistic
   const [fromDate, setfromDate] = useState("");
   const [toDate, settoDate] = useState("");
-  //
 
   //for yealy report
   const [yearlySelected, setYearlySelected] = useState(
@@ -43,7 +42,6 @@ export default function Dashboard() {
       Currentdate.getFullYear() + "-" + (Currentdate.getMonth() + 1) + "-01"
     )
   );
-  //
 
   const [brands, setBrands] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -198,7 +196,7 @@ export default function Dashboard() {
       <h2 className="mt-2 text-center">Dashboard</h2>
       <Row>
         <Col xs={6} md={3}>
-          <h4>Report on {monthNames[selectedMonth] + " " + selectedYear}</h4>
+          <h4>Report on {monthLabels[selectedMonth] + " " + selectedYear}</h4>
         </Col>
         <Col xs={6} md={2}>
           <InputGroup className="mb-3">
@@ -211,7 +209,7 @@ export default function Dashboard() {
                 console.log(selectedDate);
               }}
             >
-              {monthNames.map((m, index) => (
+              {monthLabels.map((m, index) => (
                 <option key={index} value={index}>
                   {m}
                 </option>
@@ -298,7 +296,7 @@ export default function Dashboard() {
             </h6>
             <p className="mb-0  desc">
               Compared to{" "}
-              {monthNames[pre_currentMonthReport().from.getMonth()] +
+              {monthLabels[pre_currentMonthReport().from.getMonth()] +
                 " " +
                 pre_currentMonthReport().from.getFullYear()}
             </p>
@@ -342,7 +340,7 @@ export default function Dashboard() {
             </h6>
             <p className="mb-0  desc">
               Compared to{" "}
-              {monthNames[pre_currentMonthReport().from.getMonth()] +
+              {monthLabels[pre_currentMonthReport().from.getMonth()] +
                 " " +
                 pre_currentMonthReport().from.getFullYear()}
             </p>
@@ -384,7 +382,7 @@ export default function Dashboard() {
             </h6>
             <p className="mb-0  desc">
               Compared to{" "}
-              {monthNames[pre_currentMonthReport().from.getMonth()] +
+              {monthLabels[pre_currentMonthReport().from.getMonth()] +
                 " " +
                 pre_currentMonthReport().from.getFullYear()}
             </p>

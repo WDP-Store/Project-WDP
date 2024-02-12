@@ -58,8 +58,8 @@ const SingleProduct = () => {
 
   useEffect(
     () => {
-      if (JSON.parse(sessionStorage.getItem("data"))) {
-        const user = JSON.parse(sessionStorage.getItem("data"));
+      if (JSON.parse(localStorage.getItem("data"))) {
+        const user = JSON.parse(localStorage.getItem("data"));
         axios
           .get(`http://localhost:9999/wishlists?user=` + user._id)
           .then((res) => res.data)
@@ -81,7 +81,7 @@ const SingleProduct = () => {
 
   //wish list:
   const addToWishList = () => {
-    // if (JSON.parse(sessionStorage.getItem("data"))) { //if user is logged in
+    // if (JSON.parse(localStorage.getItem("data"))) { //if user is logged in
     if (wishlist?.product._id == id) {
       Swal.fire({
         icon: 'error',
@@ -91,7 +91,7 @@ const SingleProduct = () => {
     } else {
       axios
         .post(`http://localhost:9999/wishlists`, {
-          // user: JSON.parse(sessionStorage.getItem("data"))._id,
+          // user: JSON.parse(localStorage.getItem("data"))._id,
           user: "65c6e0400a9390c33d67b2c1",
           product: id
         }).then(() => {
@@ -126,19 +126,19 @@ const SingleProduct = () => {
     //   })
     // }
   }
-  //session cart :
+  //local storage cart :
   const [cart, setCart] = useState([]);
 
-  //when cart changes, update session cart
+  //when cart changes, update local storage cart
   useEffect(
     () => {
-      if (sessionStorage.getItem("cart")) { //if cart exist
-        var index = JSON.parse(sessionStorage.getItem("cart")).length;
-        var sessionCart = [
-          ...JSON.parse(sessionStorage.getItem("cart"))
+      if (localStorage.getItem("cart")) { //if cart exist
+        var index = JSON.parse(localStorage.getItem("cart")).length;
+        var localCart = [
+          ...JSON.parse(localStorage.getItem("cart"))
         ]
-        sessionCart.map((s) => s.id = index--)
-        if (sessionCart.some(item => item.productId == id && item.color == recentColor)) { //if product is duplicate
+        localCart.map((s) => s.id = index--)
+        if (localCart.some(item => item.product == id && item.color == recentColor)) { //if product is duplicate
           Swal.fire({
             icon: 'error',
             title: 'Failed',
@@ -147,9 +147,9 @@ const SingleProduct = () => {
         }
         else {
           if (Object.keys(cart).length != 0) { //if cart(state) is not empty 
-            sessionCart = [
+            localCart = [
               cart, // new item on the top
-              ...sessionCart
+              ...localCart
             ]
             Swal.fire({
               icon: 'success',
@@ -159,41 +159,41 @@ const SingleProduct = () => {
             setCartQuantity(cartQuantity + 1)
           }
         }
-        sessionStorage.setItem("cart", JSON.stringify(sessionCart));
+        localStorage.setItem("cart", JSON.stringify(localCart));
       }
-      else sessionStorage.setItem("cart", JSON.stringify(cart));
-      console.log(JSON.parse(sessionStorage.getItem("cart")));
+      else localStorage.setItem("cart", JSON.stringify(cart));
+      console.log(JSON.parse(localStorage.getItem("cart")));
     }, [cart]
   )
 
   const addToCart = () => { //cart fearture
-    if (JSON.parse(sessionStorage.getItem("data"))) { //logged in
-      setCart(
-        // cart,
-        {
-          productId: Number(id),
-          color: recentColor,
-          quantity: quantity,
-        }
-      )
-    }
-    else {
-      Swal.fire({
-        icon: 'error',
-        title: 'Not logged in',
-        text: 'Log in to save this product in your cart',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        cancelButtonText: "Cancel",
-        confirmButtonText: 'Login'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          window.location = "/login";
-        }
-      })
-    }
-    //sessionStorage.setItem("cart", JSON.stringify(cart));
+    // if (JSON.parse(localStorage.getItem("data"))) { //logged in
+    setCart(
+      // cart,
+      {
+        product: id,
+        color: recentColor,
+        quantity: quantity,
+      }
+    )
+    // }
+    // else {
+    //   Swal.fire({
+    //     icon: 'error',
+    //     title: 'Not logged in',
+    //     text: 'Log in to save this product in your cart',
+    //     showCancelButton: true,
+    //     confirmButtonColor: '#3085d6',
+    //     cancelButtonColor: '#d33',
+    //     cancelButtonText: "Cancel",
+    //     confirmButtonText: 'Login'
+    //   }).then((result) => {
+    //     if (result.isConfirmed) {
+    //       window.location = "/login";
+    //     }
+    //   })
+    // }
+    //localStorage.setItem("cart", JSON.stringify(cart));
   }
   return (
     <>
@@ -289,7 +289,7 @@ const SingleProduct = () => {
                 </div>
                 <div className="d-flex align-items-center gap-15">
                   <div>
-                    <button onClick={() => addToWishList()} type="button" class="button" style={{ backgroundColor: "pink", border: 0 }}> <AiOutlineHeart className="m-0" size={25} /> Add to Wishlist</button>
+                    <button onClick={() => addToWishList()} type="button" className="button" style={{ backgroundColor: "pink", border: 0 }}> <AiOutlineHeart className="m-0" size={25} /> Add to Wishlist</button>
                   </div>
                 </div>
                 <div className="d-flex gap-10 flex-column  my-3">
