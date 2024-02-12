@@ -32,7 +32,7 @@ const Login = () => {
             login(values.email, values.password);
         },
     });
-    
+
     const login = (email, password) => {
         fetch(`http://localhost:9999/users/${email}`)
             .then((res) => {
@@ -50,7 +50,7 @@ const Login = () => {
                             role: resp.role,
                             name: resp.name
                         }
-                        sessionStorage.setItem('data', JSON.stringify(data));
+                        localStorage.setItem('data', JSON.stringify(data));
                         navigate('/');
                     } else {
                         toast.error('Wrong password');

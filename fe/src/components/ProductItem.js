@@ -26,7 +26,7 @@ const ProductItem = (props) => {
   }, [isWish]);
 
   const addToWishList = () => {
-    // if (JSON.parse(sessionStorage.getItem("data"))) { //if user is logged in
+    // if (JSON.parse(localStorage.getItem("data"))) { //if user is logged in
     if (wish?.product?._id === product._id) {
       Swal.fire({
         icon: 'error',
@@ -36,7 +36,7 @@ const ProductItem = (props) => {
     } else {
       axios
         .post(`http://localhost:9999/wishlists`, {
-          // user: JSON.parse(sessionStorage.getItem("data"))._id,
+          // user: JSON.parse(localStorage.getItem("data"))._id,
           user: "65c6e0400a9390c33d67b2c1",
           product: product._id
         }).then(() => {
@@ -75,10 +75,10 @@ const ProductItem = (props) => {
   const removeFromWishList = () => {
     console.log("wish delete")
     console.log(wish)
-    // if (JSON.parse(sessionStorage.getItem("data"))) { //if user is logged in
+    // if (JSON.parse(localStorage.getItem("data"))) { //if user is logged in
     axios
       .delete(`http://localhost:9999/wishlists/${wish._id}`, {
-        // user: JSON.parse(sessionStorage.getItem("data"))._id,
+        // user: JSON.parse(localStorage.getItem("data"))._id,
         user: "65c6e0400a9390c33d67b2c1",
         product: product._id
       }).then(() => {
