@@ -24,7 +24,8 @@ const productSchema = yup.object({
     .required("This field is required")
     .positive("Must be a positive value")
     .integer()
-    .min(1900),
+    .min(1900)
+    .max(new Date().getFullYear()),
   originalPrice: yup
     .number()
     .typeError("Must be a number")
@@ -302,7 +303,7 @@ const EditProduct = () => {
       )}
       <Row>
         <Col>
-          <h3 className="mt-3">Create new product</h3>
+          <h3 className="mt-2 text-center">Create new product</h3>
           <Formik initialValues={initialValues} onSubmit={formik.handleSubmit}>
             {({ values }) => (
               <Form>

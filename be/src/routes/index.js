@@ -4,6 +4,8 @@ import productRouter from './product.js';
 import feedbackRouter from './feedback.js';
 import brandRouter from './brand.js';
 import categoryRouter from './category.js';
+import wishlistRouter from './wishlist.js';
+import orderRouter from './order.js';
 
 const route = (app) => {
     app.use("/users", userRouter);
@@ -12,6 +14,8 @@ const route = (app) => {
     app.use("/auth", authRouter);
     app.use("/brands", brandRouter);
     app.use("/categories", categoryRouter);
+    app.use("/orders", orderRouter);
+    app.use("/wishlists", wishlistRouter);
 }
 
 export default route;

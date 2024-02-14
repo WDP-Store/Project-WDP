@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 const Blog = new mongoose.Schema({
-    categoryId: {
+    category: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Category",
         required: true

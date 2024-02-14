@@ -3,6 +3,85 @@ GET http://localhost:9999/products
 Content-Type: application/json
 
 ###
+GET http://localhost:9999/products/65bfb0d71e2ddb10f515e626
+Content-Type: application/json
+
+###
+# GET http://localhost:9999/orders/find-by-order-vnpay-id/Thanh toan cho ma GD:12230035
+GET http://localhost:9999/orders/find-by-order-vnpay-id/Thanh toan cho ma GD:12231109
+Content-Type: application/json
+
+###
+GET http://localhost:9999/wishlists
+Content-Type: application/json
+
+###
+GET http://localhost:9999/wishlists?product=65c6e0400a9390c33d67b2c1&user=65c6e0400a9390c33d67b2c1
+Content-Type: application/json
+
+###
+POST http://localhost:9999/wishlists
+Content-Type: application/json
+
+{
+    "user": "65c6e0400a9390c33d67b2c1",
+    "product": "65bfb0d71e2ddb10f515e626"
+}
+
+###
+POST http://localhost:9999/orders
+Content-Type: application/json
+
+{
+    "user": "65c6e0400a9390c33d67b2c1",
+    "name": "abc",
+    "phone": "098",
+    "address": {
+        "country": "US",
+        "state": "Alabama",
+        "city": "aergaerg",
+        "detailAddress": "aerg",
+        "zipcode": "aerg"
+    },
+    "productList": [
+        {
+            "productId": "65bfb0d71e2ddb10f515e626",
+            "productName": "iPhone 13 Pro Max",
+            "category": "Tablet",
+            "brand": "Samsung",
+            "quantity": 2,
+            "color": "Space green",
+            "unitPrice": 1099.99,
+            "originalPrice": 900.25
+        },
+        {
+            "productId": "65bfb0d71e2ddb10f515e626",
+            "productName": "iPhone 13 Pro Max",
+            "category": "Tablet",
+            "brand": "Samsung",
+            "quantity": 1,
+            "color": "Ocean blue",
+            "unitPrice": 1099.99,
+            "originalPrice": 900.25
+        },
+        {
+            "productId": "65bfb0d71e2ddb10f515e626",
+            "productName": "iPhone 13 Pro Max",
+            "category": "Tablet",
+            "brand": "Samsung",
+            "quantity": 1,
+            "color": "Lumious White",
+            "unitPrice": 1099.99,
+            "originalPrice": 900.25
+        }
+    ],
+    "paymentMethod": "COD",
+    "totalAmount": 4399.96,
+    "date": "2024-02-12T04:05:00.833Z",
+    "status": "65c9987222000fd0245fe3e4"
+}
+
+###
 POST http://localhost:9999/products
 Content-Type: application/json
 
