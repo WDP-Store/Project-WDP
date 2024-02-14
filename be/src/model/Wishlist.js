@@ -1,15 +1,21 @@
 import mongoose from "mongoose";
-const WishList = new mongoose.Schema({
-    userId: {
+import mongoosePaginate from 'mongoose-paginate-v2'
+
+const Wishlist = new mongoose.Schema({
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true
     },
-    productId: {
+    product: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Product",
-        require: true,
+        required: true,
     }
 }, { timestamps: true });
 
-export default mongoose.model("WishList", WishList);
+// Create a unique compound index with both userId and productId
+Wishlist.index({ user: 1, product: 1 }, { unique: true });
+Wishlist.plugin(mongoosePaginate);
+
+export default mongoose.model("Wishlist", Wishlist);

@@ -9,9 +9,10 @@ import { useParams } from "react-router-dom";
 import ProductItem from "../components/ProductItem";
 import Swal from "sweetalert2";
 import { CartContext } from '../components/CartContext'
+import axios from "axios";
 
 const SingleProduct = () => {
-  const {cartQuantity ,setCartQuantity} = useContext(CartContext)
+  const { cartQuantity, setCartQuantity } = useContext(CartContext)
   const { id } = useParams();
   const [products, setProducts] = useState([]);
   const [relatedProducts, setRelatedProduct] = useState([]);
@@ -21,7 +22,8 @@ const SingleProduct = () => {
   const [quantity, setQuantity] = useState(1);
   const [brands, setBrands] = useState([]); //brands
   const { images } = products;
-  const [wishlist, setWishList] = useState([]);
+  const [wishlist, setWishList] = useState({});
+  const [isWish, setIsWish] = useState(false);
 
   useEffect( //fetch product data by id
     () => {
@@ -35,15 +37,13 @@ const SingleProduct = () => {
               .then(json => {
                 const result = json.slice(0, 4); //get just 4 products for relative products
                 setRelatedProduct(result);
-              }
-              );
+              });
           }
         );
 
       fetch(`http://localhost:9999/brands`)
         .then(res => res.json())
         .then(json => setBrands(json));
-
     }, [id]
   );
 
@@ -58,77 +58,87 @@ const SingleProduct = () => {
 
   useEffect(
     () => {
-      if (JSON.parse(sessionStorage.getItem("data"))) {
-        const user = JSON.parse(sessionStorage.getItem("data"));
-        fetch(`http://localhost:9999/wishLists/?userId=` + user.email)
-          .then(res => res.json())
+      if (JSON.parse(localStorage.getItem("data"))) {
+        const user = JSON.parse(localStorage.getItem("data"));
+        axios
+          .get(`http://localhost:9999/wishlists?user=` + user._id)
+          .then((res) => res.data)
           .then(json => {
             setWishList(json)
-          }
-          );
+          });
       }
     }, []
   );
 
+  useEffect(() => {
+    axios
+      .get(`http://localhost:9999/wishlists?product=${id}&user=65c6e0400a9390c33d67b2c1`)
+      .then((res) => res.data.docs[0])
+      .then((data) => {
+        setWishList(data);
+      });
+  }, [isWish]);
+
   //wish list:
   const addToWishList = () => {
-    if (JSON.parse(sessionStorage.getItem("data"))) { //if user is logged in
-      if (wishlist.some(w => w.productId == id)) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Failed',
-          text: 'You have already added this item to wishlist',
-        })
-      } else {
-        fetch('http://localhost:9999/wishLists', { //add new item to json
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            userId: JSON.parse(sessionStorage.getItem("data")).email,
-            productId: id
-          })
-        })
-        wishlist.push({ //update the useState wishlist to prevent duplication
-          productId: id
-        })
-        Swal.fire({
-          icon: 'success',
-          title: 'Added',
-          text: 'Added item to wishlist',
-        })
-      }
-    } else { //not logged in
+    // if (JSON.parse(localStorage.getItem("data"))) { //if user is logged in
+    if (wishlist?.product._id == id) {
       Swal.fire({
         icon: 'error',
-        title: 'Not logged in',
-        text: 'Log in to save this product along with your account',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        cancelButtonText: "Cancel",
-        confirmButtonText: 'Login'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          window.location = "/login";
-        }
+        title: 'Failed',
+        text: 'You have already added this item to wishlist',
       })
+    } else {
+      axios
+        .post(`http://localhost:9999/wishlists`, {
+          // user: JSON.parse(localStorage.getItem("data"))._id,
+          user: "65c6e0400a9390c33d67b2c1",
+          product: id
+        }).then(() => {
+          setIsWish(true)
+          Swal.fire({
+            icon: 'success',
+            title: 'Added',
+            text: 'Added item to wishlist',
+          })
+        }).catch((e) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Failed',
+            text: `Failed to add wishlist ${e}`,
+          })
+        })
     }
+    // } else { //not logged in
+    //   Swal.fire({
+    //     icon: 'error',
+    //     title: 'Not logged in',
+    //     text: 'Log in to save this product along with your account',
+    //     showCancelButton: true,
+    //     confirmButtonColor: '#3085d6',
+    //     cancelButtonColor: '#d33',
+    //     cancelButtonText: "Cancel",
+    //     confirmButtonText: 'Login'
+    //   }).then((result) => {
+    //     if (result.isConfirmed) {
+    //       window.location = "/login";
+    //     }
+    //   })
+    // }
   }
-  //session cart :
+  //local storage cart :
   const [cart, setCart] = useState([]);
 
-  //when cart changes, update session cart
+  //when cart changes, update local storage cart
   useEffect(
     () => {
-      if (sessionStorage.getItem("cart")) { //if cart exist
-        var index = JSON.parse(sessionStorage.getItem("cart")).length;
-        var sessionCart = [
-          ...JSON.parse(sessionStorage.getItem("cart"))
+      if (localStorage.getItem("cart")) { //if cart exist
+        var index = JSON.parse(localStorage.getItem("cart")).length;
+        var localCart = [
+          ...JSON.parse(localStorage.getItem("cart"))
         ]
-        sessionCart.map((s) => s.id = index--)
-        if (sessionCart.some(item => item.productId == id && item.color == recentColor)) { //if product is duplicate
+        localCart.map((s) => s.id = index--)
+        if (localCart.some(item => item.product == id && item.color == recentColor)) { //if product is duplicate
           Swal.fire({
             icon: 'error',
             title: 'Failed',
@@ -137,53 +147,53 @@ const SingleProduct = () => {
         }
         else {
           if (Object.keys(cart).length != 0) { //if cart(state) is not empty 
-            sessionCart = [
+            localCart = [
               cart, // new item on the top
-              ...sessionCart
+              ...localCart
             ]
             Swal.fire({
               icon: 'success',
               title: 'Added',
               text: 'Added item to cart',
             })
-            setCartQuantity(cartQuantity+1)
+            setCartQuantity(cartQuantity + 1)
           }
         }
-        sessionStorage.setItem("cart", JSON.stringify(sessionCart));
+        localStorage.setItem("cart", JSON.stringify(localCart));
       }
-      else sessionStorage.setItem("cart", JSON.stringify(cart));
-      console.log(JSON.parse(sessionStorage.getItem("cart")));
+      else localStorage.setItem("cart", JSON.stringify(cart));
+      console.log(JSON.parse(localStorage.getItem("cart")));
     }, [cart]
   )
 
   const addToCart = () => { //cart fearture
-    if (JSON.parse(sessionStorage.getItem("data"))) { //logged in
-      setCart(
-        // cart,
-        {
-          productId: Number(id),
-          color: recentColor,
-          quantity: quantity,
-        }
-      )
-    }
-    else {
-      Swal.fire({
-        icon: 'error',
-        title: 'Not logged in',
-        text: 'Log in to save this product in your cart',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        cancelButtonText: "Cancel",
-        confirmButtonText: 'Login'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          window.location = "/login";
-        }
-      })
-    }
-    //sessionStorage.setItem("cart", JSON.stringify(cart));
+    // if (JSON.parse(localStorage.getItem("data"))) { //logged in
+    setCart(
+      // cart,
+      {
+        product: id,
+        color: recentColor,
+        quantity: quantity,
+      }
+    )
+    // }
+    // else {
+    //   Swal.fire({
+    //     icon: 'error',
+    //     title: 'Not logged in',
+    //     text: 'Log in to save this product in your cart',
+    //     showCancelButton: true,
+    //     confirmButtonColor: '#3085d6',
+    //     cancelButtonColor: '#d33',
+    //     cancelButtonText: "Cancel",
+    //     confirmButtonText: 'Login'
+    //   }).then((result) => {
+    //     if (result.isConfirmed) {
+    //       window.location = "/login";
+    //     }
+    //   })
+    // }
+    //localStorage.setItem("cart", JSON.stringify(cart));
   }
   return (
     <>
@@ -279,7 +289,7 @@ const SingleProduct = () => {
                 </div>
                 <div className="d-flex align-items-center gap-15">
                   <div>
-                    <button onClick={() => addToWishList()} type="button" class="button" style={{ backgroundColor: "pink", border: 0 }}> <AiOutlineHeart className="m-0" size={25} /> Add to Wishlist</button>
+                    <button onClick={() => addToWishList()} type="button" className="button" style={{ backgroundColor: "pink", border: 0 }}> <AiOutlineHeart className="m-0" size={25} /> Add to Wishlist</button>
                   </div>
                 </div>
                 <div className="d-flex gap-10 flex-column  my-3">

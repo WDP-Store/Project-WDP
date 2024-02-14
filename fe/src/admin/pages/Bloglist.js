@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Col, Form, Row, Table } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import Swal from 'sweetalert2';
-import Paginate from '../components/Paginate';
+import React, { useEffect, useState } from "react";
+import { Button, Col, Form, Row, Table } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import Swal from "sweetalert2";
+import Paginate from "../components/Paginate";
 
 const Bloglist = () => {
   const [blogs, setBlogs] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [filter, setFilter] = useState('');
-  const [sortKey, setSortKey] = useState('');
-  const [sortOrder, setSortOrder] = useState('asc');
+  const [filter, setFilter] = useState("");
+  const [sortKey, setSortKey] = useState("");
+  const [sortOrder, setSortOrder] = useState("asc");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
 
@@ -21,21 +21,21 @@ const Bloglist = () => {
 
   const fetchBlogs = async () => {
     try {
-      const response = await fetch('http://localhost:9999/blogs');
+      const response = await fetch("http://localhost:9999/blogs");
       const data = await response.json();
       setBlogs(data);
     } catch (error) {
-      console.error('Error fetching blogs:', error);
+      console.error("Error fetching blogs:", error);
     }
   };
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch('http://localhost:9999/categories');
+      const response = await fetch("http://localhost:9999/categories");
       const data = await response.json();
       setCategories(data);
     } catch (error) {
-      console.error('Error fetching categories:', error);
+      console.error("Error fetching categories:", error);
     }
   };
 
@@ -55,7 +55,9 @@ const Bloglist = () => {
     const filtered = blogs.filter((blog) => {
       return (
         blog.title.toLowerCase().includes(filter.toLowerCase()) ||
-        getCategoryName(blog.categoryId).toLowerCase().includes(filter.toLowerCase())
+        getCategoryName(blog.categoryId)
+          .toLowerCase()
+          .includes(filter.toLowerCase())
       );
     });
     setBlogs(filtered);
@@ -66,7 +68,7 @@ const Bloglist = () => {
       const valueA = getSortValue(a);
       const valueB = getSortValue(b);
 
-      if (sortOrder === 'asc') {
+      if (sortOrder === "asc") {
         return valueA.localeCompare(valueB);
       } else {
         return valueB.localeCompare(valueA);
@@ -77,18 +79,18 @@ const Bloglist = () => {
 
   const getSortValue = (blog) => {
     switch (sortKey) {
-      case 'title':
+      case "title":
         return blog.title;
-      case 'category':
+      case "category":
         return getCategoryName(blog.categoryId);
       default:
-        return '';
+        return "";
     }
   };
 
   const getCategoryName = (categoryId) => {
     const category = categories.find((category) => category.id === categoryId);
-    return category ? category.name : '';
+    return category ? category.name : "";
   };
 
   const handleFilterChange = (event) => {
@@ -97,13 +99,10 @@ const Bloglist = () => {
 
   const handleSortChange = (event) => {
     const { value } = event.target;
-    const [key, order] = value.split(':');
+    const [key, order] = value.split(":");
     setSortKey(key);
     setSortOrder(order);
   };
-
-
-
 
   const handleView = (blogId) => {
     console.log(`View blog with ID ${blogId}`);
@@ -115,14 +114,14 @@ const Bloglist = () => {
 
   const handleDeleteBlog = (blogId) => {
     Swal.fire({
-      title: 'Are you sure?',
-      text: 'This action cannot be undone.',
-      icon: 'warning',
+      title: "Are you sure?",
+      text: "This action cannot be undone.",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#dc3545',
-      cancelButtonColor: '#6c757d',
-      confirmButtonText: 'Delete',
-      cancelButtonText: 'Cancel',
+      confirmButtonColor: "#dc3545",
+      cancelButtonColor: "#6c757d",
+      confirmButtonText: "Delete",
+      cancelButtonText: "Cancel",
     }).then((result) => {
       if (result.isConfirmed) {
         deleteBlog(blogId);
@@ -132,14 +131,14 @@ const Bloglist = () => {
 
   const deleteBlog = (blogId) => {
     fetch(`http://localhost:9999/blogs/${blogId}`, {
-      method: 'DELETE',
+      method: "DELETE",
     })
       .then((res) => {
         if (res.ok) {
           fetchBlogs();
-          toast.success('Blog deleted successfully');
+          toast.success("Blog deleted successfully");
         } else {
-          toast.error('Failed to delete blog');
+          toast.error("Failed to delete blog");
         }
       })
       .catch((error) => {
@@ -169,7 +168,7 @@ const Bloglist = () => {
 
   return (
     <Col lg={12}>
-      <h3 className="mt-2">Blogs List</h3>
+      <h3 className="mt-2 text-center">Blogs List</h3>
       <Row className="my-4">
         <Col xs={12} md={3}>
           <Form.Group className="mb-3" controlId="filter">
@@ -182,7 +181,11 @@ const Bloglist = () => {
           </Form.Group>
         </Col>
         <Col xs={12} md={3}>
-          <Form.Select id="sort" value={`${sortKey}:${sortOrder}`} onChange={handleSortChange}>
+          <Form.Select
+            id="sort"
+            value={`${sortKey}:${sortOrder}`}
+            onChange={handleSortChange}
+          >
             <option value="">Sort By</option>
             <option value="title:asc">Title (Ascending)</option>
             <option value="title:desc">Title (Descending)</option>
@@ -190,7 +193,7 @@ const Bloglist = () => {
             <option value="category:desc">Category (Descending)</option>
           </Form.Select>
         </Col>
-        <Col xs={12} md={2} style={{ textAlign: 'right' }}>
+        <Col xs={12} md={2} style={{ textAlign: "right" }}>
           <Button variant="primary" onClick={handleAddNewBlog}>
             Add New Blog
           </Button>
@@ -211,20 +214,35 @@ const Bloglist = () => {
             <tr key={blog.id}>
               <td>{blog.id}</td>
               <td>
-                <img src={blog.image} alt={blog.title} style={{ width: '50px', height: '50px', borderRadius: '50%' }} />
+                <img
+                  src={blog.image}
+                  alt={blog.title}
+                  style={{ width: "50px", height: "50px", borderRadius: "50%" }}
+                />
               </td>
               <td>{blog.title}</td>
               <td>{getCategoryName(blog.categoryId)}</td>
               <td>
                 <Button variant="primary" className="mx-1">
-                  <Link className="text-white" to={`/admin/blogdetails/${blog.id}`}>
+                  <Link
+                    className="text-white"
+                    to={`/admin/blogdetails/${blog.id}`}
+                  >
                     View
                   </Link>
                 </Button>
-                <Button variant="warning" className="mx-1" onClick={() => handleEdit(blog.id)}>
+                <Button
+                  variant="warning"
+                  className="mx-1"
+                  onClick={() => handleEdit(blog.id)}
+                >
                   Edit
                 </Button>
-                <Button variant="danger" className="mx-1" onClick={() => handleDeleteBlog(blog.id)}>
+                <Button
+                  variant="danger"
+                  className="mx-1"
+                  onClick={() => handleDeleteBlog(blog.id)}
+                >
                   Delete
                 </Button>
               </td>

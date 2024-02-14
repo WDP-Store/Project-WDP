@@ -14,14 +14,14 @@ import { date } from "yup";
 
 
 export default function MyOrder() {
-
+  
   const [orders, setOrders] = useState([]); //fetched orders
   const [status, setStatus] = useState([]); //fetched status
   const [lgShow, setLgShow] = useState(false); //modal
   const effectBadge = ["warning", "warning", "primary", "success", "danger"]; // each status has it badge
   const colorBadge = ["#9ea954db", "#9ea954db", "#3876a9", "#248e5cd6", "#7c3c3cd6"];  // each status has it color
   const [currentDetail, setCurrentDetail] = useState([]);
-  const user = JSON.parse(sessionStorage.getItem("data"));
+  const user = JSON.parse(localStorage.getItem("data"));
 
   //for filtering
   const [statusFilter, setStatusFilter] = useState('')

@@ -6,26 +6,30 @@ import ProductItem from "../components/ProductItem";
 import Paginate from '../admin/components/Paginate';
 import { toast } from 'react-toastify';
 import { Col, Form, InputGroup } from "react-bootstrap";
-import { BsSearch} from "react-icons/bs";
+import { BsSearch } from "react-icons/bs";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 
 const OurStore = () => {
-  const {key} = useParams(); //search key from header
+  const { key } = useParams(); //search key from header
   const [products, setProducts] = useState([]); //productlist that use for display
   const [categories, setCategories] = useState([]); //category
   const [brands, setBrands] = useState([]); //brands
   const [isLoading, setIsLoading] = useState(false); //loading effect
 
   // filtering 
-  const [nameSearch, setNameSearch] = useState(key? key : '');
+  const [nameSearch, setNameSearch] = useState(key ? key : '');
   const [brand_f, setBrand_f] = useState([]);
   const [year_f, setYear_f] = useState([]);
   const [category_f, setCategory_f] = useState([]);
   const [max_f, setMax_f] = useState('');
   const [min_f, setMin_f] = useState('')
-  //
 
-  //pagination
+  // sorting 
+  const [urlSortKey, setUrlSortKey] = useState('');
+  const [urlSortValue, setUrlSortValue] = useState('');
+
+  // pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
 
@@ -44,34 +48,65 @@ const OurStore = () => {
       setCurrentPage(currentPage + 1);
     }
   };
-  //
 
   //category & brand
-  useEffect(
-    () => {
-      fetch(`http://localhost:9999/categories`)
-        .then(res => res.json())
-        .then(json => setCategories(json));
-    }, []
-  );
+  useEffect(() => {
+    axios
+      .get("http://localhost:9999/categories")
+      .then((res) => res.data)
+      .then((data) => {
+        setCategories(data);
+      });
+  }, []);
 
-  useEffect(
-    () => {
-      fetch(`http://localhost:9999/brands`)
-        .then(res => res.json())
-        .then(json => setBrands(json));
-    }, []
-  );
-  //
+  useEffect(() => {
+    axios
+      .get("http://localhost:9999/brands")
+      .then((res) => res.data)
+      .then((data) => {
+        setBrands(data);
+      });
+  }, []);
 
   var currentYear = new Date().getFullYear();
   const years = [currentYear--, currentYear--, currentYear--, currentYear--];
 
+  const SortProduct = (index) => {
+    if (index == 0) {
+      setUrlSortKey('featured_s')
+      setUrlSortValue('desc')
+    };
+    if (index == 1) {
+      setUrlSortKey('name_s')
+      setUrlSortValue('asc')
+    };
+    if (index == 2) {
+      setUrlSortKey('name_s')
+      setUrlSortValue('desc')
+    };
+    if (index == 3) {
+      setUrlSortKey('price_s')
+      setUrlSortValue('asc')
+    };
+    if (index == 4) {
+      setUrlSortKey('price_s')
+      setUrlSortValue('desc')
+    };
+    if (index == 5) {
+      setUrlSortKey('year_s')
+      setUrlSortValue('asc')
+    };
+    if (index == 6) {
+      setUrlSortKey('featured_s')
+      setUrlSortValue('desc')
+    };
+  }
+
   const handleFilter = (page) => {
-    var url = `http://localhost:9999/products/?_page=${page}&_limit=12`;
+    var url = `http://localhost:9999/products?page=${page}`;
 
     if (nameSearch) {
-      url += `&name_like=${nameSearch}`;
+      url += `&name=${nameSearch}`;
     }
 
     if (brand_f.length != 0) {
@@ -79,49 +114,44 @@ const OurStore = () => {
         url += ('&brand=' + b)
       )
     }
+
     if (category_f.length != 0) {
       category_f?.map(b =>
-        url += ('&categoryId=' + b)
+        url += ('&category=' + b)
       )
     }
+
     if (year_f.length != 0) {
       year_f?.map(b =>
         url += ('&year=' + b)
       )
     }
+
     if (min_f != '') {
       url += ('&price_gte=' + min_f)
     }
+
     if (max_f != '') {
       url += ('&price_lte=' + max_f)
     }
-    fetch(url)
+
+    if (urlSortValue != '' && urlSortKey != '') {
+      url += (`&${urlSortKey}=` + urlSortValue)
+    }
+
+    axios(url)
       .then((res) => {
-        const totalCount = res.headers.get('X-Total-Count');
-        setTotalPages(Math.ceil(totalCount / 10));
-        return res.json();
+        setTotalPages(res.data.totalPages);
+        setProducts(res.data.docs);
       })
-      .then(json => setProducts(json))
       .catch((err) => toast.error(err));
   }
 
   useEffect(
     () => {
       handleFilter(currentPage);
-    }, [currentPage, year_f, category_f, brand_f, max_f, min_f, nameSearch]
+    }, [currentPage, year_f, category_f, brand_f, max_f, min_f, nameSearch, urlSortKey, urlSortValue]
   )
-
-  const SortProduct = (index) => {
-    const newProducts = [...products];
-    if (index == 0) newProducts.sort((a, b) => b.feartured - a.feartured);
-    if (index == 1) newProducts.sort((a, b) => a.name.localeCompare(b.name));
-    if (index == 2) newProducts.sort((a, b) => b.name.localeCompare(a.name));
-    if (index == 3) newProducts.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
-    if (index == 4) newProducts.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
-    if (index == 5) newProducts.sort((a, b) => a.id - b.id);
-    if (index == 6) newProducts.sort((a, b) => b.id - a.id);
-    setProducts(newProducts);
-  }
 
   const handleFilterValue = (attr) => {
     if (attr === "brand") {
@@ -134,6 +164,7 @@ const OurStore = () => {
       }
       setBrand_f(temp)
     }
+
     if (attr === "category") {
       let box = document.getElementsByName("cate-Filter-Box");
       let temp = []
@@ -144,6 +175,7 @@ const OurStore = () => {
       }
       setCategory_f(temp)
     }
+
     if (attr === "year") {
       let box = document.getElementsByName("year-Filter-Box");
       let temp = []
@@ -165,13 +197,13 @@ const OurStore = () => {
             <div className="product-tags d-flex flex-wrap align-items-center gap-10">
               {
                 brands.map((b) =>
-                  <div key={b.id}>
+                  <div key={b._id}>
                     <input onChange={
                       () => handleFilterValue("brand")
                     }
-                      name="brand-Filter-Box" type="checkbox" className="btn-check" id={"brandCheck" + b.id} autoComplete="off" value={b.id}
+                      name="brand-Filter-Box" type="checkbox" className="btn-check" id={"brandCheck" + b._id} autoComplete="off" value={b._id}
                     />
-                    <label style={{ width: "150px" }} className="btn btn-outline-primary" htmlFor={"brandCheck" + b.id}>{b.name}</label>
+                    <label style={{ width: "150px" }} className="btn btn-outline-primary" htmlFor={"brandCheck" + b._id}>{b.name}</label>
                   </div>
                 )
               }
@@ -187,10 +219,10 @@ const OurStore = () => {
               <div className="btn-group d-flex flex-column" role="group" aria-label="Basic checkbox toggle button group">
                 {
                   categories.map((c) =>
-                    <div key={c.id}>
+                    <div key={c._id}>
                       <input onChange={() => handleFilterValue("category")
-                      } name="cate-Filter-Box" type="checkbox" className="btn-check" id={"btncheck" + c.id} autoComplete="off" value={c.id} />
-                      <label style={{ width: "150px" }} className="btn btn-outline-primary" htmlFor={"btncheck" + c.id}>{c.name}</label>
+                      } name="cate-Filter-Box" type="checkbox" className="btn-check" id={"btncheck" + c._id} autoComplete="off" value={c._id} />
+                      <label style={{ width: "150px" }} className="btn btn-outline-primary" htmlFor={"btncheck" + c._id}>{c.name}</label>
                     </div>
                   )
                 }
@@ -267,7 +299,7 @@ const OurStore = () => {
                 <Col xs={12} md={4}>
                   <InputGroup className="mb-3">
                     <InputGroup.Text>
-                      Search <BsSearch size={20} style={{paddingLeft:"5px"}} className="m-0" />
+                      Search <BsSearch size={20} style={{ paddingLeft: "5px" }} className="m-0" />
                     </InputGroup.Text>
                     <Form.Control
                       type="name" placeholder="Search by name..."
@@ -286,8 +318,8 @@ const OurStore = () => {
                   </div>
                 ) : (
                   products.map((p) => (p.status ?
-                    <div className="col-3" key={p.id}>
-                      <ProductItem product={p} brand={brands.map(b => b.id == p.brand ? b.name : '')}></ProductItem>
+                    <div className="col-3" key={p._id}>
+                      <ProductItem product={p} brand={brands.map(b => b._id == p.brand ? b.name : '')}></ProductItem>
                     </div> : ''
                   ))
                 )}

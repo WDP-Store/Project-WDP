@@ -1,20 +1,133 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ReactStars from "react-rating-stars-component";
 import { Link } from "react-router-dom";
-import prodcompare from "../images/prodcompare.svg";
-import wish from "../images/wish.svg";
-import addcart from "../images/add-cart.svg";
-import view from "../images/view.svg";
+import whiteWish from "../images/wish.svg";
+import pinkWish from "../images/pink-wishlist.png";
+import axios from "axios";
+import { toast } from "react-toastify";
+import Swal from "sweetalert2";
+
+// import prodcompare from "../images/prodcompare.svg";
+// import addcart from "../images/add-cart.svg";
+// import view from "../images/view.svg";
 const ProductItem = (props) => {
   const { product, brand } = props;
+  const [wish, setWish] = useState({});
+  const [isWish, setIsWish] = useState(false);
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:9999/wishlists?product=${product._id}&user=65c6e0400a9390c33d67b2c1`)
+      .then((res) => res.data.docs[0])
+      .then((data) => {
+        if (data) setIsWish(true)
+        setWish(data);
+      });
+  }, [isWish]);
+
+  const addToWishList = () => {
+    // if (JSON.parse(localStorage.getItem("data"))) { //if user is logged in
+    if (wish?.product?._id === product._id) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Failed',
+        text: 'You have already added this item to wishlist',
+      })
+    } else {
+      axios
+        .post(`http://localhost:9999/wishlists`, {
+          // user: JSON.parse(localStorage.getItem("data"))._id,
+          user: "65c6e0400a9390c33d67b2c1",
+          product: product._id
+        }).then(() => {
+          setIsWish(true);
+          Swal.fire({
+            icon: 'success',
+            title: 'Added',
+            text: 'Added item to wishlist',
+          })
+        }).catch((e) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Failed',
+            text: `Failed to add wishlist ${e}`,
+          })
+        })
+    }
+    // } else { //not logged in
+    //   Swal.fire({
+    //     icon: 'error',
+    //     title: 'Not logged in',
+    //     text: 'Log in to save this product along with your account',
+    //     showCancelButton: true,
+    //     confirmButtonColor: '#3085d6',
+    //     cancelButtonColor: '#d33',
+    //     cancelButtonText: "Cancel",
+    //     confirmButtonText: 'Login'
+    //   }).then((result) => {
+    //     if (result.isConfirmed) {
+    //       window.location = "/login";
+    //     }
+    //   })
+    // }
+  }
+
+  const removeFromWishList = () => {
+    console.log("wish delete")
+    console.log(wish)
+    // if (JSON.parse(localStorage.getItem("data"))) { //if user is logged in
+    axios
+      .delete(`http://localhost:9999/wishlists/${wish._id}`, {
+        // user: JSON.parse(localStorage.getItem("data"))._id,
+        user: "65c6e0400a9390c33d67b2c1",
+        product: product._id
+      }).then(() => {
+        setIsWish(false)
+        Swal.fire({
+          icon: 'success',
+          title: 'Removed',
+          text: 'Removed item to wishlist',
+        })
+      }).catch((e) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Failed',
+          text: `Failed to remove from wishlist ${e}`,
+        })
+      })
+    // } else { //not logged in
+    //   Swal.fire({
+    //     icon: 'error',
+    //     title: 'Not logged in',
+    //     text: 'Log in to remove this product from wishlist',
+    //     showCancelButton: true,
+    //     confirmButtonColor: '#3085d6',
+    //     cancelButtonColor: '#d33',
+    //     cancelButtonText: "Cancel",
+    //     confirmButtonText: 'Login'
+    //   }).then((result) => {
+    //     if (result.isConfirmed) {
+    //       window.location = "/login";
+    //     }
+    //   })
+    // }
+  }
+
   return (
     <>
-        <Link className="product-card position-relative" to={"/product/"+ product.id}>
-          <div className="wishlist-icon position-absolute">
-            <button className="border-0 bg-transparent">
-              <img src={wish} alt="wishlist" />
+      <div className="product-card position-relative">
+        <div className="wishlist-icon position-absolute" >
+          {isWish ? (
+            <button className="border-0 bg-transparent" onClick={() => removeFromWishList()}>
+              <img src={pinkWish} style={{ width: '18px', height: '18px' }} alt="wishlist" />
             </button>
-          </div>
+          ) : (
+            <button className="border-0 bg-transparent" onClick={() => addToWishList()}>
+              <img src={whiteWish} alt="wishlist" />
+            </button>
+          )}
+        </div>
+        <Link to={"/product/" + product._id}>
           <div style={{ height: "250px" }}>
             {product.images && product.images.length > 0 && (
               <img src={product.images[0]} alt="" style={{ width: "95%" }} />
@@ -34,7 +147,9 @@ const ProductItem = (props) => {
             />
             <p className="price">${product.price}</p>
           </div>
-          <div className="action-bar position-absolute">
+        </Link>
+
+        {/* <div className="action-bar position-absolute">
             <div className="d-flex flex-column gap-15">
               <button className="border-0 bg-transparent">
                 <img src={prodcompare} alt="compare" />
@@ -46,8 +161,8 @@ const ProductItem = (props) => {
                 <img src={addcart} alt="addcart" />
               </button>
             </div>
-          </div>
-        </Link>
+          </div> */}
+      </div>
     </>
   );
 };

@@ -7,30 +7,31 @@ import { Link } from "react-router-dom";
 import Container from "../components/Container";
 import Swal from "sweetalert2";
 import { CartContext } from '../components/CartContext'
+import axios from 'axios'
 
 const Cart = () => {
-  const {cartQuantity ,setCartQuantity} = useContext(CartContext); //update cart globaly
-  // const user = JSON.parse(sessionStorage.getItem("data"));
+  const { cartQuantity, setCartQuantity } = useContext(CartContext); //update cart globaly
+  // const user = JSON.parse(localStorage.getItem("data"));
   // console.log(user.name);
-  const [cart, setCart] = useState(JSON.parse(sessionStorage.getItem("cart")));
+  const [cart, setCart] = useState(JSON.parse(localStorage.getItem("cart")));
   const [quantity, setQuantity] = useState(cart?.map(c => c.quantity))
   const [products, setProducts] = useState([]);
   const [subTotal, setSubTotal] = useState(0);
+  
   useEffect(() => {
     Promise.all(  //wait for all of the fetch requests to complete before updating the state with the fetched data.
       cart?.map((c) => {
-        return fetch(`http://localhost:9999/products/` + c.productId)
-          .then((res) => res.json())
-          .then((json) => {
+        return axios
+          .get(`http://localhost:9999/products/${c.product}`)
+          .then((res) => res.data)
+          .then(json => {
             json.index = c.id;  // index of products will match cart id
             return json;
           });
       })
     ).then((data) => {
       setProducts(data);
-      //console.log(cart);
-    }
-    );
+    });
   }, []);
 
   useEffect( //handle event when quantity or cart is updated
@@ -40,7 +41,7 @@ const Cart = () => {
         temp += Number(p.price) * quantity[index]
       )
       setSubTotal(temp); //update subtotal each time cart changes
-      sessionStorage.setItem("cart", JSON.stringify(cart)) //when cart changes , update cart in session
+      localStorage.setItem("cart", JSON.stringify(cart)) //when cart changes , update cart in session
       //console.log(products);
     }, [cart, products]
   )
@@ -57,16 +58,16 @@ const Cart = () => {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        sessionStorage.setItem("cart", JSON.stringify(cart.filter((c,idx) => idx !== index)))
-        setCart(JSON.parse(sessionStorage.getItem("cart")))
+        localStorage.setItem("cart", JSON.stringify(cart.filter((c, idx) => idx !== index)))
+        setCart(JSON.parse(localStorage.getItem("cart")))
         setProducts(products.filter((p, idx) => idx != index)) //when delete cart , update the product array
-        setQuantity(quantity.filter((q, idx)  => idx != index)) //when delete cart , update the quantity array
+        setQuantity(quantity.filter((q, idx) => idx != index)) //when delete cart , update the quantity array
         Swal.fire(
           'Deleted!',
           'Your item has been deleted.',
           'success'
         )
-        setCartQuantity(cartQuantity-1)
+        setCartQuantity(cartQuantity - 1)
       }
     })
   }
@@ -82,6 +83,7 @@ const Cart = () => {
     var tempFullCart = cart.map((c, idx) => idx == index ? tempCart : c) // this temp update cart list with new quality value
     setCart(tempFullCart);
   }
+  
   return (
     <div>
       <Meta title={"Cart"} />
@@ -129,14 +131,14 @@ const Cart = () => {
                     <h5 className="price"> $ {(p.price * quantity[index]).toFixed(2)}</h5>
                   </div>
                   <div className="cart-col-2">
-                    <button onClick={() => deleteCart(index)} className="btn btn-danger"><AiOutlineDelete size={25} className="m-0" />delete</button>
+                    <button onClick={() => deleteCart(index)} className="btn btn-danger"><AiOutlineDelete size={25} className="m-0" /> Delete</button>
                   </div>
                 </div>
               )
             }
 
           </div>
-          <div style={{position: "sticky" , bottom: 0, background: "#ffcccc" , borderRadius:"10px"}} className="col-12 py-2 mt-4">
+          <div style={{ position: "sticky", bottom: 0, background: "#ffcccc", borderRadius: "10px" }} className="col-12 py-2 mt-4">
             <div className="d-flex justify-content-between align-items-baseline">
               <Link to="/product" className="button">
                 Continue To Shopping
@@ -146,8 +148,8 @@ const Cart = () => {
                 <p>Taxes and shipping calculated at checkout</p>
                 {
                   cartQuantity > 0 ? <Link to="/checkout" className="button disable">
-                  Checkout
-                </Link> : ''
+                    Checkout
+                  </Link> : ''
                 }
               </div>
             </div>
