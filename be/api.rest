@@ -1,4 +1,26 @@
 ###
+POST http://localhost:9999/auth/register
+Content-Type: application/json
+
+{
+    "name": "minh",
+    "email": "min333h@example.com",
+    "password": "Minh123456"
+}
+
+### test verify token
+GET http://localhost:9999/products
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7Il9pZCI6IjY1YzZlMTkzODEwMDQ1NzBiYWQ5ZmU5YyIsIm5hbWUiOiJtaW5oIiwicGFzc3dvcmQiOiIkMmIkMTAkcnA4eFVrcmFPWC5RaGh2YXozODVodVh2ZFJPdm9LMkQuU0IuWC53L0IvcTNRWktTUnpwZXEiLCJlbWFpbCI6Im1pbjMzM2hAZXhhbXBsZS5jb20iLCJyb2xlIjoiY3VzdG9tZXIiLCJjcmVhdGVkQXQiOiIyMDI0LTAyLTEwVDAyOjM4OjExLjUwN1oiLCJ1cGRhdGVkQXQiOiIyMDI0LTAyLTEwVDAyOjM4OjExLjUwN1oiLCJfX3YiOjB9LCJpYXQiOjE3MDc1NTI0OTUsImV4cCI6MTcwNzU1NjA5NX0.-nDQLBeguYWXb2BCfi6-Fj7RUJyAkTK5-b1DdVgh44Q
+###
+POST http://localhost:9999/auth/login
+Content-Type: application/json
+
+{
+    "email": "min333h@example.com",
+    "password": "Minh123456"
+}
+
+###
 GET http://localhost:9999/products
 Content-Type: application/json
 
