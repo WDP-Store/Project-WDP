@@ -17,7 +17,7 @@ import CustomInput from "../../components/CustomInput";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const categorySchema = yup.object({
+const brandSchema = yup.object({
   name: yup.string().required("This field is required"),
 });
 
@@ -25,10 +25,10 @@ const initialValues = {
   name: "",
 };
 
-const Categorylist = () => {
+const Brandlist = () => {
   const [action, setAction] = useState("");
-  const [category, setCategory] = useState({});
-  const [categories, setCategories] = useState([]);
+  const [brand, setBrand] = useState({});
+  const [brands, setBrands] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [nameSearch, setNameSearch] = useState("");
   const [totalPages, setTotalPages] = useState(0);
@@ -37,7 +37,7 @@ const Categorylist = () => {
 
   const formik = useFormik({
     initialValues,
-    validationSchema: categorySchema,
+    validationSchema: brandSchema,
     onSubmit: async (values) => {
       setIsLoading(true);
       handleCreateOk(values);
@@ -45,30 +45,30 @@ const Categorylist = () => {
     },
   });
 
-  const saveCategory = (values) => {
+  const saveBrand = (values) => {
     const { name } = values;
 
     axios
-      .post(`http://localhost:9999/categories`, {
+      .post(`http://localhost:9999/brands`, {
         name,
       })
       .then(() => {
-        toast.success("Create category successfully");
-        fetchCategories();
+        toast.success("Create brand successfully");
+        fetchBrands();
       })
       .catch(() => toast.error("Something went wrong!"));
   };
 
-  const updateCategory = (values) => {
+  const updateBrand = (values) => {
     const { name } = values;
 
     axios
-      .patch(`http://localhost:9999/categories/${category._id}`, {
+      .patch(`http://localhost:9999/brands/${brand._id}`, {
         name,
       })
       .then(() => {
-        toast.success("Update category successfully");
-        fetchCategories();
+        toast.success("Update brand successfully");
+        fetchBrands();
       })
       .catch(() => toast.error("Something went wrong!"));
   };
@@ -76,9 +76,9 @@ const Categorylist = () => {
   const handleCreateOk = (values) => {
     if (formik.dirty) {
       if (action === "Edit") {
-        updateCategory(values);
+        updateBrand(values);
       } else {
-        saveCategory(values);
+        saveBrand(values);
       }
 
       setShow(false);
@@ -94,8 +94,8 @@ const Categorylist = () => {
     setShow(true);
   };
 
-  const fetchCategories = (page) => {
-    let url = `http://localhost:9999/categories/all?page=${page}`;
+  const fetchBrands = (page) => {
+    let url = `http://localhost:9999/brands/all?page=${page}`;
 
     if (nameSearch) {
       url += `&name=${nameSearch}`;
@@ -104,13 +104,13 @@ const Categorylist = () => {
     axios(url)
       .then((res) => {
         setTotalPages(res.data.totalPages);
-        setCategories(res.data.docs);
+        setBrands(res.data.docs);
       })
       .catch((err) => toast.error(err));
   };
 
   useEffect(() => {
-    fetchCategories(currentPage);
+    fetchBrands(currentPage);
   }, [currentPage, nameSearch]);
 
   const handlePageChange = (page) => {
@@ -152,7 +152,7 @@ const Categorylist = () => {
         </div>
       )}
       <Col lg={12}>
-        <h3 className="mt-2 text-center">Category List</h3>
+        <h3 className="mt-2 text-center">Brand List</h3>
         <Row className="my-4">
           <Col xs={12} md={9}>
             <ReactBootstrapForm.Group
@@ -176,7 +176,7 @@ const Categorylist = () => {
                 handleShow();
               }}
             >
-              <Link className="text-white">Add Category</Link>
+              <Link className="text-white">Add Brand</Link>
             </Button>
           </Col>
         </Row>
@@ -189,7 +189,7 @@ const Categorylist = () => {
             </tr>
           </thead>
           <tbody>
-            {categories
+            {brands
               .filter((p) => {
                 const nameMatches =
                   !nameSearch ||
@@ -207,7 +207,7 @@ const Categorylist = () => {
                       onClick={() => {
                         setAction("Edit");
                         formik.setFieldValue("name", c.name);
-                        setCategory(c)
+                        setBrand(c)
                         handleShow();
                       }}
                     >
@@ -217,8 +217,8 @@ const Categorylist = () => {
                       <Modal.Header closeButton>
                         <Modal.Title>
                           {action === "Create"
-                            ? "Create category"
-                            : "Update category"}
+                            ? "Create brand"
+                            : "Update brand"}
                         </Modal.Title>
                       </Modal.Header>
                       <Modal.Body>
@@ -234,7 +234,7 @@ const Categorylist = () => {
                                   <CustomInput
                                     type="text"
                                     name="name"
-                                    placeholder="Category name..."
+                                    placeholder="Brand name..."
                                     onChange={formik.handleChange("name")}
                                     onBlur={formik.handleBlur("name")}
                                     value={formik.values?.name}
@@ -280,4 +280,4 @@ const Categorylist = () => {
   );
 };
 
-export default Categorylist;
+export default Brandlist;

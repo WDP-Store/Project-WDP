@@ -90,7 +90,7 @@ export default function AdminSideNav(props) {
               </Link>
               <Link
                 style={{ width: "100%", borderBottom: "1px solid #ccc" }}
-                to={"/admin/product/add-brand"}
+                to={"/admin/product/brand-list"}
               >
                 Brand
               </Link>
