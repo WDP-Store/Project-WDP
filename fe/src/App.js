@@ -23,10 +23,12 @@ import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import { ToastContainer } from "react-toastify";
 import { AppRouter } from "./routes/router";
+import { MessengerChat } from "react-messenger-chat-plugin";
+
 function App() {
   return (
     <>
-      <ToastContainer theme='colored' position='top-center'></ToastContainer>
+      <ToastContainer theme="colored" position="top-center"></ToastContainer>
       {/* <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout />}>
@@ -53,6 +55,8 @@ function App() {
         </Routes>
       </BrowserRouter> */}
       <AppRouter />
+
+      <MessengerChat pageId='207709222433574' appId='329527983419602' />
     </>
   );
 }

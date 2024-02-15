@@ -18,9 +18,9 @@ import Orders from '../admin/pages/Orders';
 import Productlist from '../admin/pages/Productlist';
 import ProductDetail from '../admin/pages/ProductDetail';
 import EditProduct from '../admin/pages/EditProduct';
-import Addbrand from '../admin/pages/Addbrand';
 import AddProduct from '../admin/pages/Addproduct';
 import Categorylist from '../admin/pages/Categorylist';
+import Brandlist from '../admin/pages/Brandlist';
 import Bloglist from '../admin/pages/Bloglist';
 import Addblog from '../admin/pages/Addblog';
 import BlogDetails from '../admin/pages/BlogDetail';
@@ -49,8 +49,8 @@ const allRoutes = createBrowserRouter([
       { path: '/admin/product', element: <Productlist /> },
       { path: '/admin/product/:id', element: <ProductDetail /> },
       { path: '/admin/product/edit/:id', element: <EditProduct /> },
-      { path: '/admin/product/add-brand', element: <Addbrand /> },
       { path: '/admin/product/add-product', element: <AddProduct /> },
+      { path: '/admin/product/brand-list', element: <Brandlist /> },
       { path: '/admin/product/category-list', element: <Categorylist /> },
     
       //blog

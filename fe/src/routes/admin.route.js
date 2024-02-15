@@ -10,7 +10,6 @@ import Addbrand from "../admin/pages/Addbrand";
 import AddProduct from "../admin/pages/Addproduct"
 import Productlist from "../admin/pages/Productlist";
 import Bloglist from "../admin/pages/Bloglist"
-import Categorylist from "../admin/pages/Categorylist";
 import Orders from "../admin/pages/Orders";
 import ProductDetail from "../admin/pages/ProductDetail";
 import EditProduct from "../admin/pages/EditProduct";
