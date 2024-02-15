@@ -4,6 +4,7 @@ import Meta from "../components/Meta";
 import { Link, useNavigate } from "react-router-dom";
 import Container from "../components/Container";
 import CustomInput from "../components/CustomInput";
+import { Button, Form } from "react-bootstrap";
 import * as bcrypt from "bcryptjs";
 
 const Signup = () => {
@@ -70,7 +71,7 @@ const Signup = () => {
           <div className="col-12">
             <div className="auth-card">
               <h3 className="text-center mb-3">Sign Up</h3>
-              <form onSubmit={handleSignUp} className="d-flex flex-column gap-15">
+              {/* <form onSubmit={handleSignUp} className="d-flex flex-column gap-15">
                 <CustomInput type="text" name="name" placeholder="Name" />
                 <CustomInput type="email" name="email" placeholder="Email" />
                 <CustomInput
@@ -90,7 +91,30 @@ const Signup = () => {
                     </button>
                   </div>
                 </div>
-              </form>
+              </form> */}
+
+              <Form>
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                  <Form.Label>Email address</Form.Label>
+                  <Form.Control type="email" placeholder="Enter email" />
+                  <Form.Text className="text-muted">
+                    We'll never share your email with anyone else.
+                  </Form.Text>
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="formBasicPassword">
+                  <Form.Label>Password</Form.Label>
+                  <Form.Control type="password" placeholder="Password" />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formBasicCheckbox">
+                  <Form.Check type="checkbox" label="Check me out" />
+                </Form.Group>
+                <div className="mt-3 d-flex justify-content-center gap-15 align-items-center">
+                    <Button type="submit" className="button border-0">
+                      Sign Up
+                    </Button>
+                </div>
+              </Form>
             </div>
           </div>
         </div>
