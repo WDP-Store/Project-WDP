@@ -12,7 +12,7 @@ const login = async (data) => {
         if (isMatchPassword) {
             //create access token jwt
             const accessToken = jwt.sign({ data: existingUser },"test",{ expiresIn: '10m' } )
-            const refreshToken = jwt.sign({ data: existingUser },"test1",{ expiresIn: '10m' } )
+            const refreshToken = jwt.sign({ data: existingUser },"test1",{ expiresIn: '1y' } )
             return {
                 ...existingUser,
                 password: "not show password",
@@ -31,22 +31,16 @@ const login = async (data) => {
 
 const register = async (data) => {
     try {
-        console.log("repositories: " + data);
         const {name, email, password} = data;
-        console.log(name, email, password);
-        
         //check duplicated (exec() hỗ trợ chuyển Query Object -> Promisse)
         const existingUser = await User.findOne({ email }).exec();
         if (existingUser) throw { message: "DUPLICATE", status: 400 };
-        
         //hashed password
         const hashedPassword = await bcrypt.hash(password, parseInt(process.env.SALT_ROUNDS));
         //insert to db
         const newUser = await User.create({ name, email, password: hashedPassword});
         console.log("new user => ", newUser);
-        return {
-            newUser
-        }
+        return newUser;
     } catch (error) {
         throw error;
     }

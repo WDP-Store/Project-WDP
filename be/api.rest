@@ -10,14 +10,14 @@ Content-Type: application/json
 
 ### test verify token
 GET http://localhost:9999/products
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7Il9pZCI6IjY1YzZlMTkzODEwMDQ1NzBiYWQ5ZmU5YyIsIm5hbWUiOiJtaW5oIiwicGFzc3dvcmQiOiIkMmIkMTAkcnA4eFVrcmFPWC5RaGh2YXozODVodVh2ZFJPdm9LMkQuU0IuWC53L0IvcTNRWktTUnpwZXEiLCJlbWFpbCI6Im1pbjMzM2hAZXhhbXBsZS5jb20iLCJyb2xlIjoiY3VzdG9tZXIiLCJjcmVhdGVkQXQiOiIyMDI0LTAyLTEwVDAyOjM4OjExLjUwN1oiLCJ1cGRhdGVkQXQiOiIyMDI0LTAyLTEwVDAyOjM4OjExLjUwN1oiLCJfX3YiOjB9LCJpYXQiOjE3MDc1NTI0OTUsImV4cCI6MTcwNzU1NjA5NX0.-nDQLBeguYWXb2BCfi6-Fj7RUJyAkTK5-b1DdVgh44Q
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7Il9pZCI6IjY1ZDA2NzRiYjk3M2UwMTkyNTEwYmFlNSIsIm5hbWUiOiJOZ3V54buFbiBRdWFuZyBNaW5oIiwicGFzc3dvcmQiOiIkMmIkMTAkTkZtaU9KNE1jd1ZCajlLNjBFalc1dWJKSXJTQWdacnNSc2NqNUxrRWd2dHREZ0tFYTJaekciLCJlbWFpbCI6Im1pbmhuZ3V5ZW5oaGhobkBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJjcmVhdGVkQXQiOiIyMDI0LTAyLTE3VDA3OjU5OjA3LjcyNFoiLCJ1cGRhdGVkQXQiOiIyMDI0LTAyLTE3VDA3OjU5OjA3LjcyNFoiLCJfX3YiOjB9LCJpYXQiOjE3MDgyNDc2MDQsImV4cCI6MTcwODI0ODIwNH0.kyPdZV8om6wAJzuYrhPIhgcN0hWXZBxHTwD5QX__gYs
 ###
 POST http://localhost:9999/auth/login
 Content-Type: application/json
 
 {
-    "email": "min333h@example.com",
-    "password": "Minh123456"
+    "email": "minhnguyenhhhhn@gmail.com",
+    "password": "minh123"
 }
 
 ###

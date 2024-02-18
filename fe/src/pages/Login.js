@@ -1,132 +1,128 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import BreadCrumb from '../components/BreadCrumb';
-import Meta from '../components/Meta';
-import Container from '../components/Container';
-import CustomInput from '../components/CustomInput';
-import * as yup from 'yup';
-import { useFormik } from 'formik';
-import { toast } from 'react-toastify';
-import { hashCode } from '../util/hashPassword';
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import BreadCrumb from "../components/BreadCrumb";
+import Meta from "../components/Meta";
+import Container from "../components/Container";
+import CustomInput from "../components/CustomInput";
+import * as yup from "yup";
+import { useFormik } from "formik";
+import { toast } from "react-toastify";
+import { hashCode } from "../util/hashPassword";
+import { useState } from "react";
+import axios from "axios";
+import { Button, Form } from "react-bootstrap";
 
-const loginSchema = yup.object({
-    email: yup
-        .string()
-        .email('Please enter a valid email')
-        .required('This field is required'),
-    password: yup.string().required('This field is required'),
-});
 
 const Login = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const formik = useFormik({
-        initialValues: {
-            email: '',
-            password: '',
-        },
-        validationSchema: loginSchema,
-        onSubmit: (values) => {
-            console.log(values);
-            console.log(values.password);
-            login(values.email, values.password);
-        },
-    });
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const [errors, setErrors] = useState({});
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const isValid = handleValidate(formData);
+    if (isValid) {
+      axios
+      .post("http://localhost:9999/auth/login", formData)
+      .then((response) => {
+          localStorage.setItem("data", JSON.stringify(response.data) );    
+          const userTest = localStorage.getItem("data");
+          toast.success("Login successfully !");
+          navigate("/");
+        })
+        .catch((err) => {
+          toast.error("Wrong email or password !");
+        });
+    }
+  };
 
-    const login = (email, password) => {
-        fetch(`http://localhost:9999/users/${email}`)
-            .then((res) => {
-                return res.json();
-            })
-            .then((resp) => {
-                console.log(resp);
-                if (Object.keys(resp).length === 0) {
-                    toast.error('Please enter valid email');
-                } else {
-                    if (hashCode().verifyCode(password, resp.password)) {
-                        toast.success('Successfully logged in');
-                        const data = {
-                            email: email,
-                            role: resp.role,
-                            name: resp.name
-                        }
-                        localStorage.setItem('data', JSON.stringify(data));
-                        navigate('/');
-                    } else {
-                        toast.error('Wrong password');
-                    }
-                }
-            })
-            .catch((err) => {
-                toast.error('Login failed: ' + err.message);
-            });
-    };
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    // properties need same id
+    setFormData((prevData) => ({
+      ...prevData,
+      [id]: value,
+    }));
+    //clear error
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [id]: "",
+    }));
+  };
 
-    return (
-        <>
-            <Meta title={'Login'} />
-            <BreadCrumb title="Login" />
+  const handleValidate = (formData) => {
+    const newErrors = {};
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      newErrors.email = "Invalid email format";
+    }
+    const passwordRegex = /^[A-Za-z\d@$!%*?&]{6,}$/;
+    if (!passwordRegex.test(formData.password)) {
+      newErrors.password =
+        "Invalid password format, password must be at least 6 characters";
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
-            <Container class1="login-wrapper py-5 home-wrapper-2">
-                <div className="row">
-                    <div className="col-12">
-                        <div className="auth-card">
-                            <h3 className="text-center mb-3">Login</h3>
-                            <form
-                                className="d-flex flex-column gap-15"
-                                onSubmit={formik.handleSubmit}
-                            >
-                                <CustomInput
-                                    type="email"
-                                    name="email"
-                                    placeholder="Email"
-                                    onChange={formik.handleChange('email')}
-                                    onBlur={formik.handleBlur('email')}
-                                    value={formik.value?.email}
-                                    errMes={
-                                        formik.touched.email &&
-                                        formik.errors.email
-                                    }
-                                />
-                                <CustomInput
-                                    type="password"
-                                    name="password"
-                                    placeholder="Password"
-                                    onChange={formik.handleChange('password')}
-                                    onBlur={formik.handleBlur('password')}
-                                    value={formik.value?.password}
-                                    errMes={
-                                        formik.touched.password &&
-                                        formik.errors.password
-                                    }
-                                />
-                                <div>
-                                    <Link to="/forgot-password">
-                                        Forgot Password?
-                                    </Link>
+  return (
+    <>
+      <Meta title={"Login"} />
+      <BreadCrumb title="Login" />
 
-                                    <div className="mt-3 d-flex justify-content-center gap-15 align-items-center">
-                                        <button
-                                            className="button border-0"
-                                            type="submit"
-                                        >
-                                            Login
-                                        </button>
-                                        <Link
-                                            to="/signup"
-                                            className="button signup"
-                                        >
-                                            Sign Up
-                                        </Link>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+      <Container class1="login-wrapper py-5 home-wrapper-2">
+        <div className="row">
+          <div className="col-12">
+            <div className="auth-card">
+              <h3 className="text-center mb-3">Login</h3>
+              <Form onSubmit={handleLogin}>
+                <Form.Group className="mb-3" controlId="email">
+                  <Form.Label>Email</Form.Label>
+                  <Form.Control
+                    type="email"
+                    className="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder="Enter email"
+                  />
+                  <Form.Text className="text-danger">
+                    {errors.email}
+                  </Form.Text>
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="password">
+                  <Form.Label>Password</Form.Label>
+                  <Form.Control
+                    type="password"
+                    className="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    placeholder="Password"
+                  />
+                  <Form.Text className="text-danger">
+                    {errors.password}
+                  </Form.Text>
+                </Form.Group>
+                <div>
+                  <Link to="/forgot-password">Forgot Password?</Link>
+                  <div className="mt-3 d-flex justify-content-center gap-15 align-items-center">
+                    <button className="button border-0" type="submit">
+                      Login
+                    </button>
+                    <Link to="/signup" className="button signup">
+                      Sign Up
+                    </Link>
+                  </div>
                 </div>
-            </Container>
-        </>
-    );
+              </Form>
+            </div>
+          </div>
+        </div>
+      </Container>
+    </>
+  );
 };
 
 export default Login;

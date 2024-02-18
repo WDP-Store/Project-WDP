@@ -10,8 +10,7 @@ const validateRegister = data => {
         password: Joi.string()
                 .min(6)
                 .max(32)
-                .pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$')) // 1UP, 1LP, 1Number
-                .required(),      
+                .required(),    
     })
 
     return schema.validate(data);
@@ -26,7 +25,6 @@ const validateLogin = data => {
         password: Joi.string()
                 .min(6)
                 .max(32)
-                .pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$')) // 1UP, 1LP, 1Number
                 .required(),      
     })
 

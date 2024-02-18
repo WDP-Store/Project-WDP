@@ -7,6 +7,7 @@ import SpecialProduct from "../components/SpecialProduct";
 import Container from "../components/Container";
 import axios from "axios";
 import ProductItem from "../components/ProductItem";
+import logoBanner1 from '../images/main-banner-1.jpg';
 //import { services } from "../utils/Data";
 
 const Home = () => {
@@ -31,13 +32,13 @@ const Home = () => {
   }, []);
 
   return (
-    <>
-      <Container class1="home-wrapper-1 py-5">
+    <div className="content_home">
+      <div class1="home-wrapper-1 py-5" className="container block-item">
         <div className="row">
           <div className="col-6">
             <div className="main-banner position-relative ">
-              <img
-                src="images/main-banner-1.jpg"
+            <img
+                src={logoBanner1}
                 className="img-fluid rounded-3"
                 alt="main banner"
               />
@@ -68,11 +69,12 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </Container>
-      <Container class1="home-wrapper-2 py-5">
+      </div>
+      <div class1="home-wrapper-2 py-5" className="container block-item">
         <div className="row">
           <div className="col-12">
             <div className="servies d-flex align-items-center justify-content-between">
+              
               {/* {services?.map((i, j) => {
                 return (
                   <div className="d-flex align-items-center gap-15" key={j}>
@@ -87,8 +89,8 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </Container>
-      <Container class1="home-wrapper-2 py-5">
+      </div>
+      <div class1="home-wrapper-2 py-5" className="container block-item">
         <div className="row">
           <div className="col-12">
             <div className="categories d-flex justify-content-between flex-wrap align-items-center">
@@ -151,8 +153,8 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </Container>
-      <Container class1="featured-wrapper py-5 home-wrapper-2">
+      </div>
+      <div class1="featured-wrapper py-5 home-wrapper-2" className="container block-item">
         <h3 className="section-heading">Featured Collection</h3>
         <div className="row">
           {last8Product.map((p,index) => (
@@ -161,7 +163,7 @@ const Home = () => {
             </div>
           ))}
         </div>
-      </Container>
+      </div>
 
       {/* <Container class1="famous-wrapper py-5 home-wrapper-2">
         <div className="row">
@@ -289,7 +291,7 @@ const Home = () => {
         </div>
       </Container> */}
 
-      <Container class1="blog-wrapper py-5 home-wrapper-2">
+      <div class1="blog-wrapper py-5 home-wrapper-2" className="container block-item">
         <div className="row">
           <div className="col-12">
             <h3 className="section-heading">Our Latest Blogs</h3>
@@ -302,8 +304,8 @@ const Home = () => {
             </div>
           ))}
         </div>
-      </Container>
-    </>
+      </div>
+    </div>
   );
 };
 

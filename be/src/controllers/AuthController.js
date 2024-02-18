@@ -2,11 +2,8 @@ import { authRepository } from "../repositories/index.js";
 import authValidation from "../validations/auth.js";
 const register = async (req, res) => {
   try {
-    console.log("controller: register =>", req.body);
     const { error } = authValidation.validateRegister(req.body);
-    console.log(error);
     if (error) {
-      console.log(error.details);
       // throw new Error(error);
       const validationErrors = {};
       for (let item of error.details) {
@@ -15,8 +12,6 @@ const register = async (req, res) => {
         }
         validationErrors[item.context.key].push(item.message);
       }
-      console.log(validationErrors);
-
       return res.status(400).json(validationErrors);
       // return res.status(400).json({ error: error.details[0].message });
     }
@@ -27,25 +22,23 @@ const register = async (req, res) => {
       data: user ? user : null,
     });
   } catch (error) {
-    console.log(error);
-    console.log("check error duplicated => ", error.message);
     if (error.message === "DUPLICATE") {
       return res.status(400).json({
         message: "User registration duplicate",
+        data: null
       });
     }
     return res.status(500).json({
       message: "User registration failed",
+      data: null
     });
   }
 };
 
 const login = async (req, res) => {
   try {
-    console.log("controller => login");
     const { error } = authValidation.validateLogin(req.body);
     if (error) {
-      console.log(error.details);
       // throw new Error(error);
       const validationErrors = {};
       for (let item of error.details) {
@@ -54,20 +47,15 @@ const login = async (req, res) => {
         }
         validationErrors[item.context.key].push(item.message);
       }
-      console.log(validationErrors);
-
       return res.status(400).json(validationErrors);
       // return res.status(400).json({ error: error.details[0].message });
     }
 
-    const info = await authRepository.login(req.body);
-    res.status(200).json({
-      message: "Login successfully",
-      data: info ? info : null,
-    });
+    const user = await authRepository.login(req.body);
+    res.status(200).json(
+      {id:user._doc._id , name: user._doc.name, email: user._doc.email, role: user._doc.role, accessToken: user.accessToken, refreshToken: user.refreshToken},
+    );
   } catch (error) {
-    console.log(error);
-    console.log("error login", error.message);
     res.status(500).json({ message: error.message, data: null });
   }
 };

@@ -12,7 +12,8 @@ import { toast } from "react-toastify";
 import { BiLogOut } from "react-icons/bi";
 import { BiUser } from "react-icons/bi";
 import { FaMoneyCheckDollar } from "react-icons/fa6";
-import logo from '../images/logo_home.png';
+import logo from '../images/logo-sdn.png';
+// import logo from '../images/logo_home.png';
 import { CartContext } from '../components/CartContext'
 
 const Header = () => {
@@ -25,9 +26,7 @@ const Header = () => {
 
   useEffect(() => {
     if (isLogged) {
-      fetch("http://localhost:9999/users/" + JSON.parse(localStorage.getItem("data")).email)
-        .then(res => res.json())
-        .then(json => setThisUser(json))
+      setThisUser(JSON.parse(localStorage.getItem("data")))
     }
   }, [isLogged]
   )
@@ -50,7 +49,7 @@ const Header = () => {
                 <Link className="text-white"><img className='p-2' style={{ width: "70%" }} src={logo} alt='logo'></img></Link>
               </h2>
             </div>
-            <div className="col-12 col-lg-5">
+            <div className="col-12 col-lg-7">
               <form action={"/ourStore/" + searchKey}>
                 <div className="input-group">
                   <input
@@ -68,9 +67,9 @@ const Header = () => {
                 </div>
               </form>
             </div>
-            <div className="col-12 col-lg-5">
+            <div className="col-12 col-lg-3">
               <div className="header-upper-links d-flex align-items-center justify-content-around row">
-                <div className="col-6 col-lg-3">
+                {/* <div className="col-6 col-lg-3">
                   <Link
                     to="/compare-product"
                     className="d-flex align-items-center gap-10 text-white"
@@ -80,7 +79,7 @@ const Header = () => {
                       Compare <br /> Products
                     </p>
                   </Link>
-                </div>
+                </div> */}
                 {isLogged && (
                   <div className="col-6 col-lg-3">
                     <Link
