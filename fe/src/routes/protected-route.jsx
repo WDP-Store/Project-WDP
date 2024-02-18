@@ -7,9 +7,10 @@ export function ProtectedRoute({ children }) {
 
   // TODO: uncomment - Comment to logged in without authentication
 
-  // if (!isLogged) {
-  //   return <Navigate state={{ from: location }} to="/login" replace />;
-  // }
+  //test
+  if (!isLogged) {
+    return <Navigate state={{ from: location }} to="/login" replace />;
+  }
 
   return children;
 }

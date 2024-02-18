@@ -7,7 +7,8 @@ export function AuthorizationRoute(props) {
   const { checkAccess } = useAuthorization();
   const canAccess = checkAccess({ accessRoles: roles });
 
-  return canAccess ? children : children;
+  //test 
+  // return canAccess ? children : children;
   // TODO: uncomment - Comment to logged in without authentication
-  // return canAccess ? children : <Navigate to={'/login'} />; 
+  return canAccess ? children : <Navigate to={'/login'} />;
 }

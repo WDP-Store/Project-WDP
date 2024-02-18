@@ -28,7 +28,7 @@ import { MessengerChat } from "react-messenger-chat-plugin";
 function App() {
   return (
     <>
-      <ToastContainer theme="colored" position="top-center"></ToastContainer>
+      <ToastContainer theme="colored" position="top-right"></ToastContainer>
       {/* <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout />}>

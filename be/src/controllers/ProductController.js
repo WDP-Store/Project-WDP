@@ -4,6 +4,7 @@ import { productRepository } from '../repositories/index.js';
 
 
 const findAll = async (req, res) => {
+  console.log(req.headers)
   try {
     const data = await productRepository.findAll(req, res);
 

@@ -4,61 +4,70 @@ import Meta from "../components/Meta";
 import { Link, useNavigate } from "react-router-dom";
 import Container from "../components/Container";
 import CustomInput from "../components/CustomInput";
-import * as bcrypt from "bcryptjs";
+import { Button, Form } from "react-bootstrap";
+import { useState } from "react";
+import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Signup = () => {
   const navigate = useNavigate();
 
-  const handleSignUp = async (event) => {
-    event.preventDefault();
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
 
-    const id = event.target.email.value;
-    const name = event.target.name.value;
-    const email = event.target.email.value;
-    const mobile = event.target.mobile.value;
-    const password = event.target.password.value;
+  const [errors, setErrors] = useState({});
 
-    // Mã hóa mật khẩu
-    const hashedPassword = hash(password);
-
-    // Tạo đối tượng user mới
-    const newUser = {
-      id,
-      name,
-      email,
-      phone: mobile,
-      password: hashedPassword,
-      role: "Customer",
-    };
-
-    try {
-      // Gửi yêu cầu đăng ký đến API backend
-      const response = await fetch("http://localhost:9999/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newUser),
-      });
-
-      if (response.ok) {
-        console.log(response.data);
-
-        alert("Đăng ký thành công!");
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    const isValid = handleValidate(formData);
+    if (isValid) {
+      axios.post("http://localhost:9999/auth/register", formData)
+      .then(response => {
         navigate("/login");
-        // Các xử lý khác sau khi đăng ký thành công
-      } else {
-        throw new Error("Đăng ký thất bại.");
-      }
-    } catch (error) {
-      console.error(error);
-      alert("Đã xảy ra lỗi. Vui lòng thử lại sau.");
-      // Các xử lý khác khi xảy ra lỗi
+      })
+      .catch(err => {
+        toast.error("Email has been registered !");
+      });
+    };
+      
     }
+
+
+
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    // properties need same id
+    setFormData((prevData) => ({
+      ...prevData,
+      [id]: value,
+    }));
+    //clear error
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [id]: "",
+    }));
   };
 
-  const hash = (password) => {
-    return bcrypt.hashSync(password, 10);
+  const handleValidate = (formData) => {
+    const newErrors = {};
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required";
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      newErrors.email = "Invalid email format";
+    }
+    const passwordRegex = /^[A-Za-z\d@$!%*?&]{6,}$/;
+    if (!passwordRegex.test(formData.password)) {
+      newErrors.password =
+        "Invalid password format, password must be at least 6 characters";
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   return (
@@ -70,27 +79,52 @@ const Signup = () => {
           <div className="col-12">
             <div className="auth-card">
               <h3 className="text-center mb-3">Sign Up</h3>
-              <form onSubmit={handleSignUp} className="d-flex flex-column gap-15">
-                <CustomInput type="text" name="name" placeholder="Name" />
-                <CustomInput type="email" name="email" placeholder="Email" />
-                <CustomInput
-                  type="tel"
-                  name="mobile"
-                  placeholder="Mobile Number"
-                />
-                <CustomInput
-                  type="password"
-                  name="password"
-                  placeholder="Password"
-                />
-                <div>
-                  <div className="mt-3 d-flex justify-content-center gap-15 align-items-center">
-                    <button type="submit" className="button border-0">
-                      Sign Up
-                    </button>
-                  </div>
+              <Form onSubmit={handleSignUp}>
+                <Form.Group className="mb-3" controlId="name">
+                  <Form.Label>Full name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    className="name"
+                    placeholder="Enter your name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                  />
+                  <Form.Text className="text-danger">
+                    {errors.name}
+                  </Form.Text>
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="email">
+                  <Form.Label>Email</Form.Label>
+                  <Form.Control
+                    type="email"
+                    className="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder="Enter email"
+                  />
+                  <Form.Text className="text-danger">
+                    {errors.email}
+                  </Form.Text>
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="password">
+                  <Form.Label>Password</Form.Label>
+                  <Form.Control
+                    type="password"
+                    className="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    placeholder="Password"
+                  />
+                  <Form.Text className="text-danger">
+                    {errors.password}
+                  </Form.Text>
+                </Form.Group>
+                <div className="mt-3 d-flex justify-content-center gap-15 align-items-center">
+                  <Button type="submit" className="button border-0">
+                    Sign Up
+                  </Button>
                 </div>
-              </form>
+              </Form>
             </div>
           </div>
         </div>
