@@ -33,7 +33,7 @@ export function publicRoutes() {
             { path: '/ourStore/:key', element: <OurStore /> },
             { path: '/product/:id', element: <SingleProduct /> },
             { path: '/blogs', element: <Blog /> },
-            { path: '/blog/:id', element: <SingleBlog /> },
+            { path: '/blogs/:id', element: <SingleBlog /> },
             { path: '/forgot-password', element: <Forgotpassword /> },
             { path: '/signup', element: <Signup /> },
             { path: '/compare-product', element: <CompareProduct /> },

@@ -21,6 +21,10 @@ Content-Type: application/json
 }
 
 ###
+GET http://localhost:9999/blogs
+Content-Type: application/json
+
+###
 GET http://localhost:9999/products
 Content-Type: application/json
 

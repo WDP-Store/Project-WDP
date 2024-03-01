@@ -6,6 +6,7 @@ import categoryController from "./CategoryController.js";
 import wishlistController from "./WishlistController.js";
 import feedbackController from "./FeedbackController.js";
 import orderController from "./OrderController.js";
+import blogController from "./BlogController.js";
 
 export {
     userController,
@@ -14,6 +15,7 @@ export {
     brandController,
     categoryController,
     wishlistController,
+    blogController,
     orderController,
     feedbackController,
 }

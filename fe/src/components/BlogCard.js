@@ -8,7 +8,7 @@ const BlogCard = ({ blog }) => {
         <img src={blog?.image} className="img-fluid w-100" alt="blog" style={{ maxHeight: 200, objectFit: 'contain'}} />
       </div>
       <div className="blog-content">
-        <p className="date">1 Dec, 2022</p>
+        <p className="date">{"1 Dec, 2022"}</p>
         <h5 className="title">{blog?.title}</h5>
         <p
           className="desc"
@@ -21,7 +21,7 @@ const BlogCard = ({ blog }) => {
         >
           {blog?.body}
         </p>
-        <Link to={`/blog/${blog?.id}`} className="button">
+        <Link to={`/blogs/${blog?._id}`} className="button">
           Read More
         </Link>
       </div>
