@@ -125,11 +125,11 @@ export default function AdminSideNav(props) {
             <Accordion.Body>
               <Link
                 style={{ width: "100%", borderBottom: "1px solid #ccc" }}
-                to={"/admin/blog"}
+                to={"/admin/blogs"}
               >
                 Blog list
               </Link>
-              <Link style={{ width: "100%" }} to={"/admin/blog/add-blog"}>
+              <Link style={{ width: "100%" }} to={"/admin/blogs/add-blog"}>
                 Blog add new
               </Link>
             </Accordion.Body>

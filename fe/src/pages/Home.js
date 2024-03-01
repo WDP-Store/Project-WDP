@@ -18,14 +18,15 @@ const Home = () => {
   useEffect(() => {
     axios
       .get("http://localhost:9999/products")
-      .then((res) => res.data)
+      .then((res) => res.data.docs)
       .then((data) => {
         setProducts(data.slice(-4));
         setlast8Product(data.slice(-8));
       });
+
     axios
       .get("http://localhost:9999/blogs")
-      .then((res) => res.data)
+      .then((res) => res.data.docs)
       .then((data) => {
         setLast4Blogs(data.slice(-4));
       });
@@ -291,7 +292,7 @@ const Home = () => {
         </div>
       </Container> */}
 
-      <div class1="blog-wrapper py-5 home-wrapper-2" className="container block-item">
+      <div class1="blog-wrapper py-5 home-wrapper-2" className="container block-item  mb-3">
         <div className="row">
           <div className="col-12">
             <h3 className="section-heading">Our Latest Blogs</h3>

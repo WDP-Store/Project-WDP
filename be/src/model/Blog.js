@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import mongoosePaginate from 'mongoose-paginate-v2';
+
 const Blog = new mongoose.Schema({
     category: {
         type: mongoose.Schema.Types.ObjectId,
@@ -19,4 +21,6 @@ const Blog = new mongoose.Schema({
     },
 }, { timestamps: true });
 
+
+Blog.plugin(mongoosePaginate);
 export default mongoose.model("Blog", Blog);

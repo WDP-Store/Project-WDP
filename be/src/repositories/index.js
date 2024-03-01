@@ -6,6 +6,7 @@ import categoryRepository from "./category.js";
 import feedbackRepository from "./feedback.js";
 import wishlistRepository from "./wishlist.js";
 import orderRepository from "./order.js";
+import blogRepository from "./blog.js";
 
 export {
     userRepository,
@@ -14,6 +15,7 @@ export {
     brandRepository,
     feedbackRepository,
     categoryRepository,
+    blogRepository,
     orderRepository,
     wishlistRepository,
 }

@@ -54,9 +54,9 @@ const allRoutes = createBrowserRouter([
       { path: '/admin/product/category-list', element: <Categorylist /> },
     
       //blog
-      { path: '/admin/blog', element: <Bloglist /> },
-      { path: '/admin/blogdetails/:id', element: <BlogDetails /> },
-      { path: '/admin/blog/add-blog', element: <Addblog /> },
+      { path: '/admin/blogs', element: <Bloglist /> },
+      { path: '/admin/blogs/:id', element: <BlogDetails /> },
+      { path: '/admin/blogs/add-blog', element: <Addblog /> },
     ],
   },
   customerRoutes(),

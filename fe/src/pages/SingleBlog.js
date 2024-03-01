@@ -4,14 +4,15 @@ import BreadCrumb from '../components/BreadCrumb';
 import { HiOutlineArrowLeft } from 'react-icons/hi';
 import Meta from '../components/Meta';
 import Container from '../components/Container';
+import axios from 'axios';
 
 const SingleBlog = () => {
     const { id } = useParams();
     const [blog, setBlog] = useState({});
 
     useEffect(() => {
-        fetch(`http://localhost:9999/blogs/${id}`)
-            .then((res) => res.json())
+        axios.get(`http://localhost:9999/blogs/${id}`)
+            .then((res) => res.data)
             .then((data) => {
                 setBlog(data);
             });

@@ -226,7 +226,7 @@ const Bloglist = () => {
                 <Button variant="primary" className="mx-1">
                   <Link
                     className="text-white"
-                    to={`/admin/blogdetails/${blog.id}`}
+                    to={`/admin/blogs/${blog.id}`}
                   >
                     View
                   </Link>
