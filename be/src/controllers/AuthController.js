@@ -1,5 +1,5 @@
 import { authRepository } from "../repositories/index.js";
-import authValidation from "../validations/auth.js";
+import authValidation from "../util/validations/auth.js";
 const register = async (req, res) => {
   try {
     const { error } = authValidation.validateRegister(req.body);
@@ -25,12 +25,12 @@ const register = async (req, res) => {
     if (error.message === "DUPLICATE") {
       return res.status(400).json({
         message: "User registration duplicate",
-        data: null
+        data: null,
       });
     }
     return res.status(500).json({
       message: "User registration failed",
-      data: null
+      data: null,
     });
   }
 };
@@ -52,11 +52,13 @@ const login = async (req, res) => {
     }
 
     const user = await authRepository.login(req.body);
-    res.status(200).json(
-      {id:user._doc._id , name: user._doc.name, email: user._doc.email, role: user._doc.role, accessToken: user.accessToken, refreshToken: user.refreshToken},
-    );
+    res.status(200).json(user ? user : null);
   } catch (error) {
-    res.status(500).json({ message: error.message, data: null });
+    return res.status(500).json({
+      message: "Login failed",
+      data: null,
+      error: error,
+    });
   }
 };
 

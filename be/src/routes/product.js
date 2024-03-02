@@ -1,6 +1,5 @@
 import express, { json } from "express";
 import { productController } from "../controllers/index.js";
-import {checkLogin, checkAdmin} from "../middlewares/verifyToken.js"
 const productRouter = express.Router();
 
 //demo check login will access page
