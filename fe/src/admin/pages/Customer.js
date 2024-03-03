@@ -1,14 +1,19 @@
 import { useEffect, useState } from "react";
 import Paginate from "../components/Paginate";
 import { toast } from "react-toastify";
-import { Col, Form, Row, Table } from "react-bootstrap";
+import { Col, Form, Row, Table, Badge } from "react-bootstrap";
 import { AiOutlineSortAscending } from "react-icons/ai";
 import InputGroup from "react-bootstrap/InputGroup";
+import axios from "axios";
 
 export default function Customer() {
   const [users, setUsers] = useState([]);
   const [emailSearch, setEmailSearch] = useState("");
   const [nameSearch, setNameSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState();
+
+  const [nameOrder, setNameOrder] = useState(true);
+  const [emailOrder, setEmailOrder] = useState(true);
 
   //pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -29,43 +34,49 @@ export default function Customer() {
       setCurrentPage(currentPage + 1);
     }
   };
-  //
 
-  // useEffect(
-  //     () => {
-  //         fetch(`http://localhost:9999/users`)
-  //             .then(res => res.json())
-  //             .then(json => setUsers(json));
-  //     }, []
-  // );
-
-  const handleSearch = (page) => {
-    let url = `http://localhost:9999/users/?role=Customer&_sort=id&_order=desc&_page=${page}&_limit=10`;
-
-    if (emailSearch) {
-      url += `&email_like=${emailSearch}`;
-    }
+  const fetchUsers = (page) => {
+    let url = `http://localhost:9999/users?page=${page}`;
 
     if (nameSearch) {
-      url += `&name_like=${nameSearch}`;
+      url += `&name=${nameSearch}`;
+    }
+    if (emailSearch) {
+      url += `&email=${emailSearch}`;
     }
 
-    fetch(url)
+    if (statusFilter) {
+      url += `&status=${statusFilter}`;
+    }
+
+    console.log("76_url",url);
+    axios(url)
       .then((res) => {
-        const totalCount = res.headers.get("X-Total-Count");
-        setTotalPages(Math.ceil(totalCount / 10));
-        return res.json();
+        console.log("res");
+        console.log(res);
+        setTotalPages(res.data.totalPages);
+        setUsers(res.data.docs);
       })
-      .then((json) => setUsers(json))
       .catch((err) => toast.error(err));
   };
 
   useEffect(() => {
-    handleSearch(currentPage);
-  }, [currentPage, emailSearch, nameSearch]);
+    fetchUsers(currentPage);
+  }, [currentPage, emailSearch, nameSearch, statusFilter]);
 
-  const [nameOrder, setNameOrder] = useState(true);
-  const [emailOrder, setEmailOrder] = useState(true);
+  const changeStatus = (userId, status) => {
+    axios
+      .patch(`http://localhost:9999/users/${userId}`, {
+        status: !status,
+      })
+      .then((res) => {
+        fetchUsers(currentPage);
+        toast.success("Change status successfully");
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
+  };
   const sortCustomer = (attr) => {
     const newUserList = [...users];
     if (attr == "name") {
@@ -134,28 +145,38 @@ export default function Customer() {
             </th>
             <th>Phone</th>
             <th>Address</th>
+            <th>Status</th>
           </tr>
         </thead>
         <tbody>
-          {users.map((u) => (
+          {users && users.map((u) => (
             <tr key={u.id}>
               <td>{(currentPage - 1) * 10 + i++}</td>
               <td>{u.email}</td>
               <td>{u.name}</td>
               <td>{u.phone}</td>
               <td>
-                {u.address.zipcode +
-                  ", " +
-                  u.address.detailAddress +
-                  ", " +
-                  u.address.street +
-                  ", " +
-                  u.address.district +
-                  ", " +
-                  u.address.province +
-                  ", " +
-                  u.address.country}
+              
               </td>
+              <td className="text-center">
+                  {u.status === true ? (
+                    <Badge
+                      bg="primary"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => changeStatus(u._id, u.status)}
+                    >
+                      Active
+                    </Badge>
+                  ) : (
+                    <Badge
+                      bg="warning"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => changeStatus(u._id, u.status)}
+                    >
+                      Inactive
+                    </Badge>
+                  )}
+                </td>
             </tr>
           ))}
         </tbody>
