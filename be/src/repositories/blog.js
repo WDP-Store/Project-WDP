@@ -23,6 +23,29 @@ const findAll = async (req, res) => {
     throw new Error("Couldn't findAll: " + error);
   }
 };
+const list = async (req, res) => {
+  try {
+    const { page, category, title } = req.query;
+    console.log("29_query", page, category, title  );
+    const query = {};
+    if (category) query.category = category;
+    if (title) query.title = { $regex: title, $options: "i" };
+
+    const data = await Blog.paginate(query, {
+      populate: ['category'],
+      page: page || 1,
+      limit: 5,
+      sort: {
+        createdAt: "desc",
+      },
+    });
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Couldn't findAll: " + error);
+  }
+};
 
 const findOne = async (id) => {
   try {
@@ -74,4 +97,5 @@ export default {
   findOne,
   update,
   deleteBlog,
+  list
 };

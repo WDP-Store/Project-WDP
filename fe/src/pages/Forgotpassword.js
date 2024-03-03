@@ -1,4 +1,3 @@
-import React from 'react';
 import BreadCrumb from '../components/BreadCrumb';
 import Meta from '../components/Meta';
 import { Link } from 'react-router-dom';
@@ -8,6 +7,8 @@ import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { toast } from 'react-toastify';
 import emailjs from '@emailjs/browser';
+import  axios from 'axios';
+import React, { useState } from 'react';
 
 const forgotSchema = yup.object({
     user_email: yup
@@ -17,70 +18,26 @@ const forgotSchema = yup.object({
 });
 
 const Forgotpassword = () => {
+    const [email, setEmail] = useState("");
+
     const formik = useFormik({
         initialValues: {
             user_email: '',
         },
         validationSchema: forgotSchema,
-        onSubmit: (values, { resetForm }) => {
-            sendEmail(values.user_email, 'hello', resetForm);
+        onSubmit: async (values) => {
+            try {
+                const response = await axios.post(`http://localhost:9999/users/forgot-password`, { email: values.user_email })
+                console.log("testResponseForgotPassword", response.data);
+                // Handle response
+                toast.success('Code send to your email');
+            } catch (error) {
+                // Handle error
+                toast.error('Failed to send password reset email');
+            }
         },
     });
 
-    const sendEmail = (user_email, message, resetForm) => {
-        fetch(`http://localhost:9999/users/${user_email}`)
-            .then((res) => {
-                return res.json();
-            })
-            .then((resp) => {
-                if (Object.keys(resp).length === 0) {
-                    toast.error('Please enter valid email');
-                } else {
-                    const token = crypto.randomUUID();
-
-                    emailjs
-                        .send(
-                            'service_2xekwl1',
-                            'template_1ucoe5o',
-                            {
-                                to_name: resp.name,
-                                user_email,
-                                message: `http://localhost:3000/reset-password/${user_email}-${token}`,
-                            },
-                            '9fVcof7gddlDPABit'
-                        )
-                        .then(
-                            (result) => {
-                                console.log(result);
-                                resetForm();
-                                formik.setValues({ user_email: '' });
-
-                                fetch(`http://localhost:9999/users/${user_email}`,{
-                                    method: 'PATCH',
-                                    body: JSON.stringify({
-                                        token,
-                                    }),
-                                    headers: {
-                                        'Content-type':
-                                            'application/json; charset=UTF-8',
-                                    },
-                                  }
-                                );
-                                toast.success(
-                                    'Send mail successfully. Please check you email to get reset password link!'
-                                );
-                            },
-                            (error) => {
-                                console.log(error);
-                                toast.error('Cannot send email');
-                            }
-                        );
-                }
-            })
-            .catch((err) => {
-                toast.error('Login failed :' + err.message);
-            });
-    };
 
     return (
         <>

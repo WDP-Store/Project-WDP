@@ -4,64 +4,58 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import Paginate from "../components/Paginate";
+import axios from "axios";
 
 const Bloglist = () => {
   const [blogs, setBlogs] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [filter, setFilter] = useState("");
+  const [titleSearch, setTitleSearch] = useState("");
+  const [categoryId, setCategoryId] = useState();
   const [sortKey, setSortKey] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
+
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
-    fetchBlogs();
-    fetchCategories();
-  }, []);
-
-  const fetchBlogs = async () => {
-    try {
-      const response = await fetch("http://localhost:9999/blogs");
-      const data = await response.json();
-      setBlogs(data);
-    } catch (error) {
-      console.error("Error fetching blogs:", error);
-    }
-  };
-
-  const fetchCategories = async () => {
-    try {
-      const response = await fetch("http://localhost:9999/categories");
-      const data = await response.json();
-      setCategories(data);
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-    }
-  };
+    fetchBlogs(currentPage);
+  }, [currentPage, titleSearch, categoryId]);
 
   useEffect(() => {
-    filterBlogs();
-  }, [filter]);
+    axios
+      .get("http://localhost:9999/categories")
+      .then((res) => res.data)
+      .then((data) => {
+        setCategories(data);
+      });
+  }, []);
+
+  const fetchBlogs = async (page) => {
+    let url = `http://localhost:9999/blogs/admin?page=${page}`;
+
+    if (titleSearch) {
+      url += `&title=${titleSearch}`;
+    }
+    if (categoryId) {
+      url += `&category=${categoryId}`;
+    }
+
+    console.log("url=>", url);
+    axios(url)
+      .then((res) => {
+        setTotalPages(res.data.totalPages);
+        const blogActive = res.data.docs.filter(b => !b.isDeleted)
+        setBlogs(blogActive);
+      })
+      .catch((err) => toast.error(err));
+  };
+
+ 
+
 
   useEffect(() => {
     sortBlogs();
   }, [sortKey, sortOrder]);
-
-  useEffect(() => {
-    fetchBlogs(currentPage);
-  }, [currentPage]);
-
-  const filterBlogs = () => {
-    const filtered = blogs.filter((blog) => {
-      return (
-        blog.title.toLowerCase().includes(filter.toLowerCase()) ||
-        getCategoryName(blog.categoryId)
-          .toLowerCase()
-          .includes(filter.toLowerCase())
-      );
-    });
-    setBlogs(filtered);
-  };
 
   const sortBlogs = () => {
     const sorted = [...blogs].sort((a, b) => {
@@ -93,23 +87,11 @@ const Bloglist = () => {
     return category ? category.name : "";
   };
 
-  const handleFilterChange = (event) => {
-    setFilter(event.target.value);
-  };
-
   const handleSortChange = (event) => {
     const { value } = event.target;
     const [key, order] = value.split(":");
     setSortKey(key);
     setSortOrder(order);
-  };
-
-  const handleView = (blogId) => {
-    console.log(`View blog with ID ${blogId}`);
-  };
-
-  const handleEdit = (blogId) => {
-    console.log(`Edit blog with ID ${blogId}`);
   };
 
   const handleDeleteBlog = (blogId) => {
@@ -130,25 +112,18 @@ const Bloglist = () => {
   };
 
   const deleteBlog = (blogId) => {
-    fetch(`http://localhost:9999/blogs/${blogId}`, {
-      method: "DELETE",
-    })
-      .then((res) => {
-        if (res.ok) {
-          fetchBlogs();
-          toast.success("Blog deleted successfully");
-        } else {
-          toast.error("Failed to delete blog");
-        }
+    axios
+      .patch(`http://localhost:9999/blogs/${blogId}`, {isDeleted: true})
+      .then(() => {
+        toast.success("Remove blog successfully");
+        fetchBlogs(currentPage);
       })
-      .catch((error) => {
-        toast.error(error.message);
-      });
+      .catch(() => {
+        toast.error("Something went wrong!");
+      })
   };
 
-  const handleAddNewBlog = () => {
-    //window.location.href = "/admin/Addblog";
-  };
+  
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -174,9 +149,9 @@ const Bloglist = () => {
           <Form.Group className="mb-3" controlId="filter">
             <Form.Control
               type="text"
-              placeholder="Search by Title or Category"
-              value={filter}
-              onChange={handleFilterChange}
+              placeholder="Search by Title"
+              value={titleSearch}
+              onChange={(e) => setTitleSearch(e.target.value)}
             />
           </Form.Group>
         </Col>
@@ -189,14 +164,26 @@ const Bloglist = () => {
             <option value="">Sort By</option>
             <option value="title:asc">Title (Ascending)</option>
             <option value="title:desc">Title (Descending)</option>
-            <option value="category:asc">Category (Ascending)</option>
-            <option value="category:desc">Category (Descending)</option>
+          </Form.Select>
+        </Col>
+        <Col xs={12} md={3}>
+          <Form.Select
+            aria-label="category"
+            value={categoryId}
+            onChange={(e) => setCategoryId(e.target.value)}
+          >
+            <option value="">Select category</option>
+            {categories.map((c) => (
+              <option key={c._id} value={c._id}>
+                {c.name}
+              </option>
+            ))}
           </Form.Select>
         </Col>
         <Col xs={12} md={2} style={{ textAlign: "right" }}>
-          <Button variant="primary" onClick={handleAddNewBlog}>
-            Add New Blog
-          </Button>
+          <Link className="text-white btn btn-primary" to={"/admin/blogs/add-blog"}>
+              Add New Blog
+          </Link>
         </Col>
       </Row>
       <Table striped bordered hover variant="light">
@@ -211,8 +198,8 @@ const Bloglist = () => {
         </thead>
         <tbody>
           {blogs.map((blog) => (
-            <tr key={blog.id}>
-              <td>{blog.id}</td>
+            <tr key={blog._id}>
+              <td>{blog._id}</td>
               <td>
                 <img
                   src={blog.image}
@@ -221,27 +208,18 @@ const Bloglist = () => {
                 />
               </td>
               <td>{blog.title}</td>
-              <td>{getCategoryName(blog.categoryId)}</td>
+              <td>{blog.category?.name}</td>
               <td>
-                <Button variant="primary" className="mx-1">
-                  <Link
-                    className="text-white"
-                    to={`/admin/blogs/${blog.id}`}
-                  >
+                  <Link className="text-white btn btn-primary mx-1" to={`/admin/blogs/${blog._id}`}>
                     View
                   </Link>
-                </Button>
-                <Button
-                  variant="warning"
-                  className="mx-1"
-                  onClick={() => handleEdit(blog.id)}
-                >
-                  Edit
-                </Button>
+                  <Link className="text-white btn btn-warning mx-1" to={`/admin/blogs/edit/${blog._id}`}>
+                    Edit
+                  </Link>
                 <Button
                   variant="danger"
                   className="mx-1"
-                  onClick={() => handleDeleteBlog(blog.id)}
+                  onClick={() => handleDeleteBlog(blog._id)}
                 >
                   Delete
                 </Button>
@@ -253,9 +231,9 @@ const Bloglist = () => {
       <Paginate
         currentPage={currentPage}
         totalPages={totalPages}
-        onPageChange={handlePageChange}
-        onPrevPage={handlePrevPage}
-        onNextPage={handleNextPage}
+        handlePageChange={handlePageChange}
+        handlePrevPage={handlePrevPage}
+        handleNextPage={handleNextPage}
       />
     </Col>
   );
