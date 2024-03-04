@@ -24,6 +24,7 @@ import Brandlist from '../admin/pages/Brandlist';
 import Bloglist from '../admin/pages/Bloglist';
 import Addblog from '../admin/pages/Addblog';
 import BlogDetails from '../admin/pages/BlogDetail';
+import EditBlog from '../admin/pages/EditBlog';
 const allRoutes = createBrowserRouter([
   {
     path: '/admin',
@@ -57,6 +58,7 @@ const allRoutes = createBrowserRouter([
       { path: '/admin/blogs', element: <Bloglist /> },
       { path: '/admin/blogs/:id', element: <BlogDetails /> },
       { path: '/admin/blogs/add-blog', element: <Addblog /> },
+      { path: '/admin/blogs/edit/:id', element: <EditBlog /> },
     ],
   },
   customerRoutes(),

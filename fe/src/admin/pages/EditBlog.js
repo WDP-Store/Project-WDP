@@ -4,14 +4,14 @@ import * as yup from "yup";
 import { Field, FieldArray, Form, Formik, useFormik } from "formik";
 import { toast } from "react-toastify";
 import CustomInput from "../../components/CustomInput";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 import { DeleteOutlined } from "@ant-design/icons";
 // import ReactQuill from "react-quill";
 // import EditorToolbar, { modules, formats } from "../components/EditorToolbar";
 // import "react-quill/dist/quill.snow.css";
-import axios from "axios";
+import axios, { toFormData } from "axios";
 import MySunEditor from "../components/SunEditor";
 
 const blogSchema = yup.object({
@@ -29,7 +29,7 @@ const blogSchema = yup.object({
           return supportedTypes.includes(value.type);
         }),
     })
-  )
+  ),
   // .required("Must provide color and image"),
 });
 
@@ -41,18 +41,24 @@ const initialValues = {
   isDeleted: false,
 };
 
-const Addblog = () => {
+const EditBlog = () => {
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [blog, setBlog] = useState({});
   const navigate = useNavigate();
+  const { id } = useParams();
+  console.log("paramId", id);
 
   const formik = useFormik({
     initialValues,
     validationSchema: blogSchema,
     onSubmit: async (values) => {
       setIsLoading(true);
-      const image = await uploadImage(values.image);
-      saveBlog(values, image);
+      console.log("values", values);
+      if(values.image !== ""){
+        const image = await uploadImage(values.image);
+        saveBlog(values, image);
+      }
       setIsLoading(false);
     },
   });
@@ -65,6 +71,21 @@ const Addblog = () => {
         const c = [];
         data.map((j) => c.push({ value: j._id, label: j.name }));
         setCategories(c);
+      });
+  }, []);
+  useEffect(() => {
+    axios
+      .get(`http://localhost:9999/blogs/${id}`)
+      .then((res) => res.data)
+      .then((data) => {
+        setBlog(data);
+        console.log("data", data);
+        const { title, category, body, image, isDeleted} = data;
+        formik.setFieldValue("title", title);
+        formik.setFieldValue("category", category._id);
+        formik.setFieldValue("body", body);
+        formik.setFieldValue("image", image);
+        formik.setFieldValue("isDeleted", isDeleted);
       });
   }, []);
 
@@ -96,12 +117,15 @@ const Addblog = () => {
       isDeleted,
     };
     axios
-      .post(`http://localhost:9999/blogs`, newBlog)
+      .patch(`http://localhost:9999/blogs/${id}`, newBlog)
       .then(() => {
-        toast.success("Create blog successfully");
+        toast.success("Update blog successfully");
         navigate("/admin/blogs");
       })
-      .catch(() => toast.error("Something went wrong!"));
+      .catch(() => {
+        setIsLoading(false);
+        toast.error("Something went wrong!");
+      })
   };
 
   const removeImagePreview = () => {
@@ -132,7 +156,7 @@ const Addblog = () => {
       )}
       <Row>
         <Col>
-          <h3 className="mt-3">Create new blog</h3>
+          <h3 className="mt-3">Update blog</h3>
           <Formik initialValues={initialValues} onSubmit={formik.handleSubmit}>
             {({ values }) => (
               <Form>
@@ -171,6 +195,7 @@ const Addblog = () => {
                       onBlur={formik.handleBlur("category")}
                       value={formik.values?.category}
                     />
+                    {console.log(formik.values?.category)}
                     {formik.touched.category && (
                       <span className="text-danger">
                         {formik.errors.category}
@@ -200,11 +225,15 @@ const Addblog = () => {
                             </span>
                           )}
                         </div>
-
+                        {console.log("testImage1:", formik.values.image)}  
                         {formik.values.image && (
-                          <div className="mt-2" style={{ position: 'relative' }}>
+                          <div
+                            className="mt-2"
+                            style={{ position: "relative" }}
+                          >
                             <img
-                              src={URL.createObjectURL(formik.values.image)}
+                            //   src={URL.createObjectURL(formik.values.image)}
+                              src={formik.values.image instanceof Blob ? URL.createObjectURL(formik.values.image) : formik.values.image}
                               alt="Preview"
                               style={{
                                 width: "200px",
@@ -242,6 +271,7 @@ const Addblog = () => {
                         }
                       }}
                       data={formik.values?.body}
+                      setContents={blog.body}
                     />
                     {formik.touched.body && (
                       <span className="text-danger">{formik.errors.body}</span>
@@ -267,4 +297,4 @@ const Addblog = () => {
   );
 };
 
-export default Addblog;
+export default EditBlog;

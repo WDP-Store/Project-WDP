@@ -12,6 +12,18 @@ const findAll = async (req, res) => {
     })
   }
 }
+const getAllBlogs = async (req, res) => {
+  console.log(req.headers)
+  try {
+    const data = await blogRepository.list(req, res);
+
+    res.status(200).json(data)
+  } catch (error) {
+    res.status(500).json({
+      message: error.toString()
+    })
+  }
+}
 
 const findOne = async (req, res) => {
   try {
@@ -72,4 +84,5 @@ export default {
   create,
   update,
   deleteBlog,
+  getAllBlogs
 }
