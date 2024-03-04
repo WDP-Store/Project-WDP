@@ -64,11 +64,10 @@ export default function Orders() {
 
   const openDetail = (index) => {
     // fetch(`http://localhost:9999/order/` + id)
-    //   .then(res => res.json())
-    //   .then(json => {
-    //     setCurrentDetail(json)
-    //   }
-    //   );
+    //   .then((res) => res.json())
+    //   .then((json) => {
+    //     setCurrentDetail(json);
+    //   });
     setCurrentDetail(orders[index]);
   };
 
@@ -111,20 +110,20 @@ export default function Orders() {
       .catch((err) => toast.error(err));
   };
 
-  // useEffect(() => {  //date filtering
-  //     if(fromDate !== ''){
-  //       let temp = [...orders];
-  //       temp = temp.filter((o) => (new Date(o.date)) >= (new Date(fromDate)));
-  //       setOrders(temp);
-  //       console.log(temp)
-  //     }
-  //     if(toDate !== ''){
-  //       let temp = [...orders];
-  //       temp = temp.filter((o) => new Date(o.date) <= new Date(toDate));
-  //       setOrders(temp);
-  //     }
-  // }, [fromDate, toDate]
-  // )
+  // useEffect(() => {
+  //   //date filtering
+  //   if (fromDate !== "") {
+  //     let temp = [...orders];
+  //     temp = temp.filter((o) => new Date(o.date) >= new Date(fromDate));
+  //     setOrders(temp);
+  //     console.log(temp);
+  //   }
+  //   if (toDate !== "") {
+  //     let temp = [...orders];
+  //     temp = temp.filter((o) => new Date(o.date) <= new Date(toDate));
+  //     setOrders(temp);
+  //   }
+  // }, [fromDate, toDate]);
 
   const updateStatus = (value, index, id) => {
     //index is index of orders in orders useState , id is its order id

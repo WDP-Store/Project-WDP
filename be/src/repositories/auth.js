@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 dotenv.config();
 const generateAccessToken = (user) => {
   return jwt.sign({ data: user }, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: "10m",
+    expiresIn: "1440m",
   });
 };
 const generateRefreshToken = (user) => {
@@ -37,6 +37,8 @@ const login = async (data) => {
 
     const accessToken = generateAccessToken(existingUser);
     const refreshToken = generateRefreshToken(existingUser);
+    // console.log("existingUser", existingUser);
+    // console.log("accessToken", accessToken);
     return {
       _id: existingUser._id,
       name: existingUser.name,

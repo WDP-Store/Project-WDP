@@ -23,10 +23,11 @@ const findAll = async (req, res) => {
   }
 };
 
-const getUserProfile = async (req, res) => {
+const getUserProfile = async (id) => {
   try {
-    const user = await User.findById(req.user._id);
-    return user;
+    const userProfile = await user.findById(id);
+    return userProfile;
+
   } catch (error) {
     throw new Error(`Get user profile failed: ${error}`);
   }
