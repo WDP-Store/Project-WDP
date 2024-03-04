@@ -14,7 +14,7 @@ const findAll = async (req, res) => {
     if (date_s) sort = { price: date_s };
 
     const data = await Order.paginate(query, {
-      populate: ['user', 'status'],
+      populate: ["user", "status"],
       page: page || 1,
       limit: 10,
       sort: {
@@ -32,7 +32,7 @@ const findAll = async (req, res) => {
 
 const findOne = async (id) => {
   try {
-    const result = await Order.findById(id).populate(['user', 'status']);
+    const result = await Order.findById(id).populate(["user", "status"]);
 
     return result;
   } catch (error) {
@@ -44,7 +44,7 @@ const findOne = async (id) => {
 const findOneByOrderVnpayId = async (orderVnpayId) => {
   try {
     const result = await Order.findOne({
-      orderVnpayId
+      orderVnpayId,
     });
 
     return result;
@@ -86,6 +86,15 @@ const deleteOrder = async (id) => {
     throw new Error("Couldn't delete: " + error);
   }
 };
+const findOrderByUserId = async (id) => {
+  try {
+    const result = await Order.find({ user: id }).populate("status");
+    return result;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Couldn't findOrder: " + error);
+  }
+};
 
 export default {
   create,
@@ -94,4 +103,5 @@ export default {
   findOneByOrderVnpayId,
   update,
   deleteOrder,
+  findOrderByUserId,
 };

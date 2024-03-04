@@ -12,9 +12,9 @@ import { toast } from "react-toastify";
 import { BiLogOut } from "react-icons/bi";
 import { BiUser } from "react-icons/bi";
 import { FaMoneyCheckDollar } from "react-icons/fa6";
-import logo from '../images/logo-sdn.png';
+import logo from "../images/logo-sdn.png";
 // import logo from '../images/logo_home.png';
-import { CartContext } from '../components/CartContext'
+import { CartContext } from "../components/CartContext";
 
 const Header = () => {
   const { isLogged } = useAuthentication();
@@ -22,22 +22,20 @@ const Header = () => {
   const [thisUser, setThisUser] = useState();
   const { currentUser } = useAuthentication();
   const [searchKey, setSearchKey] = useState();
-  const { cartQuantity, setCartQuantity } = useContext(CartContext)
+  const { cartQuantity, setCartQuantity } = useContext(CartContext);
 
   useEffect(() => {
     if (isLogged) {
-      setThisUser(JSON.parse(localStorage.getItem("data")))
+      setThisUser(JSON.parse(localStorage.getItem("data")));
     }
-  }, [isLogged]
-  )
-
+  }, [isLogged]);
 
   const handleLogout = () => {
-    localStorage.removeItem('data')
-    localStorage.removeItem('cart') //remove cart 
-    toast.success("Successfully logged out!")
-    navigate('/login')
-  }
+    localStorage.removeItem("data");
+    localStorage.removeItem("cart"); //remove cart
+    toast.success("Successfully logged out!");
+    navigate("/login");
+  };
 
   return (
     <>
@@ -46,7 +44,14 @@ const Header = () => {
           <div className="row align-items-center">
             <div className="col-12 col-lg-2">
               <h2>
-                <Link className="text-white"><img className='p-2' style={{ width: "70%" }} src={logo} alt='logo'></img></Link>
+                <Link className="text-white">
+                  <img
+                    className="p-2"
+                    style={{ width: "70%" }}
+                    src={logo}
+                    alt="logo"
+                  ></img>
+                </Link>
               </h2>
             </div>
             <div className="col-12 col-lg-7">
@@ -61,7 +66,11 @@ const Header = () => {
                     aria-label="Search Product Here..."
                     aria-describedby="basic-addon2"
                   />
-                  <span style={{ height: "50px" }} className="input-group-text p-3" id="basic-addon2">
+                  <span
+                    style={{ height: "50px" }}
+                    className="input-group-text p-3"
+                    id="basic-addon2"
+                  >
                     <BsSearch className="fs-6 m-0" />
                   </span>
                 </div>
@@ -100,54 +109,57 @@ const Header = () => {
                       className="d-flex align-items-center gap-10 text-white"
                     >
                       <img src={user} alt="user" />
-                      <p className="mb-0">
-                        Log in
-                      </p>
+                      <p className="mb-0">Log in</p>
                     </Link>
                   </div>
                 )}
                 {isLogged && (
                   <div id="user-button-header" className="col-6 col-lg-3">
-                    <Link to={"/"} className="d-flex align-items-center gap-10 text-white">
+                    <Link
+                      to={"/"}
+                      className="d-flex align-items-center gap-10 text-white"
+                    >
                       <img src={user} alt="user" />
-                      <p style={{
-                        maxWidth: "10ch",
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis"
-                      }}
-                        className="mb-0">
+                      <p
+                        style={{
+                          maxWidth: "10ch",
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                        }}
+                        className="mb-0"
+                      >
                         {thisUser?.name}
                       </p>
                     </Link>
                     <div id="function-box-header">
                       <Link
-                        to={`/profile/${currentUser.email}`}
+                        to={`/profile/${currentUser._id}`}
                         className="d-flex align-items-center gap-10 text-white link-user-header-function"
                       >
-                        <BiUser className="m-0" />My profile
+                        <BiUser className="m-0" />
+                        My profile
                       </Link>
                       <Link
                         to={"/myOrder"}
                         className="d-flex align-items-center gap-10 text-white link-user-header-function"
                       >
-                        <FaMoneyCheckDollar className="m-0" />My orders
+                        <FaMoneyCheckDollar className="m-0" />
+                        My orders
                       </Link>
                       <Link
                         onClick={() => handleLogout()}
                         className="d-flex align-items-center gap-10 text-white link-user-header-function"
                       >
-                        <BiLogOut className="m-0" />Log out
+                        <BiLogOut className="m-0" />
+                        Log out
                       </Link>
                     </div>
                   </div>
                 )}
                 {isLogged && (
                   <div className="col-6 col-lg-3">
-                    <Link
-                      to="/cart"
-
-                    >
+                    <Link to="/cart">
                       <button type="button" class="btn position-relative">
                         <img src={cart} alt="cart" />
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
@@ -162,7 +174,7 @@ const Header = () => {
             </div>
           </div>
         </div>
-      </header >
+      </header>
       <header className="header-bottom py-3">
         <div className="container-xxl">
           <div className="row">
