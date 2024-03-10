@@ -47,7 +47,10 @@ export default function Dashboard() {
   const [categories, setCategories] = useState([]);
   const [orders, setOrders] = useState([]); //fetched orders
   useEffect(() => {
-    fetch(`http://localhost:9999/order?statusId=4`)
+    fetch(
+      `http://localhost:9999/orders/find-order-by-status/successful
+      `
+    )
       .then((res) => res.json())
       .then((json) => setOrders(json));
 

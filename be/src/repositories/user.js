@@ -2,19 +2,19 @@ import User from "../model/User.js";
 
 const findAll = async (req, res) => {
   try {
-    const {page, name, email, status} = req.query;
-    console.log("6_query", page, name, email, status)
+    const { page, name, email, status } = req.query;
+    console.log("6_query", page, name, email, status);
     const query = {};
     if (status !== undefined) query.status = status === "true";
-    if (name) query.name = { $regex: name, $options: 'i' };;
-    if (email) query.email = { $regex: email, $options: 'i' }; //$regex khớp 1 phần field email, "i" không phân biệt hoa-thường
+    if (name) query.name = { $regex: name, $options: "i" };
+    if (email) query.email = { $regex: email, $options: "i" }; //$regex khớp 1 phần field email, "i" không phân biệt hoa-thường
 
     const options = {
       page: page || 1,
       limit: 5,
       sort: {
         createdAt: "desc",
-      }
+      },
     };
     const users = await User.paginate(query, options);
     return users;
@@ -25,15 +25,14 @@ const findAll = async (req, res) => {
 
 const getUserProfile = async (id) => {
   try {
-    const userProfile = await user.findById(id);
+    const userProfile = await User.findById(id);
     return userProfile;
-
   } catch (error) {
     throw new Error(`Get user profile failed: ${error}`);
   }
 };
 
-const findByEmail = async(email) => {
+const findByEmail = async (email) => {
   console.log("22_repository");
   try {
     const user = await User.findOne({ email: email });
@@ -57,5 +56,5 @@ export default {
   findAll,
   getUserProfile,
   findByEmail,
-  update
+  update,
 };

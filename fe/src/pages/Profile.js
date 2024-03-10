@@ -21,7 +21,6 @@ const Profile = () => {
       .then((response) => {
         setUserData(response.data);
         setEditedData({ ...response.data });
-        console.log(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -38,9 +37,9 @@ const Profile = () => {
 
   const handleSave = () => {
     axios
-      .put(`http://localhost:9999/users/${id}`, editedData)
+      .patch(`http://localhost:9999/users/${id}`, editedData)
       .then((response) => {
-        setUserData(response.data);
+        setUserData(response.data.data);
         setIsEditing(false);
       })
       .catch((error) => {
