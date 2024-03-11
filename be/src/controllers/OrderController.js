@@ -219,6 +219,18 @@ const findOrderByUserId = async (req, res) => {
     });
   }
 };
+const findOrderByName = async (req, res) => {
+  try {
+    const name = req.params.name; // Lấy tên đơn hàng từ query parameters
+    const data = await orderRepository.findOrderByName(name); // Gọi hàm tìm kiếm từ repository
+
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(500).json({
+      message: error.toString(),
+    });
+  }
+};
 export default {
   findAll,
   findOne,
@@ -229,4 +241,5 @@ export default {
   createPaymentUrl,
   vnpayReturn,
   findOrderByUserId,
+  findOrderByName,
 };

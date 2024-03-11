@@ -18,5 +18,6 @@ orderRouter.get(
   "/find-order-by-user-id/:id",
   orderController.findOrderByUserId
 );
+orderRouter.get("/find-order-by-status/:name", orderController.findOrderByName);
 
 export default orderRouter;

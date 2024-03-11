@@ -2,14 +2,14 @@ import { userRepository } from "../repositories/index.js";
 import nodemailer from "nodemailer";
 
 const getAll = async (req, res) => {
-  console.log('GetAllUserController');
+  console.log("GetAllUserController");
   try {
     const data = await userRepository.findAll(req, res);
     res.status(200).json(data);
   } catch (error) {
     res.status(500).json({
-      message: error.toString()
-    })
+      message: error.toString(),
+    });
   }
 };
 
@@ -33,12 +33,12 @@ const getUserProfile = async (req, res) => {
 };
 
 const handleForgotPassword = async (req, res) => {
-  console.log('ForgotPasswordController');
+  console.log("ForgotPasswordController");
   try {
     const { email } = req.body;
-    console.log("21_email", email)
+    console.log("21_email", email);
     const userExisting = await userRepository.findByEmail(email);
-    console.log("email already exists", userExisting)
+    console.log("email already exists", userExisting);
     if (userExisting) {
       const token = Math.floor(10000 + Math.random() * 90000).toString();
       console.log("26_token", token);
@@ -70,24 +70,27 @@ const handleForgotPassword = async (req, res) => {
   }
 };
 
-const updateUser = async(req, res) => {
-  console.log('UpdateUserController');
+const updateUser = async (req, res) => {
+  console.log("UpdateUserController");
   try {
     const id = req.params.id;
     const data = req.body;
-    const users = await userRepository.update(id, data);
-    console.log('67_UpdateUserController', users);
-    res.status(200).json(users);
+    const updatedUser = await userRepository.update(id, data);
+    const { name, email, role, id: _id } = updatedUser; // Destructuring để lấy các trường cần thiết
+    res.status(200).json({
+      message: "Update user successfully",
+      data: { name, email, role, id: _id }, // Chỉ trả về các trường name, email, role và id
+    });
   } catch (error) {
     res.status(500).json({
-      message: error.toString()
-    })
+      message: error.toString(),
+    });
   }
-}
+};
 
 export default {
   getAll,
   getUserProfile,
   handleForgotPassword,
-  updateUser
+  updateUser,
 };

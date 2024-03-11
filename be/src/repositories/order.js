@@ -1,4 +1,5 @@
 import Order from "../model/Order.js";
+import Status from "../model/Status.js";
 
 const findAll = async (req, res) => {
   try {
@@ -95,7 +96,24 @@ const findOrderByUserId = async (id) => {
     throw new Error("Couldn't findOrder: " + error);
   }
 };
+const findOrderByName = async (name) => {
+  try {
+    // Bước 1: Tìm id của status dựa trên name
+    const status = await Status.findOne({ name: name });
+    if (!status) {
+      throw new Error(`Status with name ${name} not found`);
+    }
+    console.log(status);
 
+    // Bước 2: Tìm các order có statusId tương ứng
+    const orders = await Order.find({ status: status._id }).populate("status");
+    console.log(orders);
+    return orders;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Couldn't find orders by status name: " + error);
+  }
+};
 export default {
   create,
   findAll,
@@ -104,4 +122,5 @@ export default {
   update,
   deleteOrder,
   findOrderByUserId,
+  findOrderByName,
 };
