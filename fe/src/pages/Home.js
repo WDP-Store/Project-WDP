@@ -7,8 +7,10 @@ import SpecialProduct from "../components/SpecialProduct";
 import Container from "../components/Container";
 import axios from "axios";
 import ProductItem from "../components/ProductItem";
-import logoBanner1 from '../images/main-banner-1.jpg';
+import logoBanner1 from "../images/main-banner-1.jpg";
+import BannerCarousel from "../components/BannerCarousel";
 //import { services } from "../utils/Data";
+import ProductCarouselV1 from "./../components/ProductCarouselV1";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -17,9 +19,10 @@ const Home = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:9999/products")
-      .then((res) => res.data.docs)
+      .get("http://localhost:9999/products/fe")
+      .then((res) => res.data)
       .then((data) => {
+        console.log(data);
         setProducts(data.slice(-4));
         setlast8Product(data.slice(-8));
       });
@@ -35,10 +38,13 @@ const Home = () => {
   return (
     <div className="content_home">
       <div class1="home-wrapper-1 py-5" className="container block-item">
+        <BannerCarousel />
+      </div>
+      <div class1="home-wrapper-1 py-5" className="container block-item">
         <div className="row">
           <div className="col-6">
             <div className="main-banner position-relative ">
-            <img
+              <img
                 src={logoBanner1}
                 className="img-fluid rounded-3"
                 alt="main banner"
@@ -75,7 +81,6 @@ const Home = () => {
         <div className="row">
           <div className="col-12">
             <div className="servies d-flex align-items-center justify-content-between">
-              
               {/* {services?.map((i, j) => {
                 return (
                   <div className="d-flex align-items-center gap-15" key={j}>
@@ -155,10 +160,60 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div class1="featured-wrapper py-5 home-wrapper-2" className="container block-item">
+      <div
+        class1="featured-wrapper py-5 home-wrapper-2"
+        className="container block-item"
+      >
         <h3 className="section-heading">Featured Collection</h3>
         <div className="row">
-          {last8Product.map((p,index) => (
+          {last8Product.map((p, index) => (
+            <div key={index} className="col-3">
+              <ProductItem product={p} />
+            </div>
+          ))}
+        </div>
+      </div>
+      <div
+        class1="featured-wrapper py-5 home-wrapper-2"
+        className="container block-item block-product-wrapper"
+      >
+        <div className="row mb-3">
+          <div className="col-12">
+            <img
+              className="w-100"
+              src="https://cdn.tgdd.vn/2024/03/campaign/DMX---Banner-Flash-sale-1200x120.gif"
+              alt=""
+            />
+          </div>
+        </div>
+        {/* <h3 className="section-heading">Best Seller</h3> */}
+        <div className="row">
+          {/* {last8Product.map((p, index) => (
+            <div key={index} className="col-3">
+              <ProductItem product={p} />
+            </div>
+          ))} */}
+          {console.log("last8Product", last8Product)}
+          <ProductCarouselV1 products={last8Product} />
+        </div>
+        {/* <div className="row">
+          <div className="col-3">
+            <Link className="vie">View</Link>
+          </div>
+        </div> */}
+      </div>
+      <div
+        class1="featured-wrapper py-5 home-wrapper-2"
+        className="container block-item block-product-wrapper"
+      >
+        <img
+          className="img-fluid"
+          src="https://img.tgdd.vn/imgt/f_webp,fit_outside,quality_100/https://cdn.tgdd.vn/2024/02/banner/Tagline-HS-1200x120.png"
+          alt=""
+        />
+        {/* <h3 className="section-heading">Best Seller</h3> */}
+        <div className="row">
+          {last8Product.map((p, index) => (
             <div key={index} className="col-3">
               <ProductItem product={p} />
             </div>
@@ -292,7 +347,10 @@ const Home = () => {
         </div>
       </Container> */}
 
-      <div class1="blog-wrapper py-5 home-wrapper-2" className="container block-item  mb-3">
+      <div
+        class1="blog-wrapper py-5 home-wrapper-2"
+        className="container block-item  mb-3 block-product-wrapper"
+      >
         <div className="row">
           <div className="col-12">
             <h3 className="section-heading">Our Latest Blogs</h3>

@@ -9,6 +9,36 @@ const Footer = () => {
     <>
       <footer className="py-4">
         <div className="container-xxl">
+          <div className="row justify-content-between">
+            <div className="col-2 identify justify-content-center align-items-center text-center">
+                <img className="img-fluid" src="https://media3.scdn.vn/img4/2020/12_16/gJwXr6FFZKZCGKWaz4RB.png" alt=""/>
+                <div className="description">
+                  <h5 style={{textAlign: "center"}}>Good products</h5>
+                  <span>Whatever you need, there are 26 categories and 10 million products</span>
+                </div>
+            </div>
+            <div className="col-2 identify justify-content-center align-items-center text-center">
+                <img src="https://media3.scdn.vn/img4/2020/12_16/EfZWQVfV6nQzu2vMmnwC.png" alt=""/>
+                <div className="description">
+                  <h5 style={{textAlign: "center"}}>Good products</h5>
+                  <span>Whatever you need, there are 26 categories and 10 million products</span>
+                </div>
+            </div>
+            <div className="col-2 identify justify-content-center align-items-center text-center">
+                <img src="https://media3.scdn.vn/img4/2020/12_16/j5C6IQz7gIXPgjFJxmRz.png" alt=""/>
+                <div className="description">
+                  <h5 style={{textAlign: "center"}}>Good products</h5>
+                  <span>Whatever you need, there are 26 categories and 10 million products</span>
+                </div>
+            </div>
+            <div className="col-2 identify justify-content-center align-items-center text-center">
+                <img src="https://media3.scdn.vn/img4/2020/12_16/7AJFQGQ5qvS7gGOz8P7a.png" alt=""/>
+                <div className="description">
+                  <h5 style={{textAlign: "center"}}>Good products</h5>
+                  <span>Whatever you need, there are 26 categories and 10 million products</span>
+                </div>
+            </div>
+          </div>
           <div className="row">
             <div className="col-12 col-lg-4">
               <h4 className="text-white mb-4">Contact Us</h4>

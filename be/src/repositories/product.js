@@ -22,7 +22,7 @@ const findAll = async (req, res) => {
     const data = await Product.paginate(query, {
       populate: ['category', 'brand'],
       page: page || 1,
-      limit: 3,
+      limit: 10,
       sort: {
         ...sort,
         createdAt: "desc",
@@ -35,6 +35,16 @@ const findAll = async (req, res) => {
     throw new Error("Couldn't findAll: " + error);
   }
 };
+
+const fetchAll = async (req, res) => {
+  try {
+    const result = await Product.find().populate(["category", "brand"]);
+    return result;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Couldn't fetch all products: " + error);
+  }
+}
 
 const findOne = async (id) => {
   try {
@@ -86,4 +96,5 @@ export default {
   findOne,
   update,
   deleteProduct,
+  fetchAll
 };
