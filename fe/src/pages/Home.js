@@ -21,6 +21,12 @@ const Home = () => {
       .then((res) => res.data.docs)
       .then((data) => {
         setProducts(data.slice(-4));
+      });
+
+    axios
+      .get("http://localhost:9999/products?featured=true")
+      .then((res) => res.data.docs)
+      .then((data) => {
         setlast8Product(data.slice(-8));
       });
 
