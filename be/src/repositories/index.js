@@ -7,7 +7,7 @@ import feedbackRepository from "./feedback.js";
 import wishlistRepository from "./wishlist.js";
 import orderRepository from "./order.js";
 import blogRepository from "./blog.js";
-
+import contactRepository from "./contact.js";
 export {
     userRepository,
     authRepository,
@@ -18,4 +18,5 @@ export {
     blogRepository,
     orderRepository,
     wishlistRepository,
+    contactRepository
 }
