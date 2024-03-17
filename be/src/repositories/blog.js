@@ -77,8 +77,7 @@ const update = async (id, blog) => {
     const result = await Blog.findByIdAndUpdate(id, blog);
 
     if (blog.image) {
-      const a = await cloudinary.uploader.destroy(getPublicId([result.image]));
-      console.log(a)
+      await cloudinary.uploader.destroy(getPublicId([result.image]));
     }
 
     return result;
@@ -91,11 +90,8 @@ const update = async (id, blog) => {
 const deleteBlog = async (id) => {
   try {
     const result = await Blog.findByIdAndDelete(id).populate("category");
-    console.log("resultresultresultresult")
-    console.log(result.image)
-    console.log(getPublicId([result.image]))
-    const a = await cloudinary.uploader.destroy(getPublicId([result.image]));
-    console.log(a)
+
+    await cloudinary.uploader.destroy(getPublicId([result.image]));
     return result;
   } catch (error) {
     console.log(error);

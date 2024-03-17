@@ -1,28 +1,25 @@
 import Contact from "../model/Contact.js";
 const findAllContacts = async (req, res) => {
-    try {
-      const { page } = req.query;
-      const perPage = 10; // Adjust the number of contacts per page as needed
-  
-      const pageNumber = parseInt(page, 10) || 1;
-      const totalCount = await Contact.countDocuments();
-      const totalPages = Math.ceil(totalCount / perPage);
-  
-      const contacts = await Contact.find({})
-        .sort({ createdAt: 'desc' })
-        .skip((pageNumber - 1) * perPage)
-        .limit(perPage);
-  
-      res.status(200).json({
-        contacts,
-        currentPage: pageNumber,
-        totalPages
-      });
-    } catch (error) {
-      res.status(500).json({ message: error.toString() });
-    }
-  };
-  
+  try {
+    const { page, email, status } = req.query;
+    const query = {};
+    if (status) query.status = status;
+    if (email) query.email = { $regex: email, $options: "i" };
+
+    const data = await Contact.paginate(query, {
+      page: page || 1,
+      limit: 10,
+      sort: {
+        createdAt: "desc",
+      },
+    });
+
+    return data;
+  } catch (error) {
+    res.status(500).json({ message: error.toString() });
+  }
+};
+
 const findContactById = async (id) => {
   try {
     const result = await Contact.findById(id);
