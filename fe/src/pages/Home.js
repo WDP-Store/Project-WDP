@@ -44,7 +44,7 @@ const Home = () => {
         <div className="row">
           <div className="col-6">
             <div className="main-banner position-relative ">
-            <img
+              <img
                 src={logoBanner1}
                 className="img-fluid rounded-3"
                 alt="main banner"
@@ -60,9 +60,9 @@ const Home = () => {
           <div className="col-6">
             <div className="d-flex flex-wrap gap-10 justify-content-between align-items-center">
               {products.map((p, index) => (
-                <div className="small-banner position-relative">
+                <div key={index} className="small-banner position-relative">
                   <img
-                    src="images/catbanner-01.jpg"
+                    src={p.image}
                     className="img-fluid rounded-3"
                     alt="main banner"
                   />
@@ -81,7 +81,7 @@ const Home = () => {
         <div className="row">
           <div className="col-12">
             <div className="servies d-flex align-items-center justify-content-between">
-              
+
               {/* {services?.map((i, j) => {
                 return (
                   <div className="d-flex align-items-center gap-15" key={j}>
@@ -164,7 +164,7 @@ const Home = () => {
       <div class1="featured-wrapper py-5 home-wrapper-2" className="container block-item">
         <h3 className="section-heading">Featured Collection</h3>
         <div className="row">
-          {last8Product.map((p,index) => (
+          {last8Product.map((p, index) => (
             <div key={index} className="col-3">
               <ProductItem product={p} />
             </div>
@@ -306,7 +306,7 @@ const Home = () => {
         </div>
         <div className="row">
           {last4Blogs.map((blog) => (
-            <div className="col-3">
+            <div key={blog._id} className="col-3">
               <BlogCard blog={blog} />
             </div>
           ))}

@@ -12,6 +12,7 @@ const findAll = async (req, res) => {
     })
   }
 }
+
 const getAllBlogs = async (req, res) => {
   console.log(req.headers)
   try {
@@ -41,7 +42,11 @@ const findOne = async (req, res) => {
 const create = async (req, res) => {
   try {
     const blog = req.body;
-    const data = await blogRepository.create(blog)
+
+    const data = await blogRepository.create({
+      ...blog,
+      image: req.file?.path ? req.file?.path : undefined
+    })
 
     return res.status(201).json(data)
   } catch (error) {
@@ -55,7 +60,11 @@ const update = async (req, res) => {
   try {
     const id = req.params.id;
     const blog = req.body;
-    const data = await blogRepository.update(id, blog)
+    console.log(blog)
+    const data = await blogRepository.update(id, {
+      ...blog,
+      image: req.file?.path ? req.file?.path : undefined
+    })
 
     return res.status(200).json(data)
   } catch (error) {
