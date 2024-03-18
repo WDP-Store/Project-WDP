@@ -8,6 +8,7 @@ import wishlistRouter from './wishlist.js';
 import orderRouter from './order.js';
 import blogRouter from './blog.js';
 import contactRouter from "./contact.js";
+import statusRouter from "./status.js";
 const route = (app) => {
     app.use("/users", userRouter);
     app.use("/products", productRouter);
@@ -18,6 +19,7 @@ const route = (app) => {
     app.use("/blogs", blogRouter);
     app.use("/orders", orderRouter);
     app.use("/wishlists", wishlistRouter);
+    app.use("/status",statusRouter);
     app.use("/contacts",contactRouter);
 }
 

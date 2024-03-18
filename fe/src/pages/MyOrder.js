@@ -11,15 +11,31 @@ import Modal from 'react-bootstrap/Modal';
 import { toast } from 'react-toastify';
 import { AiFillCaretRight } from "react-icons/ai";
 import { date } from "yup";
-
+import axios from "axios"
 
 export default function MyOrder() {
-  
+
   const [orders, setOrders] = useState([]); //fetched orders
   const [status, setStatus] = useState([]); //fetched status
   const [lgShow, setLgShow] = useState(false); //modal
-  const effectBadge = ["warning", "warning", "primary", "success", "danger"]; // each status has it badge
-  const colorBadge = ["#9ea954db", "#9ea954db", "#3876a9", "#248e5cd6", "#7c3c3cd6"];  // each status has it color
+  // const effectBadge = ["warning", "warning", "primary", "success", "danger"]; // each status has it badge
+  // const colorBadge = ["#9ea954db", "#9ea954db", "#3876a9", "#248e5cd6", "#7c3c3cd6"];  // each status has it color
+  const effectBadge = {
+    preparing: "warning",
+    pending: "primary",
+    shipping: "primary",
+    preparing: "warning",
+    successful: "success",
+    failed: "danger",
+  };  // each status has it color
+  const colorBadge = {
+    preparing: "#9ea954db",
+    pending: "#3876a9",
+    shipping: "#3876a9",
+    preparing: "#9ea954db",
+    successful: "#248e5cd6",
+    failed: "#7c3c3cd6",
+  };  // each status has it color
   const [currentDetail, setCurrentDetail] = useState([]);
   const user = JSON.parse(localStorage.getItem("data"));
 
@@ -78,26 +94,27 @@ export default function MyOrder() {
   )
 
   const filterOrder = (page) => {
-    var url = (`http://localhost:9999/order/?_sort=id&_order=desc&userId=${user.email}`);
+    var url = (`http://localhost:9999/orders?page=1&user=${user._id}`);
 
-    if (fromDate === '' && toDate === '') url += `&_page=${page}&_limit=10`;
+    if (fromDate === '' && toDate === '') url += `&page=${page}`;
 
     if (statusFilter !== '') {
-      url += ('&statusId=' + statusFilter)
+      url += ('&status=' + statusFilter)
     }
     if (orderIdFilter !== '') {
       url += ('&id=' + orderIdFilter)
     }
 
-    fetch(url)
+    axios.get(url)
       .then(res => {
-        const totalCount = res.headers.get('X-Total-Count');
-        setTotalPages(Math.ceil(totalCount / 10));
-        return res.json();
+        setTotalPages(res.data.totalPages);
+        setOrders(res.data.docs);
+        return res.data.docs
       }
       )
       .then(json => {
-        setOrders(json)
+        console.log("jsonjsonjsonjson")
+        console.log(json)
         if (fromDate !== '') {
           let temp = [...json];
           temp = temp.filter((o) => (new Date(o.date)) >= (new Date(fromDate)));
@@ -126,7 +143,7 @@ export default function MyOrder() {
                 all
               </option>
               {status?.map((s) =>
-                <option key={s.id} value={s.id}>
+                <option key={s._id} value={s._id}>
                   {s.name}
                 </option>
               )}
@@ -144,7 +161,7 @@ export default function MyOrder() {
           </InputGroup>
         </Col>
         <Col xs={12} md={2}>
-        </Col >
+        </Col>
         <Col xs={6} md={3}>
           <InputGroup className="mb-3">
             <InputGroup.Text>
@@ -180,20 +197,18 @@ export default function MyOrder() {
       {
         orders.map((o, index) =>
           <div key={index} className="m-2 mb-4">
-            <Card className="m-2" style={{ background: colorBadge[o.statusId - 1] }}>
+            <Card className="m-2" style={{ background: colorBadge[o.status.name] }}>
               <Card.Header className="row">
-                <div className="col-1">
-                  <div style={{ color: "white" }}>ID: {o.id}</div>
-                </div>
-                <div className="col-1">
-                  <Badge bg={effectBadge[o.statusId - 1]}>{status[o.statusId - 1]?.name}</Badge>
+                <div className="col-3">
+                  <div style={{ color: "black" }}>ID: {o._id}</div>
                 </div>
                 <div className="col-3">
-                  <p style={{ color: "white" }}>Create date: {new Date(o.date).toLocaleString()}</p>
+                  <Badge bg={effectBadge[o.status.name]}>{o.status.name}</Badge>
                 </div>
                 <div className="col-4">
-
+                  <p style={{ color: "black" }}>Create date: {new Date(o.date).toLocaleString()}</p>
                 </div>
+
               </Card.Header>
               <Card.Body className="row m-1" style={{ background: "white" }}>
                 <Card.Title className="col-3">
@@ -223,12 +238,12 @@ export default function MyOrder() {
       >
         <Modal.Header closeButton>
           <Modal.Title id="example-modal-sizes-title-lg">
-            Order id: {currentDetail.id}
+            Order id: {currentDetail._id}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Card className="m-2">
-            <Card.Header style={{ background: colorBadge[currentDetail.statusId - 1] }}><div style={{ color: "white" }}>Status</div> <Badge bg={effectBadge[currentDetail.statusId - 1]}>{status[currentDetail.statusId - 1]?.name}</Badge></Card.Header>
+            <Card.Header style={{ background: colorBadge[currentDetail.status?.name] }}><div style={{ color: "black" }}>Status</div> <Badge bg={effectBadge[currentDetail.status?.name]}>{status[currentDetail.status]?.name}</Badge></Card.Header>
             <Card.Body>
               <Card.Title>
                 {currentDetail.name} <br></br>

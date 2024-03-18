@@ -8,6 +8,7 @@ import feedbackController from "./FeedbackController.js";
 import orderController from "./OrderController.js";
 import blogController from "./BlogController.js";
 import contactController from "./ContactController.js";
+import statusController from "./StatusController.js";
 export {
     userController,
     authController,
@@ -18,5 +19,6 @@ export {
     blogController,
     orderController,
     feedbackController,
+    statusController,
     contactController
 }

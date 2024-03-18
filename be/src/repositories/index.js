@@ -8,6 +8,7 @@ import wishlistRepository from "./wishlist.js";
 import orderRepository from "./order.js";
 import blogRepository from "./blog.js";
 import contactRepository from "./contact.js";
+import statusRepository from "./status.js";
 export {
     userRepository,
     authRepository,
@@ -18,5 +19,6 @@ export {
     blogRepository,
     orderRepository,
     wishlistRepository,
+    statusRepository,
     contactRepository
 }
