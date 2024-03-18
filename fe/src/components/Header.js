@@ -95,9 +95,9 @@ const Header = () => {
                       to="/wishlist"
                       className="d-flex align-items-center gap-10 text-white"
                     >
-                      <img src={wishlist} alt="wishlist" />
+                      <img src={wishlist} alt="Wishlist" />
                       <p className="mb-0">
-                        wishlist
+                        Wishlist
                       </p>
                     </Link>
                   </div>
@@ -132,7 +132,7 @@ const Header = () => {
                         {thisUser?.name}
                       </p>
                     </Link>
-                    <div id="function-box-header">
+                    <div id="function-box-header" >
                       <Link
                         to={`/profile/${currentUser._id}`}
                         className="d-flex align-items-center gap-10 text-white link-user-header-function"

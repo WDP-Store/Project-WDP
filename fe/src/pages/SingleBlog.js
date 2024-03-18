@@ -39,10 +39,12 @@ const SingleBlog = () => {
                             <img
                                 src={blog.image}
                                 className="img-fluid my-4 d-block m-auto"
-                                style={{ maxHeight: "500px"}}
+                                style={{ maxHeight: "500px" }}
                                 alt="blog"
                             />
-                            <p>{blog.body}</p>
+                            <div
+                                dangerouslySetInnerHTML={{ __html: blog?.body }}>
+                            </div>
                         </div>
                     </div>
                 </div>

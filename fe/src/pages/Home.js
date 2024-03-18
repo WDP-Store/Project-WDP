@@ -45,7 +45,7 @@ const Home = () => {
     <div className="content_home">
       <div
         className="adaptive_height image slide-pc"
-        style={{ position: "relative" }}
+        style={{ position: "relative", zIndex: 1 }}
       >
         <img
           srcset="//new-ella-demo.myshopify.com/cdn/shop/files/home-19-slider-1.jpg?v=1645001949&amp;width=375 375w,//new-ella-demo.myshopify.com/cdn/shop/files/home-19-slider-1.jpg?v=1645001949&amp;width=740 740w,//new-ella-demo.myshopify.com/cdn/shop/files/home-19-slider-1.jpg?v=1645001949&amp;width=750 750w,//new-ella-demo.myshopify.com/cdn/shop/files/home-19-slider-1.jpg?v=1645001949&amp;width=1100 1100w,//new-ella-demo.myshopify.com/cdn/shop/files/home-19-slider-1.jpg?v=1645001949&amp;width=1370 1370w,//new-ella-demo.myshopify.com/cdn/shop/files/home-19-slider-1.jpg?v=1645001949&amp;width=1500 1500w,//new-ella-demo.myshopify.com/cdn/shop/files/home-19-slider-1.jpg?v=1645001949&amp;width=1770 1770w,//new-ella-demo.myshopify.com/cdn/shop/files/home-19-slider-1.jpg?v=1645001949&amp;width=1780 1780w,//new-ella-demo.myshopify.com/cdn/shop/files/home-19-slider-1.jpg?v=1645001949&amp;width=1880 1880w,"
@@ -86,7 +86,7 @@ const Home = () => {
       </div>
       <div class1="home-wrapper-1 py-5" className="container block-item">
         <div className="row">
-          <div className="col-6">
+          <div className="col-12">
             <div className="main-banner position-relative ">
               <img
                 src={logoBanner1}
@@ -101,7 +101,7 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <div className="col-6">
+          {/* <div className="col-6">
             <div className="d-flex flex-wrap gap-10 justify-content-between align-items-center">
               {products.map((p, index) => (
                 <div key={index} className="small-banner position-relative">
@@ -118,7 +118,7 @@ const Home = () => {
                 </div>
               ))}
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
       <div class1="home-wrapper-2 py-5" className="container block-item">
@@ -140,7 +140,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div class1="home-wrapper-2 py-5" className="container block-item">
+      {/* <div class1="home-wrapper-2 py-5" className="container block-item">
         <div className="row">
           <div className="col-12">
             <div className="categories d-flex justify-content-between flex-wrap align-items-center">
@@ -203,7 +203,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
       <div
         class1="featured-wrapper py-5 home-wrapper-2"
         className="container block-item block-product-wrapper"
@@ -246,7 +246,7 @@ const Home = () => {
           </div>
         </div> */}
       </div>
-      
+
 
       {/* <Container class1="famous-wrapper py-5 home-wrapper-2">
         <div className="row">

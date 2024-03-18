@@ -13,7 +13,7 @@ export function useAuthentication() {
     }
   }, [isLogged, location.pathname, navigate]);
 
-  const isAdmin = isLogged && user?.role === 'Admin';
+  const isAdmin = isLogged && user?.role === 'admin';
   const role = (user?.role) || '';
   const name = user?.name || '';
   const currentUser = user || {};

@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 import ProductItem from "../components/ProductItem";
 import Swal from "sweetalert2";
 import { CartContext } from '../components/CartContext'
+import { toast } from "react-toastify";
 import axios from "axios";
 
 const SingleProduct = () => {
@@ -20,29 +21,39 @@ const SingleProduct = () => {
   const { color } = products;
   const [recentColor, setRecentColor] = useState([]);
   const [quantity, setQuantity] = useState(1);
+  const [feedbacks, setFeedbacks] = useState([]);
   const [brands, setBrands] = useState([]); //brands
   const { images } = products;
   const [wishlist, setWishList] = useState({});
   const [isWish, setIsWish] = useState(false);
 
+  useEffect(() => {
+    axios(`http://localhost:9999/feedbacks?product=${id}`)
+      .then((res) => {
+        setFeedbacks(res.data?.docs);
+      })
+      .catch((err) => toast.error(err));
+  }, []);
+
   useEffect( //fetch product data by id
     () => {
-      fetch(`http://localhost:9999/products/` + id)
-        .then(res => res.json())
+      axios.get(`http://localhost:9999/products/` + id)
+        .then(res => res.data)
         .then(
           json => {
             setProducts(json);
-            fetch(`http://localhost:9999/products?categoryId=${json.categoryId}&_sort=id&_order=desc&_page=1&_limit=4`)
-              .then(res => res.json())
-              .then(json => {
-                const result = json.slice(0, 4); //get just 4 products for relative products
-                setRelatedProduct(result);
-              });
+            // axios.get(`http://localhost:9999/products?&page=1&category=${json.category._id}`)
+            //   .then(res => res.data)
+            //   .then(json => {
+            //     console.log("json")
+            //     console.log(json)
+            //     setRelatedProduct(json);
+            //   });
           }
         );
 
-      fetch(`http://localhost:9999/brands`)
-        .then(res => res.json())
+      axios.get(`http://localhost:9999/brands`)
+        .then(res => res.data)
         .then(json => setBrands(json));
     }, [id]
   );
@@ -72,7 +83,7 @@ const SingleProduct = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:9999/wishlists?product=${id}&user=65c6e0400a9390c33d67b2c1`)
+      .get(`http://localhost:9999/wishlists?product=${id}&user=${JSON.parse(localStorage.getItem("data"))._id}`)
       .then((res) => res.data.docs[0])
       .then((data) => {
         setWishList(data);
@@ -82,7 +93,7 @@ const SingleProduct = () => {
   //wish list:
   const addToWishList = () => {
     // if (JSON.parse(localStorage.getItem("data"))) { //if user is logged in
-    if (wishlist?.product._id == id) {
+    if (wishlist?.product?._id == id) {
       Swal.fire({
         icon: 'error',
         title: 'Failed',
@@ -91,8 +102,8 @@ const SingleProduct = () => {
     } else {
       axios
         .post(`http://localhost:9999/wishlists`, {
-          // user: JSON.parse(localStorage.getItem("data"))._id,
-          user: "65c6e0400a9390c33d67b2c1",
+          user: JSON.parse(localStorage.getItem("data"))._id,
+          // user: "65c6e0400a9390c33d67b2c1",
           product: id
         }).then(() => {
           setIsWish(true)
@@ -285,7 +296,7 @@ const SingleProduct = () => {
                   >
                     Add to Cart
                   </button>
-                  <button className="button signup">Buy It Now</button>
+                  {/* <button className="button signup">Buy It Now</button> */}
                 </div>
                 <div className="d-flex align-items-center gap-15">
                   <div>
@@ -321,7 +332,39 @@ const SingleProduct = () => {
         </div>
       </Container>
 
-      <Container class1="reviews-wrapper home-wrapper-2">
+      {feedbacks?.length > 0 && (
+        <Container
+          class1="reviews-wrapper home-wrapper-2"
+          style={{ margin: "20px 0" }}
+        >
+          <div className="row">
+            <div className="col-12">
+              <h3 id="review">Reviews</h3>
+              <div className="review-inner-wrapper">
+                {feedbacks.map((f) => (
+                  <div key={f._id} className="reviews mt-4 review-head">
+                    <div className="review">
+                      <div className="d-flex gap-10 align-items-center">
+                        <h6 className="mb-0">{f.user.name}</h6>
+                        <ReactStars
+                          count={5}
+                          size={24}
+                          value={f.rating}
+                          edit={false}
+                          activeColor="#ffd700"
+                        />
+                      </div>
+                      <p className="mt-3">{f.comment}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </Container>
+      )}
+
+      {/* <Container class1="reviews-wrapper home-wrapper-2">
         <div className="row">
           <div className="col-12">
             <h3 id="review">Reviews</h3>
@@ -365,8 +408,8 @@ const SingleProduct = () => {
             </div>
           </div>
         </div>
-      </Container>
-      <Container class1="popular-wrapper py-5 home-wrapper-2">
+      </Container> */}
+      {/* <Container class1="popular-wrapper py-5 home-wrapper-2">
         <div className="row">
           <div className="col-12">
             <h3 className="section-heading">Related Products</h3>
@@ -384,7 +427,7 @@ const SingleProduct = () => {
         <div className="row">
 
         </div>
-      </Container>
+      </Container> */}
     </>
   );
 };

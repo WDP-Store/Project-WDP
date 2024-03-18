@@ -40,7 +40,7 @@ const HeaderHome = () => {
 
   return (
     <>
-        <BannerAutoPlay/>
+      <BannerAutoPlay />
       <header className="header-upper py-3">
         <div className="container-xxl">
           <div className="row align-items-center">
@@ -97,9 +97,9 @@ const HeaderHome = () => {
                       to="/wishlist"
                       className="d-flex align-items-center gap-10 text-white"
                     >
-                      <img src={wishlist} alt="wishlist" />
+                      <img src={wishlist} alt="Wishlist" />
                       <p className="mb-0">
-                        wishlist
+                        Wishlist
                       </p>
                     </Link>
                   </div>
@@ -134,7 +134,7 @@ const HeaderHome = () => {
                         {thisUser?.name}
                       </p>
                     </Link>
-                    <div id="function-box-header">
+                    <div id="function-box-header" style={{ zIndex: 99999999 }}>
                       <Link
                         to={`/profile/${currentUser._id}`}
                         className="d-flex align-items-center gap-10 text-white link-user-header-function"
