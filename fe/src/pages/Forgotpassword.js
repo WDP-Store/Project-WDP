@@ -29,6 +29,7 @@ const Forgotpassword = () => {
         validationSchema: forgotSchema,
         onSubmit: async (values) => {
             try {
+                setEmail(values.user_email);
                 const response = await axios.post(`http://localhost:9999/users/forgot-password`, { email: values.user_email })
                 console.log("testResponseForgotPassword", response.data);
                 // Handle response
@@ -90,7 +91,7 @@ const Forgotpassword = () => {
                     </div>
                 </div>
             </Container>
-            <OTPModal show={showOTPModal} onClose={() => setShowOTPModal(false)} />
+            <OTPModal show={showOTPModal} onClose={() => setShowOTPModal(false)} email={email}/>
         </>
     );
 };

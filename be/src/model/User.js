@@ -24,6 +24,7 @@ const User = new mongoose.Schema({
         required: false,
         unique: true
     },
+    tokenExpiration: Date,
     phone: {
         type: String,
         required: false

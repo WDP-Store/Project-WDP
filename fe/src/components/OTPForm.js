@@ -1,34 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Button } from "react-bootstrap";
 import OtpInput from "react-otp-input";
 import OTPForm from "./OTPForm"; // Import your OTPForm component here
+import axios from "axios";
 
-const OTPModal = ({ show, onClose }) => {
+const OTPModal = ({ show, onClose, email }) => {
   const [otp, setOtp] = useState("");
-  const handleChange = (e) => {
-    setOtp(e.target.value);
+ 
+  const handleChange = (enteredOtp) => {
+    setOtp(enteredOtp);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle form submission here
-    // For example, you can send the OTP value to your server for verification
-    console.log("Submitting OTP:", otp);
-
-    // Close the modal after form submission
-    onClose();
+  const handleSubmit = () => {
+    
+    console.log(otp);
+    console.log(email);
+    axios
+      .post("http://localhost:9999/users/verify-otp", { email, otp})
+      .then((res) => {
+        console.log(res.data);
+        // Handle successful OTP verification (e.g., show success message)
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        // Handle error (e.g., show error message)
+      })
+      .finally(() => {
+        setOtp("");
+        onClose(); // Close the modal regardless of the result
+      });
   };
 
   return (
     <Modal show={show} onHide={onClose} centered>
-      <Modal.Header closeButton>
-        <Modal.Title>OTP</Modal.Title>
+      <Modal.Header closeButton style={{ display: "flex", justifyContent: "center" }}>
+        <Modal.Title className="text-center">OTP</Modal.Title>
       </Modal.Header>
       <Modal.Body style={{ display: "flex", justifyContent: "center" }}>
         <OtpInput
           value={otp}
-          onChange={setOtp}
-          numInputs={4}
+          onChange={handleChange}
+          numInputs={5}
           renderSeparator={<span>-</span>}
           renderInput={(props) => (
             <input
@@ -46,7 +58,14 @@ const OTPModal = ({ show, onClose }) => {
           )}
         />
       </Modal.Body>
-        <Button>OK</Button>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={onClose}>
+          Cancel
+        </Button>
+        <Button variant="primary" onClick={handleSubmit}>
+          OK
+        </Button>
+      </Modal.Footer>
     </Modal>
   );
 };

@@ -1,5 +1,7 @@
 import { userRepository } from "../repositories/index.js";
 import nodemailer from "nodemailer";
+import User from "../model/User.js";
+import bcrypt from "bcrypt";
 
 const getAll = async (req, res) => {
   console.log("GetAllUserController");
@@ -36,31 +38,43 @@ const handleForgotPassword = async (req, res) => {
   console.log("ForgotPasswordController");
   try {
     const { email } = req.body;
-    console.log("21_email", email);
+
+    // Check if the user exists
     const userExisting = await userRepository.findByEmail(email);
-    console.log("email already exists", userExisting);
-    if (userExisting) {
-      const token = Math.floor(10000 + Math.random() * 90000).toString();
-      console.log("26_token", token);
-      const transporter = nodemailer.createTransport({
-        service: "gmail", // Specify your email service provider
-        auth: {
-          user: "binancebozz@gmail.com", // Your email address
-          pass: "bhgp xhig uomm fmbx", // Your email password
-        },
-      });
-
-      const mailOptions = {
-        from: "binancebozz@gmail.com", // Sender's email address
-        to: email, // Recipient's email address
-        subject: "Verify code to your account SND-STORE", // Email subject
-        text: `You are receiving this email because you requested a password reset. Your token is: ${token}`, // Email body
-      };
-
-      //send mail
-      await transporter.sendMail(mailOptions);
+    if (!userExisting) {
+      return res.status(404).json({ message: "User not found" });
     }
-    res.status(200).json(userExisting ? userExisting : null);
+
+    // Generate token and set expiration time
+    const token = Math.floor(10000 + Math.random() * 90000).toString();
+    const tokenExpiration = new Date(Date.now() + 3 * 60 * 1000); // 3 minutes from now
+
+    // Update user with token and expiration time
+    userExisting.token = token;
+    userExisting.tokenExpiration = tokenExpiration;
+    await userExisting.save();
+
+    // Send email with token
+    const transporter = nodemailer.createTransport({
+      service: "gmail", // Specify your email service provider
+      auth: {
+        user: "binancebozz@gmail.com", // Your email address
+        pass: "bhgp xhig uomm fmbx", // Your email password
+      },
+    });
+
+    const mailOptions = {
+      from: "binancebozz@gmail.com", // Sender's email address
+      to: email, // Recipient's email address
+      subject: "Verify code to your account SND-STORE", // Email subject
+      text: `You are receiving this email because you requested a password reset. Your code is: ${token}`, // Email body
+    };
+
+    // Send mail
+    await transporter.sendMail(mailOptions);
+
+    // Respond with the updated user
+    res.status(200).json(userExisting);
   } catch (error) {
     return res.status(500).json({
       message: "Can't reset password",
@@ -86,6 +100,70 @@ const changePassword = async (req, res) => {
     });
   }
 };
+const handleCheckOTP = async (req, res) => {
+  console.log("CheckOTPController");
+  try {
+    const { email, otp } = req.body;
+    console.log("CheckOTPController", req.body);
+    console.log("CheckOTPController2", otp, email);
+
+    const user = await User.findOne({ email });
+    if (!user || user.token !== otp || user.tokenExpiration < Date.now()) {
+      return res.status(400).json({ message: "Invalid or expired OTP" });
+    }
+
+    
+
+    const password = generateRandomPassword();
+    const hashedPassword = bcrypt.hashSync(password, 10);
+
+    user.token = undefined;
+    user.tokenExpiration = undefined;
+    user.password = hashedPassword;
+    await user.save();
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail", // Specify your email service provider
+      auth: {
+        user: "binancebozz@gmail.com", // Your email address
+        pass: "bhgp xhig uomm fmbx", // Your email password
+      },
+    });
+
+    const mailOptions = {
+      from: "binancebozz@gmail.com", // Sender's email address
+      to: email, // Recipient's email address
+      subject: "Verify code to your account SND-STORE", // Email subject
+      text: `You are receiving this email because you requested a password reset. Your password is: ${password}`, // Email body
+    };
+
+    //send mail
+    await transporter.sendMail(mailOptions);
+
+    res.status(200).json({
+      message: "Please check email to get new password",
+      // data: data, // Chỉ trả về các trường name, email, role và id
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.toString(),
+    });
+  }
+};
+
+function generateRandomPassword() {
+  const length = 6;
+  const characters =
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let password = "";
+
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    password += characters.charAt(randomIndex);
+  }
+
+  return password;
+}
 
 const updateUser = async (req, res) => {
   console.log("UpdateUserController");
@@ -111,4 +189,5 @@ export default {
   handleForgotPassword,
   updateUser,
   changePassword,
+  handleCheckOTP,
 };
