@@ -9,15 +9,27 @@ const findAll = async (req, res) => {
     if (rating) query.rating = rating;
 
     const data = await Feedback.paginate(query, {
-      populate: ['user', 'product'],
+      populate: ["user", "product"],
       page: page || 1,
-      limit: 2,
+      limit: 3,
       sort: {
         createdAt: "desc",
       },
     });
 
-    return data;
+    const newData = data.docs.map((item) => {
+      return {
+        _id: item._id,
+        user: item.user.name,
+        name: item.name,
+        email: item.email,
+        rating: item.rating,
+        comment: item.comment,
+        product: item.product,
+      };
+    });
+
+    return newData;
   } catch (error) {
     console.log(error);
     throw new Error("Couldn't findAll: " + error);

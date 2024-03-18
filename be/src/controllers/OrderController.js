@@ -7,7 +7,7 @@ const findAll = async (req, res) => {
   try {
     const data = await orderRepository.findAll(req, res);
 
-    res.status(200).json(data);
+    res.status(200).json(data.docs);
   } catch (error) {
     res.status(500).json({
       message: error.toString(),
@@ -231,6 +231,18 @@ const findOrderByName = async (req, res) => {
     });
   }
 };
+const changeStatusByOrderId = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const status = req.body.status;
+    const data = await orderRepository.changeStatusByOrderId(id, status);
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(500).json({
+      message: error.toString(),
+    });
+  }
+};
 export default {
   findAll,
   findOne,
@@ -242,4 +254,5 @@ export default {
   vnpayReturn,
   findOrderByUserId,
   findOrderByName,
+  changeStatusByOrderId,
 };

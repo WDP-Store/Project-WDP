@@ -3,7 +3,7 @@ import Status from "../model/Status.js";
 
 const findAll = async (req, res) => {
   try {
-    const { page, user, status, date_s, name, id } = req.query;
+    const { page, user, status, date_s, name, id, _sort, _order } = req.query;
 
     const query = {};
     if (status !== undefined) query.status = status === "true";
@@ -13,16 +13,17 @@ const findAll = async (req, res) => {
     if (name) query.name = { $regex: name, $options: "i" };
 
     let sort = {};
-    if (date_s) sort = { price: date_s };
+    if (_sort) {
+      sort[_sort] = _order === "desc" ? -1 : 1;
+    } else {
+      sort = { createdAt: "desc" };
+    }
 
     const data = await Order.paginate(query, {
       populate: ["user", "status"],
       page: page || 1,
       limit: 10,
-      sort: {
-        ...sort,
-        createdAt: "desc",
-      },
+      sort,
     });
 
     return data;
@@ -115,6 +116,20 @@ const findOrderByName = async (name) => {
     throw new Error("Couldn't find orders by status name: " + error);
   }
 };
+const changeStatusByOrderId = async (id, status) => {
+  try {
+    const order = await Order.findById(id);
+    if (!order) {
+      throw new Error(`Order with id ${id} not found`);
+    }
+    order.status = status;
+    await order.save();
+    return order;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Couldn't change status: " + error);
+  }
+};
 export default {
   create,
   findAll,
@@ -124,4 +139,5 @@ export default {
   deleteOrder,
   findOrderByUserId,
   findOrderByName,
+  changeStatusByOrderId,
 };

@@ -99,13 +99,13 @@ export default function Feedback() {
         </thead>
         <tbody>
           {feedbacks.map((u) => (
-            <tr key={u.id}>
-              <td>{u.id}</td>
-              <td>{u.userId}</td>
+            <tr key={u._id}>
+              <td>{u._id}</td>
+              <td>{u.user}</td>
               <td>
                 <button
                   onClick={() => {
-                    window.location = `/product/${u.productId}`;
+                    window.location = `/product/${u.product._id}`;
                   }}
                   type="button"
                   style={{ minWidth: "10ch" }}
