@@ -229,6 +229,10 @@ const EditProduct = () => {
         describe,
         color: c,
         images: i,
+      }, {
+        headers: {
+          'Authorization': `Bearer ${JSON.parse(localStorage.getItem("data")).accessToken}`
+        }
       })
       .then(() => {
         toast.success("Update product successfully");
@@ -268,6 +272,10 @@ const EditProduct = () => {
       .patch(`http://localhost:9999/products/${id}`, {
         color,
         images,
+      }, {
+        headers: {
+          'Authorization': `Bearer ${JSON.parse(localStorage.getItem("data")).accessToken}`
+        }
       })
       .then((res) => {
         setProduct(res.data);

@@ -2,14 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const BlogCard = ({ blog }) => {
-  console.log(blog)
   return (
     <div className="blog-card">
       <div className="card-image">
-        <img src={blog?.image} className="img-fluid w-100" alt="blog" style={{ maxHeight: "100%", objectFit: 'contain'}} />
+        <img src={blog?.image} className="img-fluid w-100" alt="blog" style={{ maxHeight: "100%", objectFit: 'contain' }} />
       </div>
       <div className="blog-content" >
-        <p className="date">{"1 Dec, 2022"}</p>
         <h5 className="title">{blog?.title}</h5>
         <p
           className="desc"
@@ -19,8 +17,8 @@ const BlogCard = ({ blog }) => {
             textOverflow: "ellipsis",
             display: "block",
           }}
+          dangerouslySetInnerHTML={{ __html: blog?.body }}
         >
-          {blog?.body}
         </p>
         <Link to={`/blogs/${blog?._id}`} className="button">
           Read More

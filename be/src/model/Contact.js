@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
 
 const Contact = new mongoose.Schema({
     name: {
@@ -24,5 +25,6 @@ const Contact = new mongoose.Schema({
         required: true
     },
 }, { timestamps: true });
+Contact.plugin(mongoosePaginate);
 
 export default mongoose.model("Contact", Contact);

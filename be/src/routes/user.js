@@ -8,6 +8,7 @@ userRouter.post("/forgot-password", userController.handleForgotPassword);
 userRouter.patch("/change-password/:id", userController.changePassword);
 userRouter.get("/", userController.getAll);
 userRouter.get("/:id", check.checkLogin, userController.getUserProfile);
-userRouter.patch("/:id", check.checkLogin, userController.updateUser);
+userRouter.patch("/:id", userController.updateUser);
+// userRouter.patch("/:id", check.checkLogin, userController.updateUser);
 
 export default userRouter;

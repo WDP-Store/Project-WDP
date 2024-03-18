@@ -15,7 +15,7 @@ export function customerRoutes() {
         errorElement: <ErrorPage />,
         element: (
             <ProtectedRoute>
-                <AuthorizationRoute roles={['Customer']}>
+                <AuthorizationRoute roles={['customer']}>
                     <Layout>
                         <Outlet />
                     </Layout>

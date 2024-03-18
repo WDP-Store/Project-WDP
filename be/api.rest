@@ -21,7 +21,15 @@ Content-Type: application/json
 }
 
 ###
+POST http://localhost:9999/auth/de
+Content-Type: application/json
+
+###
 GET http://localhost:9999/blogs
+Content-Type: application/json
+
+###
+GET http://localhost:9999/products?featured=true
 Content-Type: application/json
 
 ###

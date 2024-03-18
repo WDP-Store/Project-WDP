@@ -17,7 +17,7 @@ const ProductItem = (props) => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:9999/wishlists?product=${product._id}&user=65c6e0400a9390c33d67b2c1`)
+      .get(`http://localhost:9999/wishlists?product=${product._id}&user=${JSON.parse(localStorage.getItem("data"))._id}`)
       .then((res) => res.data.docs[0])
       .then((data) => {
         if (data) setIsWish(true)
@@ -37,7 +37,7 @@ const ProductItem = (props) => {
       axios
         .post(`http://localhost:9999/wishlists`, {
           // user: JSON.parse(localStorage.getItem("data"))._id,
-          user: "65c6e0400a9390c33d67b2c1",
+          user: JSON.parse(localStorage.getItem("data"))._id,
           product: product._id
         }).then(() => {
           setIsWish(true);
@@ -79,7 +79,7 @@ const ProductItem = (props) => {
     axios
       .delete(`http://localhost:9999/wishlists/${wish._id}`, {
         // user: JSON.parse(localStorage.getItem("data"))._id,
-        user: "65c6e0400a9390c33d67b2c1",
+        user: JSON.parse(localStorage.getItem("data"))._id,
         product: product._id
       }).then(() => {
         setIsWish(false)

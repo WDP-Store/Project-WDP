@@ -55,10 +55,8 @@ const EditBlog = () => {
     onSubmit: async (values) => {
       setIsLoading(true);
       console.log("values", values);
-      if(values.image !== ""){
-        const image = await uploadImage(values.image);
-        saveBlog(values, image);
-      }
+      // const image = await uploadImage(values.image);
+      await saveBlog(values);
       setIsLoading(false);
     },
   });
@@ -80,7 +78,7 @@ const EditBlog = () => {
       .then((data) => {
         setBlog(data);
         console.log("data", data);
-        const { title, category, body, image, isDeleted} = data;
+        const { title, category, body, image, isDeleted } = data;
         formik.setFieldValue("title", title);
         formik.setFieldValue("category", category._id);
         formik.setFieldValue("body", body);
@@ -107,17 +105,28 @@ const EditBlog = () => {
     }
   };
 
-  const saveBlog = (values, image) => {
-    const { title, category, body, isDeleted } = values;
+  const saveBlog = (values) => {
+    const { title, category, body, isDeleted, image } = values;
     const newBlog = {
       title,
       category,
       body,
-      image: image,
+      image,
       isDeleted,
     };
+    const formData = new FormData();
+    formData.append('title', newBlog.title);
+    formData.append('category', newBlog.category);
+    formData.append('body', newBlog.body);
+    formData.append('image', newBlog.image);
+    formData.append('isDeleted', newBlog.isDeleted);
     axios
-      .patch(`http://localhost:9999/blogs/${id}`, newBlog)
+      .patch(`http://localhost:9999/blogs/${id}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${JSON.parse(localStorage.getItem("data")).accessToken}`
+        }
+      })
       .then(() => {
         toast.success("Update blog successfully");
         navigate("/admin/blogs");
@@ -225,14 +234,14 @@ const EditBlog = () => {
                             </span>
                           )}
                         </div>
-                        {console.log("testImage1:", formik.values.image)}  
+                        {console.log("testImage1:", formik.values.image)}
                         {formik.values.image && (
                           <div
                             className="mt-2"
                             style={{ position: "relative" }}
                           >
                             <img
-                            //   src={URL.createObjectURL(formik.values.image)}
+                              //   src={URL.createObjectURL(formik.values.image)}
                               src={formik.values.image instanceof Blob ? URL.createObjectURL(formik.values.image) : formik.values.image}
                               alt="Preview"
                               style={{

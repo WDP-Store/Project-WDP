@@ -100,8 +100,8 @@ const Cart = () => {
             </div>
             {
               cart && cart.length > 0 && products && products.length > 0 && products.map((p, index) =>
-                <div key={[p.id, cart[index].color]} className="cart-data py-3 mb-2 d-flex justify-content-between align-items-center">
-                  <Link to={"/product/" + p.id} className="cart-col-1 gap-15 d-flex align-items-center">
+                <div key={[p._id, cart[index].color]} className="cart-data py-3 mb-2 d-flex justify-content-between align-items-center">
+                  <Link to={"/product/" + p._id} className="cart-col-1 gap-15 d-flex align-items-center">
                     <div className="w-25">
                       <img src={(products && products.length > 0) ? (p.color.map((i, idx) => (i === cart[index].color ? p.images[idx] : ''))).filter((pt) => pt !== '') : ''} className="img-fluid" alt="product" />
                     </div>

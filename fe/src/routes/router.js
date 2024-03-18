@@ -31,7 +31,7 @@ const allRoutes = createBrowserRouter([
     errorElement: <ErrorPage />,
     element: (
       <ProtectedRoute >
-        <AuthorizationRoute roles={["Admin"]}>
+        <AuthorizationRoute roles={["admin"]}>
           <DefaultAdminLayout>
             <Outlet />
           </DefaultAdminLayout>

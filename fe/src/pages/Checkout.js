@@ -18,7 +18,7 @@ const Checkout = () => {
   const [cart, setCart] = useState(JSON.parse(localStorage.getItem("cart")));
   const [products, setProducts] = useState([]);
   const [subTotal, setSubTotal] = useState(0);
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("data")) || { _id: "65c6e0400a9390c33d67b2c1", name: "abc", phone: "098" });
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("data")) || { _id: "65c6e0400a9390c33d67b2c1", name: "abc", phone: "098728896" });
   const [order, setOrder] = useState([]);
   const { Formik } = formik;
 

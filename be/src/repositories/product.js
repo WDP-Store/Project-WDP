@@ -2,13 +2,14 @@ import Product from "../model/Product.js";
 
 const findAll = async (req, res) => {
   try {
-    const { page, status, category, brand, name, price_gte, price_lte, year, price_s, year_s, name_s, featured_s } = req.query;
+    const { page, status, category, brand, name, featured, price_gte, price_lte, year, price_s, year_s, name_s, featured_s } = req.query;
 
     const query = {};
     if (status !== undefined) query.status = status === "true";
     if (category) query.category = category;
     if (year) query.year = year;
     if (brand) query.brand = brand;
+    if (featured) query.featured = featured;
     if (name) query.name = { $regex: name, $options: "i" };
     if (price_gte) query.price = { $gte: price_gte };
     if (price_lte) query.price = { $lte: price_lte };

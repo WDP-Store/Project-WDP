@@ -186,37 +186,16 @@ const AddProduct = () => {
         describe,
         color,
         images,
+      }, {
+        headers: {
+          'Authorization': `Bearer ${JSON.parse(localStorage.getItem("data")).accessToken}`
+        }
       })
       .then(() => {
         toast.success("Create product successfully");
         navigate("/admin/product");
       })
       .catch(() => toast.error("Something went wrong!"));
-    // fetch(`http://localhost:9999/products`, {
-    //   method: "POST",
-    //   body: JSON.stringify({
-    //     name,
-    //     price: Number(price),
-    //     originalPrice: Number(originalPrice),
-    //     category,
-    //     brand,
-    //     year: Number(year),
-    //     featured,
-    //     status,
-    //     detail,
-    //     describe,
-    //     color,
-    //     images,
-    //   }),
-    //   headers: {
-    //     "Content-type": "application/json; charset=UTF-8",
-    //   },
-    // })
-    //   .then(() => {
-    //     toast.success("Create product successfully");
-    //     navigate("/admin/product");
-    //   })
-    //   .catch(() => toast.error("Something went wrong!"));
   };
 
   return (

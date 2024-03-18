@@ -11,15 +11,19 @@ const Wishlist = () => {
   const [wishlist, setWishList] = useState([]);
   const user = JSON.parse(localStorage.getItem("data")) || { _id: "65c6e0400a9390c33d67b2c1" };
 
-  useEffect(
-    () => {
-      axios
+  const fetchData = () => {
+    axios
         .get(`http://localhost:9999/wishlists?user=${user._id}`)
         .then((res) => res.data.docs)
         .then((data) => {
           setWishList(data);
         });
-    }, [wishlist]
+  }
+
+  useEffect(
+    () => {
+      fetchData()
+    }, []
   );
 
   const deleteWishList = (wishlistId) => {
@@ -41,7 +45,8 @@ const Wishlist = () => {
               'Your item has been deleted.',
               'success'
             )
-            setWishList(wishlist.filter(w => w.id != wishlistId));
+            // setWishList(wishlist.filter(w => w.id != wishlistId));
+            fetchData()
           }).catch((e) => {
             Swal.fire({
               icon: 'error',

@@ -51,8 +51,8 @@ const Addblog = () => {
     validationSchema: blogSchema,
     onSubmit: async (values) => {
       setIsLoading(true);
-      const image = await uploadImage(values.image);
-      saveBlog(values, image);
+      // const image = await uploadImage(values.image);
+      await saveBlog(values);
       setIsLoading(false);
     },
   });
@@ -86,17 +86,28 @@ const Addblog = () => {
     }
   };
 
-  const saveBlog = (values, image) => {
-    const { title, category, body, isDeleted } = values;
+  const saveBlog = (values) => {
+    const { title, category, body, isDeleted, image } = values;
     const newBlog = {
       title,
       category,
       body,
-      image: image,
+      image,
       isDeleted,
     };
+    const formData = new FormData();
+    formData.append('title', newBlog.title);
+    formData.append('category', newBlog.category);
+    formData.append('body', newBlog.body);
+    formData.append('image', newBlog.image);
+    formData.append('isDeleted', newBlog.isDeleted);
     axios
-      .post(`http://localhost:9999/blogs`, newBlog)
+      .post(`http://localhost:9999/blogs`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${JSON.parse(localStorage.getItem("data")).accessToken}`
+        }
+      })
       .then(() => {
         toast.success("Create blog successfully");
         navigate("/admin/blogs");

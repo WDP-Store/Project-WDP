@@ -50,7 +50,7 @@ const Bloglist = () => {
       .catch((err) => toast.error(err));
   };
 
- 
+
 
 
   useEffect(() => {
@@ -113,7 +113,11 @@ const Bloglist = () => {
 
   const deleteBlog = (blogId) => {
     axios
-      .patch(`http://localhost:9999/blogs/${blogId}`, {isDeleted: true})
+      .patch(`http://localhost:9999/blogs/${blogId}`, { isDeleted: true }, {
+        headers: {
+          'Authorization': `Bearer ${JSON.parse(localStorage.getItem("data")).accessToken}`
+        }
+      })
       .then(() => {
         toast.success("Remove blog successfully");
         fetchBlogs(currentPage);
@@ -123,7 +127,7 @@ const Bloglist = () => {
       })
   };
 
-  
+
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -182,7 +186,7 @@ const Bloglist = () => {
         </Col>
         <Col xs={12} md={2} style={{ textAlign: "right" }}>
           <Link className="text-white btn btn-primary" to={"/admin/blogs/add-blog"}>
-              Add New Blog
+            Add New Blog
           </Link>
         </Col>
       </Row>
@@ -210,12 +214,12 @@ const Bloglist = () => {
               <td>{blog.title}</td>
               <td>{blog.category?.name}</td>
               <td>
-                  <Link className="text-white btn btn-primary mx-1" to={`/admin/blogs/${blog._id}`}>
-                    View
-                  </Link>
-                  <Link className="text-white btn btn-warning mx-1" to={`/admin/blogs/edit/${blog._id}`}>
-                    Edit
-                  </Link>
+                <Link className="text-white btn btn-primary mx-1" to={`/admin/blogs/${blog._id}`}>
+                  View
+                </Link>
+                <Link className="text-white btn btn-warning mx-1" to={`/admin/blogs/edit/${blog._id}`}>
+                  Edit
+                </Link>
                 <Button
                   variant="danger"
                   className="mx-1"

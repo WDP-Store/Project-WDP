@@ -7,7 +7,7 @@ import wishlistController from "./WishlistController.js";
 import feedbackController from "./FeedbackController.js";
 import orderController from "./OrderController.js";
 import blogController from "./BlogController.js";
-
+import contactController from "./ContactController.js";
 export {
     userController,
     authController,
@@ -18,4 +18,5 @@ export {
     blogController,
     orderController,
     feedbackController,
+    contactController
 }

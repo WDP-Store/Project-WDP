@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Badge, Button, Col, Form, Modal, Row, Table } from "react-bootstrap";
 import { toast } from "react-toastify";
 import Paginate from "../components/Paginate";
+import axios from 'axios'
 
 export default function Contact() {
   const [contacts, setContacts] = useState([]);
@@ -14,30 +15,23 @@ export default function Contact() {
 
   const handleClose = () => setShow(false);
   const handleShow = (id) => {
-    fetch(`http://localhost:9999/contacts/${id}`)
-      .then((res) => res.json())
+    axios.get(`http://localhost:9999/contacts/${id}`)
+      .then((res) => res.data)
       .then((json) => {
         setComment(json.comment);
         if (json.status === "New") {
-          fetch("http://localhost:9999/contacts/" + id, {
-            method: "PATCH",
-            body: JSON.stringify({
-              status: "Read",
-            }),
-            headers: {
-              "Content-type": "application/json; charset=UTF-8",
-            },
+          axios.patch("http://localhost:9999/contacts/" + id, {
+            status: "Read",
           }).catch(() => toast.error("Something went wrong!"));
 
-          fetch(
-            `http://localhost:9999/contacts/?&_sort=id&_order=desc&_page=1&_limit=10`
-          )
-            .then((res) => {
-              const totalCount = res.headers.get("X-Total-Count");
-              setTotalPages(Math.ceil(totalCount / 10));
-              return res.json();
-            })
-            .then((json) => setContacts(json));
+          // axios.get(
+          //   `http://localhost:9999/contacts?page=${currentPage}`
+          // )
+          //   .then((res) => {
+          //     setTotalPages(res.data.totalPages);
+          //     return res.data.docs;
+          //   })
+          //   .then((json) => setContacts(json));
         }
       })
       .catch((err) => toast.error(err));
@@ -45,28 +39,21 @@ export default function Contact() {
     setShow(true);
   };
 
-  useEffect(() => {
-    fetch(`http://localhost:9999/contacts`)
-      .then((res) => res.json())
-      .then((json) => setContacts(json));
-  }, []);
-
   const fetchContacts = (page) => {
-    let url = `http://localhost:9999/contacts/?_sort=id&_order=desc&_page=${page}&_limit=10`;
+    let url = `http://localhost:9999/contacts?page=${page}`;
 
     if (emailSearch) {
-      url += `&email_like=${emailSearch}`;
+      url += `&email=${emailSearch}`;
     }
 
     if (statusFilter) {
       url += `&status=${statusFilter}`;
     }
 
-    fetch(url)
+    axios.get(url)
       .then((res) => {
-        const totalCount = res.headers.get("X-Total-Count");
-        setTotalPages(Math.ceil(totalCount / 10));
-        return res.json();
+        setTotalPages(res.data.totalPages);
+        return res.data.docs;
       })
       .then((json) => setContacts(json))
       .catch((err) => toast.error(err));
@@ -74,7 +61,7 @@ export default function Contact() {
 
   useEffect(() => {
     fetchContacts(currentPage);
-  }, [currentPage, emailSearch, statusFilter]);
+  }, [currentPage, emailSearch, statusFilter, comment]);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -141,8 +128,8 @@ export default function Contact() {
               return emailMatches && statusMatches;
             })
             .map((u) => (
-              <tr key={u.id}>
-                <td>{u.id}</td>
+              <tr key={u._id}>
+                <td>{u._id}</td>
                 <td>{u.name}</td>
                 <td>{u.email}</td>
                 <td>{u.phone}</td>
@@ -154,7 +141,7 @@ export default function Contact() {
                   )}
                 </td>
                 <td className="text-center">
-                  <Button variant="primary" onClick={() => handleShow(u.id)}>
+                  <Button variant="primary" onClick={() => handleShow(u._id)}>
                     View
                   </Button>
                 </td>
