@@ -17,7 +17,7 @@ const ProductItem = (props) => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:9999/wishlists?product=${product._id}&user=${JSON.parse(localStorage.getItem("data"))._id}`)
+      .get(`http://localhost:9999/wishlists?product=${product?._id}&user=${JSON.parse(localStorage.getItem("data"))?._id}`)
       .then((res) => res.data.docs[0])
       .then((data) => {
         if (data) setIsWish(true)
@@ -27,7 +27,7 @@ const ProductItem = (props) => {
 
   const addToWishList = () => {
     // if (JSON.parse(localStorage.getItem("data"))) { //if user is logged in
-    if (wish?.product?._id === product._id) {
+    if (wish?.product?._id === product?._id) {
       Swal.fire({
         icon: 'error',
         title: 'Failed',
