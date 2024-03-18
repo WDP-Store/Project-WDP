@@ -4,9 +4,19 @@ import { productRepository } from '../repositories/index.js';
 
 
 const findAll = async (req, res) => {
-  console.log(req.headers)
   try {
     const data = await productRepository.findAll(req, res);
+
+    res.status(200).json(data)
+  } catch (error) {
+    res.status(500).json({
+      message: error.toString()
+    })
+  }
+}
+const fetchProducts = async (req, res) => {
+  try {
+    const data = await productRepository.fetchAll(req, res);
 
     res.status(200).json(data)
   } catch (error) {
@@ -75,4 +85,5 @@ export default {
   create,
   update,
   deleteProduct,
+  fetchProducts
 }

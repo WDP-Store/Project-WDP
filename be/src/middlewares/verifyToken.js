@@ -4,7 +4,11 @@ dotenv.config();
 const checkLogin = (req, res, next) => {
   const token = req.headers?.authorization?.split(" ")[1];
 
-  if (!token) return res.status(401).json("You need to login");
+  if (!token)
+    return res.status(401).json({
+      code: 401,
+      message: "You need to login",
+    });
   try {
     // const user = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
     const user = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
@@ -23,7 +27,10 @@ const checkAdmin = (req, res, next) => {
   if (req.user && req.user.data.role && req.user.data.role === "admin") {
     next();
   } else {
-    return res.status(403).json("Only admin is allowed");
+    return res.status(401).json({
+      code: 401,
+      message: "Only admin is allowed",
+    });
   }
 };
 

@@ -7,8 +7,10 @@ import SpecialProduct from "../components/SpecialProduct";
 import Container from "../components/Container";
 import axios from "axios";
 import ProductItem from "../components/ProductItem";
-import logoBanner1 from '../images/main-banner-1.jpg';
+import logoBanner1 from "../images/main-banner-1.jpg";
+import BannerCarousel from "../components/BannerCarousel";
 //import { services } from "../utils/Data";
+import ProductCarouselV1 from "./../components/ProductCarouselV1";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -17,9 +19,10 @@ const Home = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:9999/products")
-      .then((res) => res.data.docs)
+      .get("http://localhost:9999/products/fe")
+      .then((res) => res.data)
       .then((data) => {
+        console.log(data);
         setProducts(data.slice(-4));
       });
 
@@ -40,6 +43,47 @@ const Home = () => {
 
   return (
     <div className="content_home">
+      <div
+        className="adaptive_height image slide-pc"
+        style={{ position: "relative" }}
+      >
+        <img
+          srcset="//new-ella-demo.myshopify.com/cdn/shop/files/home-19-slider-1.jpg?v=1645001949&amp;width=375 375w,//new-ella-demo.myshopify.com/cdn/shop/files/home-19-slider-1.jpg?v=1645001949&amp;width=740 740w,//new-ella-demo.myshopify.com/cdn/shop/files/home-19-slider-1.jpg?v=1645001949&amp;width=750 750w,//new-ella-demo.myshopify.com/cdn/shop/files/home-19-slider-1.jpg?v=1645001949&amp;width=1100 1100w,//new-ella-demo.myshopify.com/cdn/shop/files/home-19-slider-1.jpg?v=1645001949&amp;width=1370 1370w,//new-ella-demo.myshopify.com/cdn/shop/files/home-19-slider-1.jpg?v=1645001949&amp;width=1500 1500w,//new-ella-demo.myshopify.com/cdn/shop/files/home-19-slider-1.jpg?v=1645001949&amp;width=1770 1770w,//new-ella-demo.myshopify.com/cdn/shop/files/home-19-slider-1.jpg?v=1645001949&amp;width=1780 1780w,//new-ella-demo.myshopify.com/cdn/shop/files/home-19-slider-1.jpg?v=1645001949&amp;width=1880 1880w,"
+          sizes="100vw"
+          src="//new-ella-demo.myshopify.com/cdn/shop/files/home-19-slider-1.jpg?v=1645001949&amp;width=750"
+          alt="Slider-image"
+          width="1800"
+          height="400"
+        />
+        <div className="content-over-image">
+          <h2
+            className="slide-heading slide-pc"
+            style={{
+              fontSize: "50px",
+              lineHeight: "60px",
+              color: "#ffffff",
+              fontStyle: "normal",
+              // marginBottom: "23px",
+            }}
+          >
+            <strong style={{ color: "#10ffda" }}>Huge Saving</strong> on <br />{" "}
+            UHD Televisions
+          </h2>
+          <p class="slide-text slide-pc">
+            Sale up to 70% off on selected items*
+          </p>
+          <Link
+            to="/product"
+            className="slide-button button"
+            style={{ textDecoration: "none", marginTop: "1rem" }}
+          >
+            Shop Now
+          </Link>
+        </div>
+      </div>
+      <div class1="home-wrapper-1 py-5" className="container block-item">
+        <BannerCarousel />
+      </div>
       <div class1="home-wrapper-1 py-5" className="container block-item">
         <div className="row">
           <div className="col-6">
@@ -81,7 +125,6 @@ const Home = () => {
         <div className="row">
           <div className="col-12">
             <div className="servies d-flex align-items-center justify-content-between">
-
               {/* {services?.map((i, j) => {
                 return (
                   <div className="d-flex align-items-center gap-15" key={j}>
@@ -106,7 +149,7 @@ const Home = () => {
                   <h6>Music & Gaming</h6>
                   <p>10 Items</p>
                 </div>
-                <img src="images/camera.jpg" alt="camera" />
+                <img src="../images/camera.jpg" alt="camera" />
               </div>
               <div className="d-flex gap align-items-center">
                 <div>
@@ -161,16 +204,49 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div class1="featured-wrapper py-5 home-wrapper-2" className="container block-item">
+      <div
+        class1="featured-wrapper py-5 home-wrapper-2"
+        className="container block-item block-product-wrapper"
+      >
         <h3 className="section-heading">Featured Collection</h3>
         <div className="row">
           {last8Product.map((p, index) => (
-            <div key={index} className="col-3">
+            <div key={index} className="col-3" style={{ padding: "0.5rem" }}>
               <ProductItem product={p} />
             </div>
           ))}
         </div>
       </div>
+      <div
+        class1="featured-wrapper py-5 home-wrapper-2"
+        className="container block-item block-product-wrapper"
+      >
+        <div className="row mb-3">
+          <div className="col-12">
+            <img
+              className="w-100"
+              src="https://img.tgdd.vn/imgt/f_webp,fit_outside,quality_100/https://cdn.tgdd.vn/2024/02/banner/Tagline-HS-1200x120.png"
+              alt=""
+            />
+          </div>
+        </div>
+        {/* <h3 className="section-heading">Best Seller</h3> */}
+        <div className="row">
+          {/* {last8Product.map((p, index) => (
+            <div key={index} className="col-3">
+              <ProductItem product={p} />
+            </div>
+          ))} */}
+          {console.log("last8Product", last8Product)}
+          <ProductCarouselV1 products={last8Product} />
+        </div>
+        {/* <div className="row">
+          <div className="col-3">
+            <Link className="vie">View</Link>
+          </div>
+        </div> */}
+      </div>
+      
 
       {/* <Container class1="famous-wrapper py-5 home-wrapper-2">
         <div className="row">
@@ -298,7 +374,10 @@ const Home = () => {
         </div>
       </Container> */}
 
-      <div class1="blog-wrapper py-5 home-wrapper-2" className="container block-item  mb-3">
+      <div
+        class1="blog-wrapper py-5 home-wrapper-2"
+        className="container block-item  mb-3 block-product-wrapper"
+      >
         <div className="row">
           <div className="col-12">
             <h3 className="section-heading">Our Latest Blogs</h3>
@@ -306,7 +385,7 @@ const Home = () => {
         </div>
         <div className="row">
           {last4Blogs.map((blog) => (
-            <div key={blog._id} className="col-3">
+            <div key={blog._id} className="col-3" style={{ padding: "0.5rem" }}>
               <BlogCard blog={blog} />
             </div>
           ))}

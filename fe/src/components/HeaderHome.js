@@ -15,8 +15,9 @@ import { FaMoneyCheckDollar } from "react-icons/fa6";
 // import logo from "../images/logo-sdn.png";
 import logo from '../images/logo_home.png';
 import { CartContext } from "../components/CartContext";
+import BannerAutoPlay from "./BannerAutoPlay";
 
-const Header = () => {
+const HeaderHome = () => {
   const { isLogged } = useAuthentication();
   const navigate = useNavigate();
   const [thisUser, setThisUser] = useState();
@@ -39,6 +40,7 @@ const Header = () => {
 
   return (
     <>
+        <BannerAutoPlay/>
       <header className="header-upper py-3">
         <div className="container-xxl">
           <div className="row align-items-center">
@@ -197,4 +199,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default HeaderHome;

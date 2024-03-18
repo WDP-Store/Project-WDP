@@ -5,12 +5,12 @@ import dotenv from "dotenv";
 dotenv.config();
 const generateAccessToken = (user) => {
   return jwt.sign({ data: user }, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: "1440m",
+    expiresIn: "90m",
   });
 };
 const generateRefreshToken = (user) => {
   return jwt.sign({ data: user }, process.env.REFRESH_TOKEN_SECRET, {
-    expiresIn: "1y",
+    expiresIn: "25days",
   });
 };
 
@@ -53,22 +53,37 @@ const login = async (data) => {
 };
 
 const register = async (data) => {
+  console.log("RegisterRepository")
   try {
     const { name, email, password } = data;
-    //check duplicated (exec() hỗ trợ chuyển Query Object -> Promisse)
-    const existingUser = await User.findOne({ email }).exec();
+  console.log("RegisterRepository data", data)
+  
+  //check duplicated (exec() hỗ trợ chuyển Query Object -> Promisse)
+  const existingUser = await User.findOne({ email }).exec();
+  console.log("RegisterRepository existingUser", existingUser)
     if (existingUser) throw { message: "DUPLICATE", status: 400 };
     //hashed password
-    const hashedPassword = await bcrypt.hash(
-      password,
-      parseInt(process.env.SALT_ROUNDS)
-    );
+    // const hashedPassword = await bcrypt.hash(
+    //   password,
+    //   parseInt(process.env.SALT_ROUNDS)
+    // );
+    const hashedPassword = bcrypt.hashSync(password, 10);
+  console.log("RegisterRepository existingUser", hashedPassword)
+
     //insert to db
     const newUser = await User.create({
       name,
       email,
       password: hashedPassword,
+      role: "customer"
+    }).catch(error => {
+      console.error("Error creating user:", error.message);
+      throw new Error("Error creating user: " + error.message);
     });
+    
+
+  console.log("RegisterRepository", newUser)
+
     console.log("new user => ", newUser);
     return newUser;
   } catch (error) {
