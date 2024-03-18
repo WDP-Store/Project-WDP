@@ -7,6 +7,7 @@ import route from './routes/index.js';
 import cookieParser from "cookie-parser";
 import swaggerDocs from './swagger.js';
 import client from "./config/connect_redis.js";
+import session from "express-session";
 
 const app = express();
 // .env
@@ -24,6 +25,13 @@ app.use(cookieParser());
 //middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
+
+//use session
+app.use(session({
+    secret: '99',
+    resave: false,
+    saveUninitialized: false
+  }));
 
 route(app);
 
