@@ -1,8 +1,9 @@
 import React, { createContext, useContext, useState } from 'react';
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation  } from "react-router-dom";
 import Footer from "./Footer";
 import Header from "./Header";
 import { CartContext } from '../components/CartContext'
+import HeaderHome from './HeaderHome';
 
 // Create provider tat use in intier page
 function LayoutProvider({ children }) {
@@ -18,9 +19,10 @@ function LayoutProvider({ children }) {
 }
 
 const Layout = () => {
+  const location = useLocation();
   return (
     <LayoutProvider>
-      <Header />
+      {location.pathname === '/' ? <HeaderHome /> : <Header />}
       <Outlet />
       <Footer />
     </LayoutProvider>

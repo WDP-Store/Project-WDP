@@ -19,6 +19,8 @@ const Signup = () => {
     password: "",
   });
 
+  console.log(formData)
+
   const [errors, setErrors] = useState({});
 
   const handleSignUp = async (e) => {

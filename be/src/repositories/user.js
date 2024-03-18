@@ -1,4 +1,6 @@
 import User from "../model/User.js";
+import bcrypt from "bcrypt";
+
 
 const findAll = async (req, res) => {
   try {
@@ -51,10 +53,42 @@ const update = async (id, data) => {
     throw new Error(`Get user failed: ${error}`);
   }
 };
+const replacePassword = async (id, data) => {
+  try {
+
+    const {currentPassword, newPassword, confirmPassword} = data;
+    const user = await User.findById(id);
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      throw new Error('Current password is incorrect');
+    }
+
+    if (newPassword !== confirmPassword) {
+      throw new Error('New password not match confirm password');
+    }
+
+
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+
+    return {id, data};
+  } catch (error) {
+    throw new Error(`Get user failed: ${error}`);
+  }
+};
+
+
 
 export default {
   findAll,
   getUserProfile,
   findByEmail,
   update,
+  replacePassword
 };
