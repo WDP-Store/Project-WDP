@@ -51,6 +51,10 @@ const Categorylist = () => {
     axios
       .post(`http://localhost:9999/categories`, {
         name,
+      }, {
+        headers: {
+          'Authorization': `Bearer ${JSON.parse(localStorage.getItem("data")).accessToken}`
+        }
       })
       .then(() => {
         toast.success("Create category successfully");
@@ -65,6 +69,10 @@ const Categorylist = () => {
     axios
       .patch(`http://localhost:9999/categories/${category._id}`, {
         name,
+      }, {
+        headers: {
+          'Authorization': `Bearer ${JSON.parse(localStorage.getItem("data")).accessToken}`
+        }
       })
       .then(() => {
         toast.success("Update category successfully");

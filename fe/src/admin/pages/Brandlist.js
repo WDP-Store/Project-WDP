@@ -51,6 +51,10 @@ const Brandlist = () => {
     axios
       .post(`http://localhost:9999/brands`, {
         name,
+      }, {
+        headers: {
+          'Authorization': `Bearer ${JSON.parse(localStorage.getItem("data")).accessToken}`
+        }
       })
       .then(() => {
         toast.success("Create brand successfully");
@@ -65,6 +69,10 @@ const Brandlist = () => {
     axios
       .patch(`http://localhost:9999/brands/${brand._id}`, {
         name,
+      }, {
+        headers: {
+          'Authorization': `Bearer ${JSON.parse(localStorage.getItem("data")).accessToken}`
+        }
       })
       .then(() => {
         toast.success("Update brand successfully");

@@ -100,7 +100,11 @@ const Productlist = () => {
 
   const deleteProduct = (productId) => {
     axios
-      .delete(`http://localhost:9999/products/${productId}`)
+      .delete(`http://localhost:9999/products/${productId}`, {
+        headers: {
+          'Authorization': `Bearer ${JSON.parse(localStorage.getItem("data")).accessToken}`
+        }
+      })
       .then((res) => {
         fetchProducts(currentPage);
         toast.success("Product deleted successfully");
@@ -114,6 +118,10 @@ const Productlist = () => {
     axios
       .patch(`http://localhost:9999/products/${productId}`, {
         status: !status,
+      }, {
+        headers: {
+          'Authorization': `Bearer ${JSON.parse(localStorage.getItem("data")).accessToken}`
+        }
       })
       .then((res) => {
         fetchProducts(currentPage);
@@ -148,6 +156,10 @@ const Productlist = () => {
     axios
       .patch(`http://localhost:9999/products/${productId}`, {
         featured: !featured,
+      }, {
+        headers: {
+          'Authorization': `Bearer ${JSON.parse(localStorage.getItem("data")).accessToken}`
+        }
       })
       .then((res) => {
         fetchProducts(currentPage);

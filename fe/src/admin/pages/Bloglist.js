@@ -113,7 +113,11 @@ const Bloglist = () => {
 
   const deleteBlog = (blogId) => {
     axios
-      .patch(`http://localhost:9999/blogs/${blogId}`, { isDeleted: true })
+      .patch(`http://localhost:9999/blogs/${blogId}`, { isDeleted: true }, {
+        headers: {
+          'Authorization': `Bearer ${JSON.parse(localStorage.getItem("data")).accessToken}`
+        }
+      })
       .then(() => {
         toast.success("Remove blog successfully");
         fetchBlogs(currentPage);

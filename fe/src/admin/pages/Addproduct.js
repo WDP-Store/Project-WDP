@@ -186,6 +186,10 @@ const AddProduct = () => {
         describe,
         color,
         images,
+      }, {
+        headers: {
+          'Authorization': `Bearer ${JSON.parse(localStorage.getItem("data")).accessToken}`
+        }
       })
       .then(() => {
         toast.success("Create product successfully");

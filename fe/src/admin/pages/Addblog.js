@@ -104,7 +104,8 @@ const Addblog = () => {
     axios
       .post(`http://localhost:9999/blogs`, formData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${JSON.parse(localStorage.getItem("data")).accessToken}`
         }
       })
       .then(() => {
