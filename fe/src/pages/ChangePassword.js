@@ -1,115 +1,138 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Meta from "../components/Meta";
 import BreadCrumb from "../components/BreadCrumb";
-import { Container } from "react-bootstrap";
+import { Container, Form, Button } from "react-bootstrap";
 import * as bcrypt from "bcryptjs";
+import { useAuthentication } from "../util/use-authentication";
+import { toast, ToastContainer } from "react-toastify";
 
 const ChangePassword = () => {
-    const { id } = useParams();
-    const [currentPassword, setCurrentPassword] = useState("");
-    const [newPassword, setNewPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const [error, setError] = useState("");
-    const [success, setSuccess] = useState("");
-    const [user, setUser] = useState([]);
-    
-    useEffect(()=>{
-        fetch('http://localhost:9999/users/' + id)
-        .then(res => res.json())
-        .then(json => setUser(json))
-    },[]
-    )
+  const { id } = useParams();
+  const [user, setUser] = useState([]);
+  const { currentUser } = useAuthentication();
 
-    const handleChange = (e) => {
-        setError("");
-        setSuccess("");
-        if (e.target.name === "currentPassword") {
-            setCurrentPassword(e.target.value);
-        } else if (e.target.name === "newPassword") {
-            setNewPassword(e.target.value);
-        } else if (e.target.name === "confirmPassword") {
-            setConfirmPassword(e.target.value);
-        }
-    };
-    const hash = (password) => {
-        return bcrypt.hashSync(password, 10);
-      };
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setError("");
-        setSuccess("");
-        
-        if (newPassword !== confirmPassword) {
-            setError("New password and confirm password do not match.");
-            return;
-        }
+  const [validated, setValidated] = useState(false);
+const navigate = useNavigate();
+  //   useEffect(() => {
+  //     axios
+  //       .get(`http://localhost:9999/users/${id}`, {
+  //         headers: { Authorization: `Bearer ${currentUser.accessToken}` },
+  //       })
+  //       .then((response) => {
+  //           console.log(response.data);
+  //         setUser(response.data);
+  //       })
+  //       .catch((error) => {
+  //         console.log(error);
+  //       });
+  //   console.log(user)
 
-        let passwordHash = hash(newPassword)
+  // }, [id]);
 
-        console.log('http://localhost:9999/users/' + id)
+  const handleSubmit = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
 
-        fetch('http://localhost:9999/users/' + id, {
-            method: 'PUT',
-            body: JSON.stringify({
-                ...user,
-                password: passwordHash
-            }),
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-            },
+    setValidated(true);
+    console.log(form);
+    const currentPassword = form.elements["current_password"].value;
+    const newPassword = form.elements["new_password"].value;
+    const confirmPassword = form.elements["confirm_password"].value;
+
+
+    const passwordRegex = /^[A-Za-z\d@$!%*?&]{6,}$/;
+
+    if (!passwordRegex.test(newPassword) || !passwordRegex.test(confirmPassword) || !passwordRegex.test(currentPassword)) {
+        event.preventDefault(); // Prevent form submission
+        toast.error("Password must be at least 6 characters");
+        return;
+      }
+      
+    if (currentPassword && newPassword && confirmPassword) {
+      if (newPassword !== confirmPassword) {
+        event.preventDefault(); // Prevent form submission
+        toast.error("new password not match confirm password");
+        return;
+      }
+
+      axios
+      .patch(`http://localhost:9999/users/change-password/${id}`, {currentPassword, newPassword, confirmPassword})
+      .then((response) => {
+          toast.success("Change successfully !");
+        //   navigate("/");
         })
+        .catch((err) => {
+          toast.error("Wrong email or password !");
+        });
+    }
+  };
 
-        window.alert("password changed")
-    };
-
-    return (
-        <>
-            <Meta title={"Sign Up"} />
-            <BreadCrumb title="Sign Up" />
-            <Container class1="login-wrapper py-5 home-wrapper-2">
-                <div className="change-password-container">
-                    <h2>Change Password</h2>
-                    <form onSubmit={handleSubmit}>
-                        <label>
-                            Current Password:
-                            <input
-                                type="password"
-                                name="currentPassword"
-                                value={currentPassword}
-                                onChange={handleChange}
-                            />
-                        </label>
-                        <br />
-                        <label>
-                            New Password:
-                            <input
-                                type="password"
-                                name="newPassword"
-                                value={newPassword}
-                                onChange={handleChange}
-                            />
-                        </label>
-                        <br />
-                        <label>
-                            Confirm Password:
-                            <input
-                                type="password"
-                                name="confirmPassword"
-                                value={confirmPassword}
-                                onChange={handleChange}
-                            />
-                        </label>
-                        <br />
-                        {error && <p className="error">{error}</p>}
-                        {success && <p className="success">{success}</p>}
-                        <button type="submit">Change Password</button>
-                    </form>
+  return (
+    <>
+      <Meta title={"Change password"} />
+      <BreadCrumb title="Sign Up" />
+      <Container class1="login-wrapper py-5 home-wrapper-2">
+        <div className="row">
+          <div className="col-12">
+            <div className="auth-card">
+              <h3 className="text-center mb-3">Change Password</h3>
+              <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                <Form.Group className="mb-3" controlId="current_password">
+                  <Form.Label>Old password</Form.Label>
+                  <Form.Control
+                    type="password"
+                    placeholder="Enter current password"
+                    name="currentPassword"
+                    // value={currentPassword}
+                    required
+                  />
+                  <Form.Text className="text-danger">
+                    {/* {errors.name} */}
+                  </Form.Text>
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="new_password">
+                  <Form.Label>New password</Form.Label>
+                  <Form.Control
+                    type="password"
+                    placeholder="Enter new password"
+                    name="newPassword"
+                    // value={newPassword}
+                    required
+                  />
+                  <Form.Text className="text-danger">
+                    {/* {errors.email} */}
+                  </Form.Text>
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="confirm_password">
+                  <Form.Label>Confirm Password</Form.Label>
+                  <Form.Control
+                    type="password"
+                    name="confirmPassword"
+                    placeholder="Enter confirm password"
+                    // value={confirmPassword}
+                    required
+                  />
+                  <Form.Text className="text-danger">
+                    {/* {errors.password} */}
+                  </Form.Text>
+                </Form.Group>
+                <div className="mt-3 d-flex justify-content-center gap-15 align-items-center">
+                  <Button type="submit" className="button border-0">
+                    Save
+                  </Button>
                 </div>
-            </Container>
-        </>
-    );
+              </Form>
+            </div>
+          </div>
+        </div>
+      </Container>
+    </>
+  );
 };
 
 export default ChangePassword;

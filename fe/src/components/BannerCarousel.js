@@ -2,16 +2,13 @@ import Carousel from "react-bootstrap/Carousel";
 const BannerCarousel = () => {
   return (
     <Carousel data-bs-theme="dark" interval={1500}>
-      <Carousel.Item>
+      <Carousel.Item style={{ height: "20rem" }}>
         <img
           className="d-block w-100"
-          src="https://img.tgdd.vn/imgt/f_webp,fit_outside,quality_100/https://cdn.tgdd.vn/2024/03/banner/y36-720-220-720x220.png"
+          // src="https://img.tgdd.vn/imgt/f_webp,fit_outside,quality_100/https://cdn.tgdd.vn/2024/03/banner/y36-720-220-720x220.png"
+          src="https://new-ella-demo.myshopify.com/cdn/shop/files/home-19-banner-custom-4_570x.jpg?v=1645072864"
           alt="First slide"
         />
-        <Carousel.Caption>
-          <h5>First slide label</h5>
-          <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-        </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
         <img

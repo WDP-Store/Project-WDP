@@ -1014,6 +1014,30 @@ footer .service_wrapper {
 }
 
 
+.content-over-image {
+  position: absolute;
+  top: 40%; /* Adjust as needed */
+  left: 30%; /* Adjust as needed */
+  transform: translate(-50%, -50%);
+  z-index: 1; /* Ensure content is above the image */
+  /* Additional styling for the content */
+}
+
+.content-over-image p{
+  font-size: 18px;
+  color: #ffffff;
+  --des-spacing-bottom-style: 50px;
+}
+
+@keyframes scrollRightToLeft {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+
+
+
+
 
 
 

@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import emailjs from '@emailjs/browser';
 import  axios from 'axios';
 import React, { useState } from 'react';
+import OTPModal from './../components/OTPForm';
 
 const forgotSchema = yup.object({
     user_email: yup
@@ -18,6 +19,7 @@ const forgotSchema = yup.object({
 });
 
 const Forgotpassword = () => {
+    const [showOTPModal, setShowOTPModal] = useState(false);
     const [email, setEmail] = useState("");
 
     const formik = useFormik({
@@ -31,6 +33,8 @@ const Forgotpassword = () => {
                 console.log("testResponseForgotPassword", response.data);
                 // Handle response
                 toast.success('Code send to your email');
+                setShowOTPModal(true); // Show the OTP modal
+                // nagivate("/")
             } catch (error) {
                 // Handle error
                 toast.error('Failed to send password reset email');
@@ -86,6 +90,7 @@ const Forgotpassword = () => {
                     </div>
                 </div>
             </Container>
+            <OTPModal show={showOTPModal} onClose={() => setShowOTPModal(false)} />
         </>
     );
 };
