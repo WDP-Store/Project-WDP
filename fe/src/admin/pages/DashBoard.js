@@ -52,11 +52,17 @@ export default function Dashboard() {
       `
     )
       .then((res) => res.json())
-      .then((json) => setOrders(json));
+      .then((json) => {
+        setOrders(json)
+      });
 
     fetch(`http://localhost:9999/brands`)
       .then((res) => res.json())
-      .then((json) => setBrands(json));
+      .then((json) => {
+        console.log("jsonjsonjson")
+        console.log(json)
+        setBrands(json)
+      });
 
     fetch(`http://localhost:9999/categories`)
       .then((res) => res.json())
@@ -67,72 +73,41 @@ export default function Dashboard() {
 
   const getStatisticNumber = (from, to) => {
     let temp = [...orders];
-    temp = temp.filter((o) => new Date(o.date) >= new Date(from));
-    temp = temp.filter((o) => new Date(o.date) < new Date(to));
+    temp = temp.filter((o) => (new Date(o.date)) >= (new Date(from)));
+    temp = temp.filter((o) => (new Date(o.date)) < (new Date(to)));
     var ok = [];
-    temp.map((t) => t.productList.map((tp) => [ok.push(tp.quantity)]));
+    temp.map(t => t.productList.map(tp => [ok.push(tp.quantity)]))
     let data = {
       from: from,
       to: to,
       revenue: 0,
       profit: 0,
-      totalQuantity: ok.length > 0 && ok?.reduce((a, b) => a + b),
+      totalQuantity: ok.length > 0 ? ok?.reduce((a, b) => a + b) : 0,
       order: temp.length,
-      category: categories.map((c) => ({
-        name: c.name,
-        id: c.id,
-        quantity: 0,
-        profit: 0,
-        revenue: 0,
-      })),
-      brand: brands.map((b) => ({
-        name: b.name,
-        id: b.id,
-        quantity: 0,
-        profit: 0,
-        revenue: 0,
-      })),
-    };
-    data.brand.length > 0 &&
-      data.category.length > 0 &&
-      temp.map((t) => [
-        (data.revenue += t.totalAmount),
-        (data.profit += t.productList
-          .map((tp) => (tp.unitPrice - tp.originalPrice) * tp.quantity)
-          .reduce((a, b) => a + b)),
-        t.productList.map((tp) => [
-          // console.log(...data.category.map((c,index) => c.id == tp.categoryId ? index : '' ).filter(c=> c != ''))
-          data.category.map((c, index) =>
-            index + 1 == tp.categoryId ? [(c.quantity += tp.quantity)] : []
-          ),
-          data.category.map((c, index) =>
-            index + 1 == tp.categoryId
-              ? [(c.profit += (tp.unitPrice - tp.originalPrice) * tp.quantity)]
-              : []
-          ),
-          data.category.map((c, index) =>
-            index + 1 == tp.categoryId
-              ? [(c.revenue += tp.originalPrice * tp.quantity)]
-              : []
-          ),
-          data.brand.map((c, index) =>
-            index + 1 == tp.brandId ? [(c.quantity += tp.quantity)] : []
-          ),
-          data.brand.map((c, index) =>
-            index + 1 == tp.brandId
-              ? [(c.profit += (tp.unitPrice - tp.originalPrice) * tp.quantity)]
-              : []
-          ),
-          data.brand.map((c, index) =>
-            index + 1 == tp.brandId
-              ? [(c.revenue += tp.originalPrice * tp.quantity)]
-              : []
-          ),
-        ]),
-      ]);
-    console.log(data);
-    return data;
-  };
+      category: categories.map(c => ({ name: c.name, id: c._id, quantity: 0, profit: 0, revenue: 0 })),
+      brand: brands.map(b => ({ name: b.name, id: b._id, quantity: 0, profit: 0, revenue: 0 }))
+    }
+
+    console.log("data.brand")
+    console.log(temp)
+    data.brand.length > 0 && data.category.length > 0 && temp.map(t => [
+      data.revenue += t.totalAmount,
+      data.profit += t.productList.map(tp => (tp.unitPrice - tp.originalPrice) * tp.quantity).reduce((a, b) => a + b),
+      t.productList.map(tp => [
+        // console.log(...data.category.map((c,index) => c.id == tp.categoryId ? index : '' ).filter(c=> c != ''))
+        data.category.map((c, index) => index + 1 == tp.category ? [c.quantity += tp.quantity] : []),
+        data.category.map((c, index) => index + 1 == tp.category ? [c.profit += (tp.unitPrice - tp.originalPrice) * tp.quantity] : []),
+        data.category.map((c, index) => index + 1 == tp.category ? [c.revenue += tp.originalPrice * tp.quantity] : []),
+        data.brand.map((c, index) => index + 1 == tp.brand ? [c.quantity += tp.quantity] : []),
+        data.brand.map((c, index) => index + 1 == tp.brand ? [c.profit += (tp.unitPrice - tp.originalPrice) * tp.quantity] : []),
+        data.brand.map((c, index) => index + 1 == tp.brand ? [c.revenue += tp.originalPrice * tp.quantity] : [])
+      ]
+      )
+    ]
+    )
+    console.log(data)
+    return data
+  }
 
   const currentMonthReport = () =>
     getStatisticNumber(
@@ -246,12 +221,12 @@ export default function Dashboard() {
             onClick={
               selectedMonth > 0
                 ? () => {
-                    setSelectedMonth(selectedMonth - 1);
-                  }
+                  setSelectedMonth(selectedMonth - 1);
+                }
                 : () => {
-                    setSelectedMonth(11);
-                    setSelectedYear(selectedYear - 1);
-                  }
+                  setSelectedMonth(11);
+                  setSelectedYear(selectedYear - 1);
+                }
             }
             variant="danger"
           >
@@ -267,20 +242,20 @@ export default function Dashboard() {
               ${currentMonthReport().revenue.toFixed(2)}
             </h4>
           </div>
-          <div className="d-flex flex-column align-items-end">
+          {/* <div className="d-flex flex-column align-items-end">
             <h6>
               {(currentMonthReport().revenue /
                 pre_currentMonthReport().revenue) *
                 100 -
                 100 >=
-              0 ? (
+                0 ? (
                 <div style={{ color: "green" }}>
                   <AiOutlineRise size={25} className="m-0" />{" "}
                   {"+" +
                     (
                       (currentMonthReport().revenue /
                         pre_currentMonthReport().revenue) *
-                        100 -
+                      100 -
                       100
                     ).toFixed(2) +
                     "%"}
@@ -291,7 +266,7 @@ export default function Dashboard() {
                   {(
                     (currentMonthReport().revenue /
                       pre_currentMonthReport().revenue) *
-                      100 -
+                    100 -
                     100
                   ).toFixed(2) + "%"}
                 </div>
@@ -303,7 +278,7 @@ export default function Dashboard() {
                 " " +
                 pre_currentMonthReport().from.getFullYear()}
             </p>
-          </div>
+          </div> */}
         </div>
         <div className="d-flex justify-content-between align-items-end flex-grow-1 bg-white p-3 roudned-3">
           <div>
@@ -312,19 +287,19 @@ export default function Dashboard() {
               ${currentMonthReport().profit.toFixed(2)}
             </h4>
           </div>
-          <div className="d-flex flex-column align-items-end">
+          {/* <div className="d-flex flex-column align-items-end">
             <h6>
               {(currentMonthReport().profit / pre_currentMonthReport().profit) *
                 100 -
                 100 >=
-              0 ? (
+                0 ? (
                 <div style={{ color: "green" }}>
                   <AiOutlineRise size={25} className="m-0" />{" "}
                   {"+" +
                     (
                       (currentMonthReport().profit /
                         pre_currentMonthReport().profit) *
-                        100 -
+                      100 -
                       100
                     ).toFixed(2) +
                     "%"}
@@ -335,7 +310,7 @@ export default function Dashboard() {
                   {(
                     (currentMonthReport().profit /
                       pre_currentMonthReport().profit) *
-                      100 -
+                    100 -
                     100
                   ).toFixed(2) + "%"}
                 </div>
@@ -347,26 +322,26 @@ export default function Dashboard() {
                 " " +
                 pre_currentMonthReport().from.getFullYear()}
             </p>
-          </div>
+          </div> */}
         </div>
         <div className="d-flex justify-content-between align-items-end flex-grow-1 bg-white p-3 roudned-3">
           <div>
             <p className="desc">Total orders</p>
             <h4 className="mb-0 sub-title">{currentMonthReport().order}</h4>
           </div>
-          <div className="d-flex flex-column align-items-end">
+          {/* <div className="d-flex flex-column align-items-end">
             <h6>
               {(currentMonthReport().order / pre_currentMonthReport().order) *
                 100 -
                 100 >=
-              0 ? (
+                0 ? (
                 <div style={{ color: "green" }}>
                   <AiOutlineRise size={25} className="m-0" />{" "}
                   {"+" +
                     (
                       (currentMonthReport().order /
                         pre_currentMonthReport().order) *
-                        100 -
+                      100 -
                       100
                     ).toFixed(2) +
                     "%"}
@@ -377,7 +352,7 @@ export default function Dashboard() {
                   {(
                     (currentMonthReport().order /
                       pre_currentMonthReport().order) *
-                      100 -
+                    100 -
                     100
                   ).toFixed(2) + "%"}
                 </div>
@@ -389,7 +364,7 @@ export default function Dashboard() {
                 " " +
                 pre_currentMonthReport().from.getFullYear()}
             </p>
-          </div>
+          </div> */}
         </div>
       </div>
       <div

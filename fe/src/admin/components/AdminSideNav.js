@@ -104,16 +104,6 @@ export default function AdminSideNav(props) {
           </Accordion.Item>
         </div>
         <div style={{ width: "100%" }}>
-          <Link style={{ width: "100%" }} to={"/admin/dashboard"}>
-            <Accordion.Item eventKey="3">
-              <Accordion.Header>
-                <MdOutlineInventory2 style={{ marginBottom: 0 }} size="30px" />
-                <div style={{ marginLeft: "20px" }}>Inventory Management</div>
-              </Accordion.Header>
-            </Accordion.Item>
-          </Link>
-        </div>
-        <div style={{ width: "100%" }}>
           <Accordion.Item eventKey="4">
             <Accordion.Header>
               <AiOutlinePicRight
