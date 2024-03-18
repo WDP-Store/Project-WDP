@@ -77,7 +77,7 @@ export default function Orders() {
   }, [currentPage, orderIdFilter, statusFilter, fromDate, toDate, refresh]);
 
   const filterOrder = (page) => {
-    var url = `http://localhost:9999/order/?_sort=id&_order=desc`;
+    var url = `http://localhost:9999/orders/?_sort=id&_order=desc`;
 
     if (fromDate === "" && toDate === "") url += `&_page=${page}&_limit=10`;
 
@@ -109,29 +109,30 @@ export default function Orders() {
       })
       .catch((err) => toast.error(err));
   };
-
-  // useEffect(() => {
-  //   //date filtering
-  //   if (fromDate !== "") {
-  //     let temp = [...orders];
-  //     temp = temp.filter((o) => new Date(o.date) >= new Date(fromDate));
-  //     setOrders(temp);
-  //     console.log(temp);
-  //   }
-  //   if (toDate !== "") {
-  //     let temp = [...orders];
-  //     temp = temp.filter((o) => new Date(o.date) <= new Date(toDate));
-  //     setOrders(temp);
-  //   }
-  // }, [fromDate, toDate]);
+  console.log(orders);
+  console.log(status);
+  useEffect(() => {
+    //date filtering
+    if (fromDate !== "") {
+      let temp = [...orders];
+      temp = temp.filter((o) => new Date(o.date) >= new Date(fromDate));
+      setOrders(temp);
+      console.log(temp);
+    }
+    if (toDate !== "") {
+      let temp = [...orders];
+      temp = temp.filter((o) => new Date(o.date) <= new Date(toDate));
+      setOrders(temp);
+    }
+  }, [fromDate, toDate]);
 
   const updateStatus = (value, index, id) => {
     //index is index of orders in orders useState , id is its order id
-    fetch("http://localhost:9999/order/" + id, {
+    fetch("http://localhost:9999/orders/" + id, {
       method: "PUT",
       body: JSON.stringify({
         ...orders[index],
-        statusId: Number(value),
+        statusId: value,
       }),
       headers: {
         "Content-type": "application/json; charset=UTF-8",
@@ -199,36 +200,38 @@ export default function Orders() {
         <div key={index} className="m-2 mb-4">
           <Card
             className="m-2"
-            style={{ background: colorBadge[o.statusId - 1] }}
+            style={{ background: o.status._id && colorBadge[o.status._id - 1] }}
           >
             <Card.Header className="row">
               <div className="col-1">
-                <div style={{ color: "white" }}>ID: {o.id}</div>
+                <div style={{ color: "black" }}>ID: {o._id}</div>
               </div>
               <div className="col-1">
-                <Badge bg={effectBadge[o.statusId - 1]}>
-                  {status[o.statusId - 1]?.name}
+                <Badge bg={effectBadge[o.status._id - 1]}>
+                  {o.status.name}
                 </Badge>
               </div>
               <div className="col-3">
-                <p style={{ color: "white" }}>
+                <p style={{ color: "black" }}>
                   Create date: {new Date(o.date).toLocaleString()}
                 </p>
               </div>
               <div className="col-4"></div>
               <div className="col-3">
                 <InputGroup>
-                  <InputGroup.Text>Change status</InputGroup.Text>
+                  <InputGroup.Text style={{ backgroundColor: "#008DDA" }}>
+                    Change status
+                  </InputGroup.Text>
                   <Form.Select
-                    value={o.statusId}
-                    onChange={(e) => updateStatus(e.target.value, index, o.id)}
+                    value={o.status._id}
+                    onChange={(e) => updateStatus(e.target.value, index, o._id)}
                   >
                     {status?.map((s) => (
-                      <option key={s.id} value={s.id}>
-                        {s.name}
+                      <option key={s.id} value={s._id}>
+                        {o.status.name}
                       </option>
                     ))}
-                  </Form.Select>
+                  </Form.Select>{" "}
                 </InputGroup>
               </div>
             </Card.Header>

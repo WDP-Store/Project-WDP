@@ -12,12 +12,13 @@ orderRouter.get(
   orderController.findOneByOrderVnpayId
 );
 orderRouter.get("/:id", orderController.findOne);
-orderRouter.patch("/:id", orderController.update);
+orderRouter.put("/:id", orderController.update);
 orderRouter.delete("/:id", orderController.deleteOrder);
 orderRouter.get(
   "/find-order-by-user-id/:id",
   orderController.findOrderByUserId
 );
 orderRouter.get("/find-order-by-status/:name", orderController.findOrderByName);
+orderRouter.put("/update-status/:id", orderController.changeStatusByOrderId);
 
 export default orderRouter;
