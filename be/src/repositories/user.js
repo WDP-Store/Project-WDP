@@ -57,12 +57,16 @@ const replacePassword = async (id, data) => {
   try {
 
     const {currentPassword, newPassword, confirmPassword} = data;
-    const user = await User.findById(id);
+
+    console.log("replace password", id, data);
+    const user = await User.findOne({_id: id});
+    console.log("replace password", user);
     if (!user) {
       throw new Error('User not found');
     }
-
+    
     const isMatch = await bcrypt.compare(currentPassword, user.password);
+    console.log("replace password", isMatch);
     if (!isMatch) {
       throw new Error('Current password is incorrect');
     }
@@ -75,9 +79,10 @@ const replacePassword = async (id, data) => {
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     user.password = hashedPassword;
-    await user.save();
+    const info = await user.save();
+    console.log("user after update", info);
 
-    return {id, data};
+    return info;
   } catch (error) {
     throw new Error(`Get user failed: ${error}`);
   }

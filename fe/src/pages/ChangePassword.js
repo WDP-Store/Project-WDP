@@ -14,7 +14,7 @@ const ChangePassword = () => {
   const { currentUser } = useAuthentication();
 
   const [validated, setValidated] = useState(false);
-const navigate = useNavigate();
+  const navigate = useNavigate();
   //   useEffect(() => {
   //     axios
   //       .get(`http://localhost:9999/users/${id}`, {
@@ -32,9 +32,10 @@ const navigate = useNavigate();
   // }, [id]);
 
   const handleSubmit = (event) => {
+    event.preventDefault();
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
-      event.preventDefault();
+      // event.preventDefault();
       event.stopPropagation();
     }
 
@@ -44,15 +45,18 @@ const navigate = useNavigate();
     const newPassword = form.elements["new_password"].value;
     const confirmPassword = form.elements["confirm_password"].value;
 
-
     const passwordRegex = /^[A-Za-z\d@$!%*?&]{6,}$/;
 
-    if (!passwordRegex.test(newPassword) || !passwordRegex.test(confirmPassword) || !passwordRegex.test(currentPassword)) {
-        event.preventDefault(); // Prevent form submission
-        toast.error("Password must be at least 6 characters");
-        return;
-      }
-      
+    if (
+      !passwordRegex.test(newPassword) ||
+      !passwordRegex.test(confirmPassword) ||
+      !passwordRegex.test(currentPassword)
+    ) {
+      event.preventDefault(); // Prevent form submission
+      toast.error("Password must be at least 6 characters");
+      return;
+    }
+
     if (currentPassword && newPassword && confirmPassword) {
       if (newPassword !== confirmPassword) {
         event.preventDefault(); // Prevent form submission
@@ -61,13 +65,24 @@ const navigate = useNavigate();
       }
 
       axios
-      .patch(`http://localhost:9999/users/change-password/${id}`, {currentPassword, newPassword, confirmPassword})
-      .then((response) => {
-          toast.success("Change successfully !");
-        //   navigate("/");
+        .patch(`http://localhost:9999/users/change-password/${id}`, {
+          currentPassword,
+          newPassword,
+          confirmPassword,
         })
-        .catch((err) => {
-          toast.error("Wrong email or password !");
+        .then((response) => {
+          toast.success("Change password successfully, again login system");
+
+          localStorage.removeItem("data");
+          localStorage.removeItem("cart"); //remove cart
+          navigate("/login");
+        })
+        .catch((error) => {
+          if (error.response) {
+            toast.error(error.response.data.message);
+          } else {
+            toast.error("An error occurred while processing your request");
+          }
         });
     }
   };

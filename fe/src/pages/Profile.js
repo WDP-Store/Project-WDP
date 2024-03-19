@@ -86,7 +86,7 @@ const Profile = () => {
                     Edit
                   </Button>
                   |
-                  <Link to={`/changePassword/${userData._id}`}>
+                  <Link to={`/changePassword/${userData._id}`} className="btn btn-warning">
                     Change Password
                   </Link>
                 </>
