@@ -9,6 +9,15 @@ const Footer = () => {
     <>
       <footer className="py-4">
         <div className="row justify-content-between service_wrapper">
+          <div className="col-12 mb-5" style={{marginBottom: "0.3rem"}}>
+            <h3 className="text-center">
+              <span>
+                <strong style={{fontSize: "40px"}}>
+                  <b>Why shop</b> with us ?
+                </strong>
+              </span>
+            </h3>
+          </div>
           <div className="col-2 identify justify-content-center align-items-center text-center">
             <img
               className="img-fluid"
@@ -16,7 +25,7 @@ const Footer = () => {
               alt=""
             />
             <div className="description">
-              <h5 style={{ textAlign: "center" }}>Good products</h5>
+              <h5 style={{ textAlign: "center" }}>Cashback Reward Program</h5>
               <span>
                 Whatever you need, there are 26 categories and 10 million
                 products
@@ -29,7 +38,7 @@ const Footer = () => {
               alt=""
             />
             <div className="description">
-              <h5 style={{ textAlign: "center" }}>Good products</h5>
+              <h5 style={{ textAlign: "center" }}>Weekly Flash Sale</h5>
               <span>
                 Whatever you need, there are 26 categories and 10 million
                 products
@@ -42,7 +51,7 @@ const Footer = () => {
               alt=""
             />
             <div className="description">
-              <h5 style={{ textAlign: "center" }}>Good products</h5>
+              <h5 style={{ textAlign: "center" }}>Anual Payment Discount</h5>
               <span>
                 Whatever you need, there are 26 categories and 10 million
                 products
@@ -55,7 +64,7 @@ const Footer = () => {
               alt=""
             />
             <div className="description">
-              <h5 style={{ textAlign: "center" }}>Good products</h5>
+              <h5 style={{ textAlign: "center" }}>Cashback Reward Program</h5>
               <span>
                 Whatever you need, there are 26 categories and 10 million
                 products
@@ -83,7 +92,7 @@ const Footer = () => {
                   href="mailto:minhdev@gmail.com"
                   className="mt-2 d-block mb-0 text-black"
                 >
-                  minhdev@gmail.com
+                  sdnstore@gmail.com
                 </a>
                 <div className="social_icons d-flex align-items-center gap-30 mt-4">
                   <a className="text-black" href="#">

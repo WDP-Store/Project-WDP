@@ -12,8 +12,8 @@ import { toast } from "react-toastify";
 import { BiLogOut } from "react-icons/bi";
 import { BiUser } from "react-icons/bi";
 import { FaMoneyCheckDollar } from "react-icons/fa6";
-// import logo from "../images/logo-sdn.png";
-import logo from '../images/logo_home.png';
+import logo from "../images/logo-sdn.png";
+// import logo from '../images/logo_home.png';
 import { CartContext } from "../components/CartContext";
 import BannerAutoPlay from "./BannerAutoPlay";
 
@@ -44,7 +44,7 @@ const HeaderHome = () => {
       <header className="header-upper py-3">
         <div className="container-xxl">
           <div className="row align-items-center">
-            <div className="col-12 col-lg-2">
+            <div className="col-12 col-lg-2 mb-4" style={{maxHeight: "60px"}}>
               <h2>
                 <Link className="text-white">
                   <img
@@ -184,10 +184,10 @@ const HeaderHome = () => {
               <div className="menu-bottom d-flex align-items-center row">
                 <div className="menu-links col-12 col-lg-6">
                   <div className="d-flex align-items-center justify-content-center gap-15">
-                    <NavLink to="/">Home</NavLink>
-                    <NavLink to="/product">Our Store</NavLink>
-                    <NavLink to="/blogs">Blogs</NavLink>
-                    <NavLink to="/contact">Contact</NavLink>
+                    <NavLink to="/" style={{ textDecoration: 'none' }}>Home</NavLink>
+                    <NavLink to="/product" style={{ textDecoration: 'none' }}>Our Store</NavLink>
+                    <NavLink to="/blogs" style={{ textDecoration: 'none' }}>Blogs</NavLink>
+                    <NavLink to="/contact" style={{ textDecoration: 'none' }}>Contact</NavLink>
                   </div>
                 </div>
               </div>

@@ -90,13 +90,17 @@ const changePassword = async (req, res) => {
     const { id } = req.params;
     console.log("ChangePasswordController data", req.body, id);
     const data = await userRepository.replacePassword(id, req.body);
+    console.log("data2", data);
+    if (!data){
+
+    }
     res.status(200).json({
-      message: "Change password successfully",
-      // data: data, // Chỉ trả về các trường name, email, role và id
+      code: 200,
+      message: "Change password successfully"
     });
   } catch (error) {
     res.status(500).json({
-      message: error.toString(),
+      message: error.message || "Internal Server Error",
     });
   }
 };

@@ -170,11 +170,28 @@ footer .input-group-text {
 }
 
 footer .service_wrapper {
-  background-color: white;
+  /* background-color: white; */
+  background-image: url("https://new-ella-demo.myshopify.com/cdn/shop/files/home-19-banner-custom-11_1920x.jpg?v=1645425783");
   padding-left: 10%;
   padding-right: 10%;
+  padding-top: 2%;
+  padding-bottom: 5%;
   margin-bottom: 1rem;
 }
+
+footer .service_wrapper h5{
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
+  
+}
+footer .service_wrapper span{
+  color: white;
+  font-size: 12px;
+  font-weight: 300;
+
+}
+
 
 /* Footer Part Ends Here */
 .footer_src {
@@ -1033,6 +1050,8 @@ footer .service_wrapper {
   0% { transform: translateX(100%); }
   100% { transform: translateX(-100%); }
 }
+
+
 
 
 
