@@ -93,7 +93,7 @@ const AddProduct = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:9999/brands")
+      .get("https://app.vinamall.vn//brands")
       .then((res) => res.data)
       .then((data) => {
         const br = [];
@@ -104,7 +104,7 @@ const AddProduct = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:9999/categories")
+      .get("https://app.vinamall.vn//categories")
       .then((res) => res.data)
       .then((data) => {
         const c = [];
@@ -173,7 +173,7 @@ const AddProduct = () => {
     const { color, images } = product;
 
     axios
-      .post(`http://localhost:9999/products`, {
+      .post(`https://app.vinamall.vn//products`, {
         name,
         price: Number(price),
         originalPrice: Number(originalPrice),

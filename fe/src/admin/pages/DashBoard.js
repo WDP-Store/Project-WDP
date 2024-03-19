@@ -48,7 +48,7 @@ export default function Dashboard() {
   const [orders, setOrders] = useState([]); //fetched orders
   useEffect(() => {
     fetch(
-      `http://localhost:9999/orders/find-order-by-status/successful
+      `https://app.vinamall.vn//orders/find-order-by-status/successful
       `
     )
       .then((res) => res.json())
@@ -56,7 +56,7 @@ export default function Dashboard() {
         setOrders(json)
       });
 
-    fetch(`http://localhost:9999/brands`)
+    fetch(`https://app.vinamall.vn//brands`)
       .then((res) => res.json())
       .then((json) => {
         console.log("jsonjsonjson")
@@ -64,7 +64,7 @@ export default function Dashboard() {
         setBrands(json)
       });
 
-    fetch(`http://localhost:9999/categories`)
+    fetch(`https://app.vinamall.vn//categories`)
       .then((res) => res.json())
       .then((json) => setCategories(json));
     document.getElementById("btnradiocate1").checked = true;

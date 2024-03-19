@@ -6,17 +6,17 @@ import axios from "axios";
 
 const OTPModal = ({ show, onClose, email }) => {
   const [otp, setOtp] = useState("");
- 
+
   const handleChange = (enteredOtp) => {
     setOtp(enteredOtp);
   };
 
   const handleSubmit = () => {
-    
+
     console.log(otp);
     console.log(email);
     axios
-      .post("http://localhost:9999/users/verify-otp", { email, otp})
+      .post("https://app.vinamall.vn//users/verify-otp", { email, otp })
       .then((res) => {
         console.log(res.data);
         // Handle successful OTP verification (e.g., show success message)

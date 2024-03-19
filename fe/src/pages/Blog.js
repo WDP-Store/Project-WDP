@@ -48,7 +48,7 @@ const Blog = () => {
   };
 
   const handleFilter = (page) => {
-    var url = `http://localhost:9999/blogs?page=${page}`;
+    var url = `https://app.vinamall.vn//blogs?page=${page}`;
 
     if (category_f.length != 0) {
       category_f?.map((b) => (url += "&category=" + b));
@@ -69,7 +69,7 @@ const Blog = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:9999/categories")
+      .get("https://app.vinamall.vn//categories")
       .then((res) => res.data)
       .then((data) => {
         setCategories(data);
@@ -119,11 +119,11 @@ const Blog = () => {
                 </div>
               ) : (
                 blogs.map((blog) =>
-                  (
-                    <div key={blog._id} className="col-6 mb-3">
-                      <BlogCard blog={blog} />
-                    </div>
-                  )
+                (
+                  <div key={blog._id} className="col-6 mb-3">
+                    <BlogCard blog={blog} />
+                  </div>
+                )
                 )
               )}
             </div>

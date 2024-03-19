@@ -11,7 +11,7 @@ const SingleBlog = () => {
     const [blog, setBlog] = useState({});
 
     useEffect(() => {
-        axios.get(`http://localhost:9999/blogs/${id}`)
+        axios.get(`https://app.vinamall.vn//blogs/${id}`)
             .then((res) => res.data)
             .then((data) => {
                 setBlog(data);

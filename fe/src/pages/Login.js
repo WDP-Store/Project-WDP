@@ -26,9 +26,9 @@ const Login = () => {
     const isValid = handleValidate(formData);
     if (isValid) {
       axios
-      .post("http://localhost:9999/auth/login", formData)
-      .then((response) => {
-          localStorage.setItem("data", JSON.stringify(response.data) );    
+        .post("https://app.vinamall.vn//auth/login", formData)
+        .then((response) => {
+          localStorage.setItem("data", JSON.stringify(response.data));
           const userTest = localStorage.getItem("data");
           toast.success("Login successfully !");
           navigate("/");

@@ -17,7 +17,7 @@ const ProductItem = (props) => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:9999/wishlists?product=${product?._id}&user=${JSON.parse(localStorage.getItem("data"))?._id}`)
+      .get(`https://app.vinamall.vn//wishlists?product=${product?._id}&user=${JSON.parse(localStorage.getItem("data"))?._id}`)
       .then((res) => res.data.docs[0])
       .then((data) => {
         if (data) setIsWish(true)
@@ -35,7 +35,7 @@ const ProductItem = (props) => {
       })
     } else {
       axios
-        .post(`http://localhost:9999/wishlists`, {
+        .post(`https://app.vinamall.vn//wishlists`, {
           // user: JSON.parse(localStorage.getItem("data"))._id,
           user: JSON.parse(localStorage.getItem("data"))._id,
           product: product._id
@@ -77,7 +77,7 @@ const ProductItem = (props) => {
     console.log(wish)
     // if (JSON.parse(localStorage.getItem("data"))) { //if user is logged in
     axios
-      .delete(`http://localhost:9999/wishlists/${wish._id}`, {
+      .delete(`https://app.vinamall.vn//wishlists/${wish._id}`, {
         // user: JSON.parse(localStorage.getItem("data"))._id,
         user: JSON.parse(localStorage.getItem("data"))._id,
         product: product._id

@@ -49,7 +49,7 @@ const Categorylist = () => {
     const { name } = values;
 
     axios
-      .post(`http://localhost:9999/categories`, {
+      .post(`https://app.vinamall.vn//categories`, {
         name,
       }, {
         headers: {
@@ -67,7 +67,7 @@ const Categorylist = () => {
     const { name } = values;
 
     axios
-      .patch(`http://localhost:9999/categories/${category._id}`, {
+      .patch(`https://app.vinamall.vn//categories/${category._id}`, {
         name,
       }, {
         headers: {
@@ -103,7 +103,7 @@ const Categorylist = () => {
   };
 
   const fetchCategories = (page) => {
-    let url = `http://localhost:9999/categories/all?page=${page}`;
+    let url = `https://app.vinamall.vn//categories/all?page=${page}`;
 
     if (nameSearch) {
       url += `&name=${nameSearch}`;

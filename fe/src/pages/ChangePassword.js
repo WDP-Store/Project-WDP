@@ -17,7 +17,7 @@ const ChangePassword = () => {
   const navigate = useNavigate();
   //   useEffect(() => {
   //     axios
-  //       .get(`http://localhost:9999/users/${id}`, {
+  //       .get(`https://app.vinamall.vn//users/${id}`, {
   //         headers: { Authorization: `Bearer ${currentUser.accessToken}` },
   //       })
   //       .then((response) => {
@@ -65,7 +65,7 @@ const ChangePassword = () => {
       }
 
       axios
-        .patch(`http://localhost:9999/users/change-password/${id}`, {
+        .patch(`https://app.vinamall.vn//users/change-password/${id}`, {
           currentPassword,
           newPassword,
           confirmPassword,

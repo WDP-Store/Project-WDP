@@ -17,12 +17,12 @@ const Cart = () => {
   const [quantity, setQuantity] = useState(cart?.map(c => c.quantity))
   const [products, setProducts] = useState([]);
   const [subTotal, setSubTotal] = useState(0);
-  
+
   useEffect(() => {
     Promise.all(  //wait for all of the fetch requests to complete before updating the state with the fetched data.
       cart?.map((c) => {
         return axios
-          .get(`http://localhost:9999/products/${c.product}`)
+          .get(`https://app.vinamall.vn//products/${c.product}`)
           .then((res) => res.data)
           .then(json => {
             json.index = c.id;  // index of products will match cart id
@@ -83,7 +83,7 @@ const Cart = () => {
     var tempFullCart = cart.map((c, idx) => idx == index ? tempCart : c) // this temp update cart list with new quality value
     setCart(tempFullCart);
   }
-  
+
   return (
     <div>
       <Meta title={"Cart"} />

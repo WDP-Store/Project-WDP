@@ -52,7 +52,7 @@ const OurStore = () => {
   //category & brand
   useEffect(() => {
     axios
-      .get("http://localhost:9999/categories")
+      .get("https://app.vinamall.vn//categories")
       .then((res) => res.data)
       .then((data) => {
         setCategories(data);
@@ -61,7 +61,7 @@ const OurStore = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:9999/brands")
+      .get("https://app.vinamall.vn//brands")
       .then((res) => res.data)
       .then((data) => {
         setBrands(data);
@@ -103,7 +103,7 @@ const OurStore = () => {
   }
 
   const handleFilter = (page) => {
-    var url = `http://localhost:9999/products?page=${page}`;
+    var url = `https://app.vinamall.vn//products?page=${page}`;
 
     if (nameSearch) {
       url += `&name=${nameSearch}`;

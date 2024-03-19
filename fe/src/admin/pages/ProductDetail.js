@@ -17,7 +17,7 @@ const ProductDetail = () => {
   const { images } = products;
 
   useEffect(() => {
-    axios(`http://localhost:9999/products/${id}`)
+    axios(`https://app.vinamall.vn//products/${id}`)
       .then((res) => {
         console.log(res);
         setProducts(res.data);
@@ -26,7 +26,7 @@ const ProductDetail = () => {
   }, [id]);
 
   useEffect(() => {
-    axios(`http://localhost:9999/feedbacks?product=${id}`)
+    axios(`https://app.vinamall.vn//feedbacks?product=${id}`)
       .then((res) => {
         setFeedbacks(res.data?.docs);
       })
@@ -34,7 +34,7 @@ const ProductDetail = () => {
   }, []);
 
   useEffect(() => {
-    axios(`http://localhost:9999/users`)
+    axios(`https://app.vinamall.vn//users`)
       .then((res) => {
         setUsers(res.data);
       })

@@ -13,7 +13,7 @@ const BlogDetails = () => {
 
   const fetchBlog = async () => {
     try {
-      const response = await axios.get(`http://localhost:9999/blogs/${id}`);
+      const response = await axios.get(`https://app.vinamall.vn//blogs/${id}`);
       const data = await response.data;
       setBlog(data);
     } catch (error) {

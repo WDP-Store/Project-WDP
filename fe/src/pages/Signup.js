@@ -27,16 +27,16 @@ const Signup = () => {
     e.preventDefault();
     const isValid = handleValidate(formData);
     if (isValid) {
-      axios.post("http://localhost:9999/auth/register", formData)
-      .then(response => {
-        navigate("/login");
-      })
-      .catch(err => {
-        toast.error("Email has been registered !");
-      });
+      axios.post("https://app.vinamall.vn//auth/register", formData)
+        .then(response => {
+          navigate("/login");
+        })
+        .catch(err => {
+          toast.error("Email has been registered !");
+        });
     };
-      
-    }
+
+  }
 
 
 

@@ -28,7 +28,7 @@ const SingleProduct = () => {
   const [isWish, setIsWish] = useState(false);
 
   useEffect(() => {
-    axios(`http://localhost:9999/feedbacks?product=${id}`)
+    axios(`https://app.vinamall.vn//feedbacks?product=${id}`)
       .then((res) => {
         setFeedbacks(res.data?.docs);
       })
@@ -37,12 +37,12 @@ const SingleProduct = () => {
 
   useEffect( //fetch product data by id
     () => {
-      axios.get(`http://localhost:9999/products/` + id)
+      axios.get(`https://app.vinamall.vn//products/` + id)
         .then(res => res.data)
         .then(
           json => {
             setProducts(json);
-            // axios.get(`http://localhost:9999/products?&page=1&category=${json.category._id}`)
+            // axios.get(`https://app.vinamall.vn//products?&page=1&category=${json.category._id}`)
             //   .then(res => res.data)
             //   .then(json => {
             //     console.log("json")
@@ -52,7 +52,7 @@ const SingleProduct = () => {
           }
         );
 
-      axios.get(`http://localhost:9999/brands`)
+      axios.get(`https://app.vinamall.vn//brands`)
         .then(res => res.data)
         .then(json => setBrands(json));
     }, [id]
@@ -72,7 +72,7 @@ const SingleProduct = () => {
       if (JSON.parse(localStorage.getItem("data"))) {
         const user = JSON.parse(localStorage.getItem("data"));
         axios
-          .get(`http://localhost:9999/wishlists?user=` + user._id)
+          .get(`https://app.vinamall.vn//wishlists?user=` + user._id)
           .then((res) => res.data)
           .then(json => {
             setWishList(json)
@@ -83,7 +83,7 @@ const SingleProduct = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:9999/wishlists?product=${id}&user=${JSON.parse(localStorage.getItem("data"))._id}`)
+      .get(`https://app.vinamall.vn//wishlists?product=${id}&user=${JSON.parse(localStorage.getItem("data"))._id}`)
       .then((res) => res.data.docs[0])
       .then((data) => {
         setWishList(data);
@@ -101,7 +101,7 @@ const SingleProduct = () => {
       })
     } else {
       axios
-        .post(`http://localhost:9999/wishlists`, {
+        .post(`https://app.vinamall.vn//wishlists`, {
           user: JSON.parse(localStorage.getItem("data"))._id,
           // user: "65c6e0400a9390c33d67b2c1",
           product: id

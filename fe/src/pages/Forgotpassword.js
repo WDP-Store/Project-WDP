@@ -7,7 +7,7 @@ import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { toast } from 'react-toastify';
 import emailjs from '@emailjs/browser';
-import  axios from 'axios';
+import axios from 'axios';
 import React, { useState } from 'react';
 import OTPModal from './../components/OTPForm';
 
@@ -30,7 +30,7 @@ const Forgotpassword = () => {
         onSubmit: async (values) => {
             try {
                 setEmail(values.user_email);
-                const response = await axios.post(`http://localhost:9999/users/forgot-password`, { email: values.user_email })
+                const response = await axios.post(`https://app.vinamall.vn//users/forgot-password`, { email: values.user_email })
                 console.log("testResponseForgotPassword", response.data);
                 // Handle response
                 toast.success('Code send to your email');
@@ -91,7 +91,7 @@ const Forgotpassword = () => {
                     </div>
                 </div>
             </Container>
-            <OTPModal show={showOTPModal} onClose={() => setShowOTPModal(false)} email={email}/>
+            <OTPModal show={showOTPModal} onClose={() => setShowOTPModal(false)} email={email} />
         </>
     );
 };

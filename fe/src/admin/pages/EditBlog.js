@@ -63,7 +63,7 @@ const EditBlog = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:9999/categories")
+      .get("https://app.vinamall.vn//categories")
       .then((res) => res.data)
       .then((data) => {
         const c = [];
@@ -73,7 +73,7 @@ const EditBlog = () => {
   }, []);
   useEffect(() => {
     axios
-      .get(`http://localhost:9999/blogs/${id}`)
+      .get(`https://app.vinamall.vn//blogs/${id}`)
       .then((res) => res.data)
       .then((data) => {
         setBlog(data);
@@ -121,7 +121,7 @@ const EditBlog = () => {
     formData.append('image', newBlog.image);
     formData.append('isDeleted', newBlog.isDeleted);
     axios
-      .patch(`http://localhost:9999/blogs/${id}`, formData, {
+      .patch(`https://app.vinamall.vn//blogs/${id}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${JSON.parse(localStorage.getItem("data")).accessToken}`

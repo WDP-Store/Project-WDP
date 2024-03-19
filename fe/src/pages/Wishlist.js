@@ -13,11 +13,11 @@ const Wishlist = () => {
 
   const fetchData = () => {
     axios
-        .get(`http://localhost:9999/wishlists?user=${user._id}`)
-        .then((res) => res.data.docs)
-        .then((data) => {
-          setWishList(data);
-        });
+      .get(`https://app.vinamall.vn//wishlists?user=${user._id}`)
+      .then((res) => res.data.docs)
+      .then((data) => {
+        setWishList(data);
+      });
   }
 
   useEffect(
@@ -38,7 +38,7 @@ const Wishlist = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`http://localhost:9999/wishlists/${wishlistId}`)
+          .delete(`https://app.vinamall.vn//wishlists/${wishlistId}`)
           .then(() => {
             Swal.fire(
               'Deleted!',

@@ -36,7 +36,7 @@ export default function Customer() {
   };
 
   const fetchUsers = (page) => {
-    let url = `http://localhost:9999/users?page=${page}`;
+    let url = `https://app.vinamall.vn//users?page=${page}`;
 
     if (nameSearch) {
       url += `&name=${nameSearch}`;
@@ -49,7 +49,7 @@ export default function Customer() {
       url += `&status=${statusFilter}`;
     }
 
-    console.log("76_url",url);
+    console.log("76_url", url);
     axios(url)
       .then((res) => {
         console.log("res");
@@ -66,7 +66,7 @@ export default function Customer() {
 
   const changeStatus = (userId, status) => {
     axios
-      .patch(`http://localhost:9999/users/${userId}`, {
+      .patch(`https://app.vinamall.vn//users/${userId}`, {
         status: !status,
       })
       .then((res) => {
@@ -156,27 +156,27 @@ export default function Customer() {
               <td>{u.name}</td>
               <td>{u.phone}</td>
               <td>
-              
+
               </td>
               <td className="text-center">
-                  {u.status === true ? (
-                    <Badge
-                      bg="primary"
-                      style={{ cursor: "pointer" }}
-                      onClick={() => changeStatus(u._id, u.status)}
-                    >
-                      Active
-                    </Badge>
-                  ) : (
-                    <Badge
-                      bg="warning"
-                      style={{ cursor: "pointer" }}
-                      onClick={() => changeStatus(u._id, u.status)}
-                    >
-                      Inactive
-                    </Badge>
-                  )}
-                </td>
+                {u.status === true ? (
+                  <Badge
+                    bg="primary"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => changeStatus(u._id, u.status)}
+                  >
+                    Active
+                  </Badge>
+                ) : (
+                  <Badge
+                    bg="warning"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => changeStatus(u._id, u.status)}
+                  >
+                    Inactive
+                  </Badge>
+                )}
+              </td>
             </tr>
           ))}
         </tbody>

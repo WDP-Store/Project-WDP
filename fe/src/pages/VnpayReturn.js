@@ -14,19 +14,19 @@ const VnpayReturn = () => {
   useEffect(() => {
     if (vnpayResponseCode === '00') {
       axios
-        .get(`http://localhost:9999/orders/vnpay-return${location.search}`)
+        .get(`https://app.vinamall.vn//orders/vnpay-return${location.search}`)
         .then((res) => {
           console.log("res return")
           console.log(res)
           if (res.data.code === '00') {
             axios
-              .get(`http://localhost:9999/orders/find-by-order-vnpay-id/${searchParams.get('vnp_OrderInfo')}`)
+              .get(`https://app.vinamall.vn//orders/find-by-order-vnpay-id/${searchParams.get('vnp_OrderInfo')}`)
               .then((res) => {
                 if (res.data) {
                   axios
-                    .patch(`http://localhost:9999/orders/${res.data._id}`, {
+                    .patch(`https://app.vinamall.vn//orders/${res.data._id}`, {
                       isPaid: true
-                    }, )
+                    },)
                     .then(() => {
                       // localStorage.removeItem('cart')
                       // toast.success('Success payment');
