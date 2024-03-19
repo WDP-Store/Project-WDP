@@ -3,6 +3,7 @@ import { orderController } from "../controllers/index.js";
 
 const orderRouter = express.Router();
 
+orderRouter.get("/all", orderController.findAll2);
 orderRouter.get("/", orderController.findAll);
 orderRouter.post("/", orderController.create);
 orderRouter.get("/vnpay-return", orderController.vnpayReturn);

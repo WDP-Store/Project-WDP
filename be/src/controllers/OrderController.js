@@ -3,6 +3,18 @@ import moment from "moment";
 import querystring from "qs";
 import crypto from "crypto";
 
+const findAll2 = async (req, res) => {
+  try {
+    const data = await orderRepository.findAll(req, res);
+
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(500).json({
+      message: error.toString(),
+    });
+  }
+};
+
 const findAll = async (req, res) => {
   try {
     const data = await orderRepository.findAll(req, res);
@@ -244,6 +256,7 @@ const changeStatusByOrderId = async (req, res) => {
   }
 };
 export default {
+  findAll2,
   findAll,
   findOne,
   create,

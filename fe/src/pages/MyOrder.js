@@ -94,7 +94,7 @@ export default function MyOrder() {
   )
 
   const filterOrder = (page) => {
-    var url = (`http://localhost:9999/orders?page=1&user=${user._id}`);
+    var url = (`http://localhost:9999/orders/all?page=1&user=${user._id}`);
 
     if (fromDate === '' && toDate === '') url += `&page=${page}`;
 
