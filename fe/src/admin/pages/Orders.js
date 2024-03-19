@@ -11,19 +11,28 @@ import Modal from "react-bootstrap/Modal";
 import { toast } from "react-toastify";
 import { AiFillCaretRight } from "react-icons/ai";
 import { date } from "yup";
+import axios from 'axios'
 
 export default function Orders() {
   const [orders, setOrders] = useState([]); //fetched orders
   const [status, setStatus] = useState([]); //fetched status
   const [lgShow, setLgShow] = useState(false); //modal
-  const effectBadge = ["warning", "warning", "primary", "success", "danger"]; // each status has it badge
-  const colorBadge = [
-    "#9ea954db",
-    "#9ea954db",
-    "#3876a9",
-    "#248e5cd6",
-    "#7c3c3cd6",
-  ]; // each status has it color
+  const effectBadge = {
+    preparing: "warning",
+    pending: "primary",
+    shipping: "primary",
+    preparing: "warning",
+    successful: "success",
+    failed: "danger",
+  };  // each status has it color
+  const colorBadge = {
+    preparing: "#9ea954db",
+    pending: "#3876a9",
+    shipping: "#3876a9",
+    preparing: "#9ea954db",
+    successful: "#248e5cd6",
+    failed: "#7c3c3cd6",
+  };  // each status has it color
   const [currentDetail, setCurrentDetail] = useState([]);
 
   //for filtering
@@ -54,13 +63,16 @@ export default function Orders() {
   };
   //
 
-  useEffect(() => {
-    fetch(`http://localhost:9999/status`)
-      .then((res) => res.json())
-      .then((json) => {
-        setStatus(json);
-      });
-  }, []);
+  useEffect(
+    () => {
+      fetch(`http://localhost:9999/status`)
+        .then(res => res.json())
+        .then(json => {
+          setStatus(json)
+        }
+        );
+    }, []
+  );
 
   const openDetail = (index) => {
     // fetch(`http://localhost:9999/order/` + id)
@@ -77,38 +89,38 @@ export default function Orders() {
   }, [currentPage, orderIdFilter, statusFilter, fromDate, toDate, refresh]);
 
   const filterOrder = (page) => {
-    var url = `http://localhost:9999/orders/?_sort=id&_order=desc`;
+    var url = (`http://localhost:9999/orders/all?page=1`);
 
-    if (fromDate === "" && toDate === "") url += `&_page=${page}&_limit=10`;
+    if (fromDate === '' && toDate === '') url += `&page=${page}`;
 
-    if (statusFilter !== "") {
-      url += "&statusId=" + statusFilter;
+    if (statusFilter !== '') {
+      url += ('&status=' + statusFilter)
     }
-    if (orderIdFilter !== "") {
-      url += "&id=" + orderIdFilter;
+    if (orderIdFilter !== '') {
+      url += ('&id=' + orderIdFilter)
     }
 
-    fetch(url)
-      .then((res) => {
-        const totalCount = res.headers.get("X-Total-Count");
-        setTotalPages(Math.ceil(totalCount / 10));
-        return res.json();
-      })
-      .then((json) => {
-        setOrders(json);
-        if (fromDate !== "") {
+    axios.get(url)
+      .then(res => {
+        setTotalPages(res.data.totalPages);
+        setOrders(res.data.docs);
+        return res.data.docs
+      }
+      )
+      .then(json => {
+        if (fromDate !== '') {
           let temp = [...json];
-          temp = temp.filter((o) => new Date(o.date) >= new Date(fromDate));
+          temp = temp.filter((o) => (new Date(o.date)) >= (new Date(fromDate)));
           setOrders(temp);
         }
-        if (toDate !== "") {
+        if (toDate !== '') {
           let temp = [...json];
           temp = temp.filter((o) => new Date(o.date) <= new Date(toDate));
           setOrders(temp);
         }
       })
       .catch((err) => toast.error(err));
-  };
+  }
   console.log(orders);
   console.log(status);
   useEffect(() => {
@@ -203,15 +215,15 @@ export default function Orders() {
             style={{ background: o.status._id && colorBadge[o.status._id - 1] }}
           >
             <Card.Header className="row">
-              <div className="col-1">
+              <div className="col-4">
                 <div style={{ color: "black" }}>ID: {o._id}</div>
               </div>
-              <div className="col-1">
-                <Badge bg={effectBadge[o.status._id - 1]}>
+              <div className="col-4">
+                <Badge bg={effectBadge[o.status.name]}>
                   {o.status.name}
                 </Badge>
               </div>
-              <div className="col-3">
+              <div className="col-4">
                 <p style={{ color: "black" }}>
                   Create date: {new Date(o.date).toLocaleString()}
                 </p>
@@ -228,7 +240,7 @@ export default function Orders() {
                   >
                     {status?.map((s) => (
                       <option key={s.id} value={s._id}>
-                        {o.status.name}
+                        {s.name}
                       </option>
                     ))}
                   </Form.Select>{" "}
