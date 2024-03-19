@@ -26,14 +26,15 @@ const VnpayReturn = () => {
                   axios
                     .patch(`http://localhost:9999/orders/${res.data._id}`, {
                       isPaid: true
-                    })
+                    }, )
                     .then(() => {
                       // localStorage.removeItem('cart')
                       // toast.success('Success payment');
                       // navigate('/myOrder');
                     })
-                    .catch(() => {
-                      toast.success('Failed to update paid status. Please contact to admin!');
+                    .catch((err) => {
+                      console.log(err)
+                      // toast.success('Failed to update paid status. Please contact to admin!');
                       navigate('/myOrder');
                     })
                 }
