@@ -49,19 +49,19 @@ export default function Dashboard() {
   const [orders, setOrders] = useState([]); //fetched orders
   useEffect(() => {
     axios.get(
-      `https://app.vinamall.vn//orders/find-order-by-status/successful
+      `https://app.vinamall.vn/orders/find-order-by-status/successful
       `
     )
       .then((res) => res.data)
       .then((json) => setOrders(json));
 
-    axios.get(`https://app.vinamall.vn//brands`)
+    axios.get(`https://app.vinamall.vn/brands`)
       .then((res) => res.data)
       .then((json) => {
         setBrands(json)
       });
 
-    axios.get(`https://app.vinamall.vn//categories`)
+    axios.get(`https://app.vinamall.vn/categories`)
       .then((res) => res.data)
       .then((json) => {
         setCategories(json.data)

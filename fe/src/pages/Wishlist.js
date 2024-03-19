@@ -13,7 +13,7 @@ const Wishlist = () => {
 
   const fetchData = () => {
     axios
-      .get(`https://app.vinamall.vn//wishlists?user=${user._id}`)
+      .get(`https://app.vinamall.vn/wishlists?user=${user._id}`)
       .then((res) => res.data.docs)
       .then((data) => {
         setWishList(data);
@@ -38,7 +38,7 @@ const Wishlist = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`https://app.vinamall.vn//wishlists/${wishlistId}`)
+          .delete(`https://app.vinamall.vn/wishlists/${wishlistId}`)
           .then(() => {
             Swal.fire(
               'Deleted!',

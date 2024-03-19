@@ -49,7 +49,7 @@ const Brandlist = () => {
     const { name } = values;
 
     axios
-      .post(`https://app.vinamall.vn//brands`, {
+      .post(`https://app.vinamall.vn/brands`, {
         name,
       }, {
         headers: {
@@ -67,7 +67,7 @@ const Brandlist = () => {
     const { name } = values;
 
     axios
-      .patch(`https://app.vinamall.vn//brands/${brand._id}`, {
+      .patch(`https://app.vinamall.vn/brands/${brand._id}`, {
         name,
       }, {
         headers: {
@@ -103,7 +103,7 @@ const Brandlist = () => {
   };
 
   const fetchBrands = (page) => {
-    let url = `https://app.vinamall.vn//brands/all?page=${page}`;
+    let url = `https://app.vinamall.vn/brands/all?page=${page}`;
 
     if (nameSearch) {
       url += `&name=${nameSearch}`;

@@ -22,7 +22,7 @@ const Cart = () => {
     Promise.all(  //wait for all of the fetch requests to complete before updating the state with the fetched data.
       cart?.map((c) => {
         return axios
-          .get(`https://app.vinamall.vn//products/${c.product}`)
+          .get(`https://app.vinamall.vn/products/${c.product}`)
           .then((res) => res.data)
           .then(json => {
             json.index = c.id;  // index of products will match cart id

@@ -59,7 +59,7 @@ const Addblog = () => {
 
   useEffect(() => {
     axios
-      .get("https://app.vinamall.vn//categories")
+      .get("https://app.vinamall.vn/categories")
       .then((res) => res.data)
       .then((data) => {
         const c = [];
@@ -102,7 +102,7 @@ const Addblog = () => {
     formData.append('image', newBlog.image);
     formData.append('isDeleted', newBlog.isDeleted);
     axios
-      .post(`https://app.vinamall.vn//blogs`, formData, {
+      .post(`https://app.vinamall.vn/blogs`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${JSON.parse(localStorage.getItem("data")).accessToken}`

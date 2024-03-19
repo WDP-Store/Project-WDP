@@ -65,7 +65,7 @@ export default function Orders() {
 
   useEffect(
     () => {
-      fetch(`https://app.vinamall.vn//status`)
+      fetch(`https://app.vinamall.vn/status`)
         .then(res => res.json())
         .then(json => {
           setStatus(json)
@@ -75,7 +75,7 @@ export default function Orders() {
   );
 
   const openDetail = (index) => {
-    // fetch(`https://app.vinamall.vn//order/` + id)
+    // fetch(`https://app.vinamall.vn/order/` + id)
     //   .then((res) => res.json())
     //   .then((json) => {
     //     setCurrentDetail(json);
@@ -89,7 +89,7 @@ export default function Orders() {
   }, [currentPage, orderIdFilter, statusFilter, fromDate, toDate, refresh]);
 
   const filterOrder = (page) => {
-    var url = (`https://app.vinamall.vn//orders/all?page=1`);
+    var url = (`https://app.vinamall.vn/orders/all?page=1`);
 
     if (fromDate === '' && toDate === '') url += `&page=${page}`;
 
@@ -140,7 +140,7 @@ export default function Orders() {
 
   const updateStatus = (value, index, id) => {
     //index is index of orders in orders useState , id is its order id
-    fetch("https://app.vinamall.vn//orders/" + id, {
+    fetch("https://app.vinamall.vn/orders/" + id, {
       method: "PUT",
       body: JSON.stringify({
         ...orders[index],

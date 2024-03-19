@@ -33,7 +33,7 @@ export default function Feedback() {
   //
 
   const handleFilter = (page) => {
-    var url = `https://app.vinamall.vn//feedbacks/?_sort=id&_order=desc&_page=${page}&_limit=10`;
+    var url = `https://app.vinamall.vn/feedbacks/?_sort=id&_order=desc&_page=${page}&_limit=10`;
     if (product !== "") {
       url += "&productId=" + product;
     }

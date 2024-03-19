@@ -44,7 +44,7 @@ const Checkout = () => {
     Promise.all(  //wait for all of the fetch requests to complete before updating the state with the fetched data.
       cart.map((c) => {
         return axios
-          .get(`https://app.vinamall.vn//products/${c.product}`)
+          .get(`https://app.vinamall.vn/products/${c.product}`)
           .then((res) => res.data)
           .then(json => {
             json.index = c.id;  // index of products will match cart id
@@ -58,7 +58,7 @@ const Checkout = () => {
 
   useEffect(() => {
     axios
-      .get(`https://app.vinamall.vn//users/${user._id}`)
+      .get(`https://app.vinamall.vn/users/${user._id}`)
       .then((res) => setUser(res.data))
   }, [])
 
@@ -110,13 +110,13 @@ const Checkout = () => {
 
     if (temp.paymentMethod === "VNPAY") {
       axios
-        .post(`https://app.vinamall.vn//orders/create-payment-url`, temp)
+        .post(`https://app.vinamall.vn/orders/create-payment-url`, temp)
         .then((res1) => {
           const urlParams = new URLSearchParams(res1.data.url);
           const vnpOrderInfo = urlParams.get('vnp_OrderInfo');
 
           axios
-            .post(`https://app.vinamall.vn//orders`, {
+            .post(`https://app.vinamall.vn/orders`, {
               ...temp,
               orderVnpayId: vnpOrderInfo
             })
@@ -130,7 +130,7 @@ const Checkout = () => {
         });
     } else {
       axios
-        .post(`https://app.vinamall.vn//orders`, temp)
+        .post(`https://app.vinamall.vn/orders`, temp)
         .then(() => {
           localStorage.removeItem('cart')
           toast.success("Order created!")

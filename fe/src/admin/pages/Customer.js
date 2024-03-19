@@ -36,7 +36,7 @@ export default function Customer() {
   };
 
   const fetchUsers = (page) => {
-    let url = `https://app.vinamall.vn//users?page=${page}`;
+    let url = `https://app.vinamall.vn/users?page=${page}`;
 
     if (nameSearch) {
       url += `&name=${nameSearch}`;
@@ -66,7 +66,7 @@ export default function Customer() {
 
   const changeStatus = (userId, status) => {
     axios
-      .patch(`https://app.vinamall.vn//users/${userId}`, {
+      .patch(`https://app.vinamall.vn/users/${userId}`, {
         status: !status,
       })
       .then((res) => {
