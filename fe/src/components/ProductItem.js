@@ -133,6 +133,7 @@ const ProductItem = (props) => {
               <img src={product.images[0]} alt="" style={{ width: "95%" }} />
             )}
           </div>
+          <div class="product-card">
           <div className="product-details">
             <h6 className="brand">{brand}</h6>
             <h5 className="product-title">
@@ -146,6 +147,7 @@ const ProductItem = (props) => {
               activeColor="#ffd700"
             />
             <p className="price">${product.price}</p>
+          </div>
           </div>
         </Link>
 
