@@ -7,7 +7,7 @@ import SpecialProduct from "../components/SpecialProduct";
 import Container from "../components/Container";
 import axios from "axios";
 import ProductItem from "../components/ProductItem";
-import logoBanner1 from "../images/main-banner-1.jpg";
+
 import BannerCarousel from "../components/BannerCarousel";
 //import { services } from "../utils/Data";
 import ProductCarouselV1 from "./../components/ProductCarouselV1";
@@ -47,14 +47,14 @@ const Home = () => {
         className="adaptive_height image slide-pc"
         style={{ position: "relative", zIndex: 1 }}
       >
-        <img
-          srcset="//new-ella-demo.myshopify.com/cdn/shop/files/home-19-slider-1.jpg?v=1645001949&amp;width=375 375w,//new-ella-demo.myshopify.com/cdn/shop/files/home-19-slider-1.jpg?v=1645001949&amp;width=740 740w,//new-ella-demo.myshopify.com/cdn/shop/files/home-19-slider-1.jpg?v=1645001949&amp;width=750 750w,//new-ella-demo.myshopify.com/cdn/shop/files/home-19-slider-1.jpg?v=1645001949&amp;width=1100 1100w,//new-ella-demo.myshopify.com/cdn/shop/files/home-19-slider-1.jpg?v=1645001949&amp;width=1370 1370w,//new-ella-demo.myshopify.com/cdn/shop/files/home-19-slider-1.jpg?v=1645001949&amp;width=1500 1500w,//new-ella-demo.myshopify.com/cdn/shop/files/home-19-slider-1.jpg?v=1645001949&amp;width=1770 1770w,//new-ella-demo.myshopify.com/cdn/shop/files/home-19-slider-1.jpg?v=1645001949&amp;width=1780 1780w,//new-ella-demo.myshopify.com/cdn/shop/files/home-19-slider-1.jpg?v=1645001949&amp;width=1880 1880w,"
+        {/* <img
+          srcset="https://salt.tikicdn.com/cache/w500/ts/tmp/24/b8/61/632e5eb432e0277b7897d58a56dbb310.jpg&amp;width=375 375w,https://salt.tikicdn.com/cache/w500/ts/tmp/24/b8/61/632e5eb432e0277b7897d58a56dbb310.jpg&amp;width=740 740w,https://salt.tikicdn.com/cache/w500/ts/tmp/24/b8/61/632e5eb432e0277b7897d58a56dbb310.jpg&amp;width=750 750w,https://salt.tikicdn.com/cache/w500/ts/tmp/24/b8/61/632e5eb432e0277b7897d58a56dbb310.jpg&amp;width=1100 1100w,https://salt.tikicdn.com/cache/w500/ts/tmp/24/b8/61/632e5eb432e0277b7897d58a56dbb310.jpg&amp;width=1370 1370w,https://salt.tikicdn.com/cache/w500/ts/tmp/24/b8/61/632e5eb432e0277b7897d58a56dbb310.jpg&amp;width=1500 1500w,https://salt.tikicdn.com/cache/w500/ts/tmp/24/b8/61/632e5eb432e0277b7897d58a56dbb310.jpg&amp;width=1770 1770w,https://salt.tikicdn.com/cache/w500/ts/tmp/24/b8/61/632e5eb432e0277b7897d58a56dbb310.jpg&amp;width=1780 1780w,https://salt.tikicdn.com/cache/w500/ts/tmp/24/b8/61/632e5eb432e0277b7897d58a56dbb310.jpg&amp;width=1880 1880w,"
           sizes="100vw"
-          src="//new-ella-demo.myshopify.com/cdn/shop/files/home-19-slider-1.jpg?v=1645001949&amp;width=750"
+          src="https://salt.tikicdn.com/cache/w500/ts/tmp/24/b8/61/632e5eb432e0277b7897d58a56dbb310.jpg&amp;width=750"
           alt="Slider-image"
           width="1800"
           height="400"
-        />
+        /> */}
         <div className="content-over-image">
           <h2
             className="slide-heading slide-pc"
@@ -66,19 +66,19 @@ const Home = () => {
               // marginBottom: "23px",
             }}
           >
-            <strong style={{ color: "#10ffda" }}>Huge Saving</strong> on <br />{" "}
-            UHD Televisions
+            <strong style={{ color: "#10ffda" }}></strong>  <br />{" "}
+           
           </h2>
           <p class="slide-text slide-pc">
-            Sale up to 70% off on selected items*
+          
           </p>
-          <Link
+          {/* <Link
             to="/product"
             className="slide-button button"
             style={{ textDecoration: "none", marginTop: "1rem" }}
           >
-            Shop Now
-          </Link>
+            
+          </Link> */}
         </div>
       </div>
       <div class1="home-wrapper-1 py-5" className="container block-item">
@@ -89,14 +89,14 @@ const Home = () => {
           <div className="col-12">
             <div className="main-banner position-relative ">
               <img
-                src={logoBanner1}
+                src="https://salt.tikicdn.com/cache/750x750/ts/product/11/b2/ee/5483470d9ef36e7be8abad581ffb4fc9.jpg.webp"
                 className="img-fluid rounded-3"
                 alt="main banner"
               />
               <div className="main-banner-content position-absolute">
-                <h4>SUPERCHARGED FOR PROS.</h4>
-                <h5>iPad S13+ Pro.</h5>
-                <p>From $999.00 or $41.62/mo.</p>
+                <h4>Trinh thám - Kinh dị</h4>
+                <h2>Tết ở làng địa ngục</h2>
+                <p>$ 99.000đ.</p>
                 <Link className="button">BUY NOW</Link>
               </div>
             </div>
@@ -225,7 +225,7 @@ const Home = () => {
           <div className="col-12">
             <img
               className="w-100"
-              src="https://img.tgdd.vn/imgt/f_webp,fit_outside,quality_100/https://cdn.tgdd.vn/2024/02/banner/Tagline-HS-1200x120.png"
+              src=""
               alt=""
             />
           </div>
