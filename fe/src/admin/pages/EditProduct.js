@@ -409,7 +409,7 @@ const EditProduct = () => {
                     {product.color?.map((c, index) => (
                       <Row key={index} className="mb-3">
                         <Col xs={12} lg={6}>
-                          <label>Language</label>
+                          <label>Color</label>
                           <CustomInput type="text" defaultValue={c} disabled />
                         </Col>
                         <Col xs={10} lg={4}>
@@ -444,11 +444,11 @@ const EditProduct = () => {
                             values.product.map((product, index) => (
                               <Row key={index} className="mb-3">
                                 <Col xs={12} lg={6}>
-                                  <label>Language</label>
+                                  <label>Color</label>
                                   <CustomInput
                                     type="text"
                                     name={`product.${index}.color`}
-                                    placeholder="Language..."
+                                    placeholder="Color..."
                                     onChange={formik.handleChange(
                                       `product.${index}.color`
                                     )}

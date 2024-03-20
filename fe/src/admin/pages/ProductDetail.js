@@ -130,7 +130,7 @@ const ProductDetail = () => {
                 </div> */}
               </div>
               <div className=" py-3">
-                <h3 className="product-heading pb-2">Language :</h3>
+                <h3 className="product-heading pb-2">Color :</h3>
                 <div
                   className="btn-group"
                   role="group"

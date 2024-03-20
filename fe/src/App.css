@@ -213,17 +213,6 @@ footer .service_wrapper span{
   letter-spacing: 0.3px;
   text-transform: uppercase;
 }
-.main-banner-content {
-  top: 15%; /* Di chuyển nội dung lên trên 50% của phần tử cha */
-  left: 45%; /* Di chuyển nội dung sang trái 50% của phần tử cha */
-  transform: translate(-50%, -50%); /* Dịch chuyển nội dung đi ngược lại 50% chiều ngang và 50% chiều dọc để căn giữa */
-  text-align: center; /* Canh giữa nội dung theo chiều ngang */
-  position: absolute; /* Đặt vị trí tuyệt đối để căn chỉnh theo tọa độ của phần tử cha */
-  background-color: rgba(145, 130, 130, 0.8); /* Màu nền cho nội dung */
-  padding: 20px; /* Khoảng cách giữa nội dung và khung ảnh */
-  border-radius: 10px; /* Bo góc cho nội dung */
-}
-
 
 .main-banner-content h5 {
   font-size: 42px;
@@ -395,39 +384,6 @@ footer .service_wrapper span{
 /*  Blog Part ends here */
 
 /* Product Card */
-/* CSS cho các card sản phẩm */
-.product-card {
-  border: 1px solid #ccc;
- margin-top: auto;
-  border-radius: 8px;
-  padding: 10px;
-  margin: 0px;
-  width: 100px; /* Điều chỉnh kích thước tùy theo nhu cầu */
-  display: inline-block; /* Hiển thị các card cùng một hàng */
-}
-
-/* CSS cho các thông tin sản phẩm trong card */
-.product-details {
-  text-align: center;
-}
-
-/* CSS cho tên thương hiệu */
-.brand {
-  font-size: 14px;
-  color: #333;
-}
-
-/* CSS cho tiêu đề sản phẩm */
-.product-title {
-  font-size: 18px;
-  color: #222;
-}
-
-/* CSS cho giá sản phẩm */
-.price {
-  font-size: 16px;
-  color: #555;
-}
 
 .product-card {
   padding: 15px;

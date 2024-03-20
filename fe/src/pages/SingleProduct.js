@@ -263,7 +263,7 @@ const SingleProduct = () => {
                 </div>
               </div>
               <div className=" py-3">
-                <h3 className="product-heading pb-2">Language :</h3>
+                <h3 className="product-heading pb-2">Color :</h3>
                 <div className="btn-group flex-wrap" role="group" aria-label="Basic radio toggle button group">
                   {color && color.length > 0 && color.map((cl, index) =>
                     <div key={cl}>
