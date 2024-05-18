@@ -5,7 +5,7 @@ import { AiOutlineHome, AiOutlineMail } from "react-icons/ai";
 import { BiPhoneCall, BiInfoCircle } from "react-icons/bi";
 import Container from "../components/Container";
 import { toast } from "react-toastify";
-import axios from 'axios'
+import axios from 'axios';
 
 const Contact = () => {
   const [name, setName] = useState("");
@@ -25,7 +25,7 @@ const Contact = () => {
     };
 
     // Gửi yêu cầu POST để lưu dữ liệu mới
-    axios.post("https://app.vinamall.vn/contacts", newContact)
+    axios.post("http://wdp.bachgiaphat.vn/contacts", newContact)
       .then((response) => response.data)
       .then((data) => {
         toast.success("Successfully submit contact");

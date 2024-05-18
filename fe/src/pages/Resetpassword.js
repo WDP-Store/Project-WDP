@@ -33,7 +33,7 @@ const Resetpassword = () => {
   const checkToken = token.slice(separatorIndex + 1);
 
   useEffect(() => {
-    fetch(`https://app.vinamall.vn/users?token=${checkToken}`)
+    fetch(`http://wdp.bachgiaphat.vn/users?token=${checkToken}`)
       .then((res) => res.json())
       .then((resp) => {
         if (Object.keys(resp).length === 0) {
@@ -47,7 +47,7 @@ const Resetpassword = () => {
     if (password !== confirmPassword) {
       toast.error("Confirm password does not match");
     } else {
-      fetch(`https://app.vinamall.vn/users/${email}`, {
+      fetch(`http://wdp.bachgiaphat.vn/users/${email}`, {
         method: "PATCH",
         body: JSON.stringify({
           password: hashCode().hash(password),

@@ -48,13 +48,13 @@ const Blog = () => {
   };
 
   const handleFilter = (page) => {
-    var url = `https://app.vinamall.vn/blogs?page=${page}`;
+    var url = `http://wdp.bachgiaphat.vn/blogs?page=${page}`;
 
     if (category_f.length != 0) {
       category_f?.map((b) => (url += "&category=" + b));
     }
 
-    console.log(category_f)
+    console.log(category_f);
     axios(url)
       .then((res) => {
         setTotalPages(res.data.totalPages);
@@ -69,7 +69,7 @@ const Blog = () => {
 
   useEffect(() => {
     axios
-      .get("https://app.vinamall.vn/categories")
+      .get("http://wdp.bachgiaphat.vn/categories")
       .then((res) => res.data)
       .then((data) => {
         setCategories(data);

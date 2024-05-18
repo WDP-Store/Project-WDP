@@ -16,7 +16,7 @@ const ProductCard = (props) => {
 
   useEffect(() => {
     axios
-      .get("https://app.vinamall.vn/brands")
+      .get("http://wdp.bachgiaphat.vn/brands")
       .then((res) => res.data)
       .then((data) => {
         setBrands(data);
@@ -31,10 +31,10 @@ const ProductCard = (props) => {
       >
         <Link
           to={`${location.pathname === "/"
+            ? `/product/${product?.id}`
+            : location.pathname === `/product/${product?.id}`
               ? `/product/${product?.id}`
-              : location.pathname === `/product/${product?.id}`
-                ? `/product/${product?.id}`
-                : `${product?.id}`
+              : `${product?.id}`
             }`}
           className="product-card position-relative"
         >

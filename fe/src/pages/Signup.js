@@ -19,7 +19,7 @@ const Signup = () => {
     password: "",
   });
 
-  console.log(formData)
+  console.log(formData);
 
   const [errors, setErrors] = useState({});
 
@@ -27,7 +27,7 @@ const Signup = () => {
     e.preventDefault();
     const isValid = handleValidate(formData);
     if (isValid) {
-      axios.post("https://app.vinamall.vn/auth/register", formData)
+      axios.post("http://wdp.bachgiaphat.vn/auth/register", formData)
         .then(response => {
           navigate("/login");
         })
@@ -36,7 +36,7 @@ const Signup = () => {
         });
     };
 
-  }
+  };
 
 
 

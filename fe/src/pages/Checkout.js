@@ -8,7 +8,7 @@ import Form from 'react-bootstrap/Form';
 import * as formik from 'formik';
 import * as yup from 'yup';
 import Swal from "sweetalert2";
-import axios from 'axios'
+import axios from 'axios';
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
@@ -36,15 +36,15 @@ const Checkout = () => {
       var temp = 0;
       products.map((p, index) =>
         temp += Number(p.price) * cart[index].quantity
-      )
+      );
       setSubTotal(temp.toFixed(2)); //update subtotal each time cart changes
-    }, [cart, products])
+    }, [cart, products]);
 
   useEffect(() => {
     Promise.all(  //wait for all of the fetch requests to complete before updating the state with the fetched data.
       cart.map((c) => {
         return axios
-          .get(`https://app.vinamall.vn/products/${c.product}`)
+          .get(`http://wdp.bachgiaphat.vn/products/${c.product}`)
           .then((res) => res.data)
           .then(json => {
             json.index = c.id;  // index of products will match cart id
@@ -58,9 +58,9 @@ const Checkout = () => {
 
   useEffect(() => {
     axios
-      .get(`https://app.vinamall.vn/users/${user._id}`)
-      .then((res) => setUser(res.data))
-  }, [])
+      .get(`http://wdp.bachgiaphat.vn/users/${user._id}`)
+      .then((res) => setUser(res.data));
+  }, []);
 
   useEffect(() => {
     setOrder({ //preset the order information based on user's information
@@ -88,8 +88,8 @@ const Checkout = () => {
       totalAmount: Number(subTotal),
       date: new Date(),
       status: "65c9987222000fd0245fe3e4"
-    })
-  }, [user, products, subTotal])
+    });
+  }, [user, products, subTotal]);
 
   const checkOut = (values) => { //change the order preset by value that inputed from form
     var temp = {
@@ -104,45 +104,45 @@ const Checkout = () => {
         state: values.state,
         zipcode: values.zipcode
       }
-    }
-    console.log("temp")
-    console.log(temp)
+    };
+    console.log("temp");
+    console.log(temp);
 
     if (temp.paymentMethod === "VNPAY") {
       axios
-        .post(`https://app.vinamall.vn/orders/create-payment-url`, temp)
+        .post(`http://wdp.bachgiaphat.vn/orders/create-payment-url`, temp)
         .then((res1) => {
           const urlParams = new URLSearchParams(res1.data.url);
           const vnpOrderInfo = urlParams.get('vnp_OrderInfo');
 
           axios
-            .post(`https://app.vinamall.vn/orders`, {
+            .post(`http://wdp.bachgiaphat.vn/orders`, {
               ...temp,
               orderVnpayId: vnpOrderInfo
             })
             .then((res2) => {
               window.location.replace(res1.data.url);
             })
-            .catch(() => toast.error("Something went wrong!"))
+            .catch(() => toast.error("Something went wrong!"));
         })
         .catch((e) => {
-          toast.error("Something went wrong!")
+          toast.error("Something went wrong!");
         });
     } else {
       axios
-        .post(`https://app.vinamall.vn/orders`, temp)
+        .post(`http://wdp.bachgiaphat.vn/orders`, temp)
         .then(() => {
-          localStorage.removeItem('cart')
-          toast.success("Order created!")
-          navigate('/myOrder')
+          localStorage.removeItem('cart');
+          toast.success("Order created!");
+          navigate('/myOrder');
         })
         .catch(() => toast.error("Something went wrong!"));
     }
-  }
+  };
 
   useEffect(() => {
-    console.log(order)
-  }, [order])
+    console.log(order);
+  }, [order]);
 
   return (
     <>
@@ -187,7 +187,7 @@ const Checkout = () => {
                 validationSchema={schema}
                 onSubmit={
                   (values) => {
-                    checkOut(values)
+                    checkOut(values);
                   }
                 }
                 enableReinitialize={true}

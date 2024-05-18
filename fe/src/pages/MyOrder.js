@@ -11,7 +11,7 @@ import Modal from 'react-bootstrap/Modal';
 import { toast } from 'react-toastify';
 import { AiFillCaretRight } from "react-icons/ai";
 import { date } from "yup";
-import axios from "axios"
+import axios from "axios";
 
 export default function MyOrder() {
 
@@ -40,12 +40,12 @@ export default function MyOrder() {
   const user = JSON.parse(localStorage.getItem("data"));
 
   //for filtering
-  const [statusFilter, setStatusFilter] = useState('')
-  const [orderIdFilter, setOrderIdFilter] = useState('')
-  const [fromDate, setfromDate] = useState('')
-  const [toDate, settoDate] = useState('')
+  const [statusFilter, setStatusFilter] = useState('');
+  const [orderIdFilter, setOrderIdFilter] = useState('');
+  const [fromDate, setfromDate] = useState('');
+  const [toDate, settoDate] = useState('');
 
-  const [refresh, setRefresh] = useState(true)
+  const [refresh, setRefresh] = useState(true);
   //pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -69,52 +69,52 @@ export default function MyOrder() {
 
   useEffect(
     () => {
-      fetch(`https://app.vinamall.vn/status`)
+      fetch(`http://wdp.bachgiaphat.vn/status`)
         .then(res => res.json())
         .then(json => {
-          setStatus(json)
+          setStatus(json);
         }
         );
     }, []
   );
 
   const openDetail = (index) => {
-    // fetch(`https://app.vinamall.vn/order/` + id)
+    // fetch(`http://wdp.bachgiaphat.vn/order/` + id)
     //   .then(res => res.json())
     //   .then(json => {
     //     setCurrentDetail(json)
     //   }
     //   );
-    setCurrentDetail(orders[index])
-  }
+    setCurrentDetail(orders[index]);
+  };
 
   useEffect(() => { //filter with status, order id
     filterOrder(currentPage);
   }, [currentPage, orderIdFilter, statusFilter, fromDate, toDate, refresh]
-  )
+  );
 
   const filterOrder = (page) => {
-    var url = (`https://app.vinamall.vn/orders/all?page=1&user=${user._id}`);
+    var url = (`http://wdp.bachgiaphat.vn/orders/all?page=1&user=${user._id}`);
 
     if (fromDate === '' && toDate === '') url += `&page=${page}`;
 
     if (statusFilter !== '') {
-      url += ('&status=' + statusFilter)
+      url += ('&status=' + statusFilter);
     }
     if (orderIdFilter !== '') {
-      url += ('&id=' + orderIdFilter)
+      url += ('&id=' + orderIdFilter);
     }
 
     axios.get(url)
       .then(res => {
         setTotalPages(res.data.totalPages);
         setOrders(res.data.docs);
-        return res.data.docs
+        return res.data.docs;
       }
       )
       .then(json => {
-        console.log("jsonjsonjsonjson")
-        console.log(json)
+        console.log("jsonjsonjsonjson");
+        console.log(json);
         if (fromDate !== '') {
           let temp = [...json];
           temp = temp.filter((o) => (new Date(o.date)) >= (new Date(fromDate)));
@@ -127,7 +127,7 @@ export default function MyOrder() {
         }
       })
       .catch((err) => toast.error(err));
-  }
+  };
 
   return (
     <Container lg={10}>
@@ -224,7 +224,7 @@ export default function MyOrder() {
                 <Card.Text className="col-2">
                   $ {o.totalAmount}
                 </Card.Text>
-                <Button onClick={() => { setLgShow(true); openDetail(index) }} className="btn-light btn-outline-dark">Detail</Button>
+                <Button onClick={() => { setLgShow(true); openDetail(index); }} className="btn-light btn-outline-dark">Detail</Button>
               </Card.Body>
             </Card>
           </div>
@@ -270,7 +270,7 @@ export default function MyOrder() {
                     {currentDetail?.productList?.map((p, index) =>
                       <tr key={index}>
                         <td>{index + 1}</td>
-                        <td><button onClick={() => { window.location = `/product/${p.productId}` }} type='button' style={{ minWidth: "10ch" }} className='btn btn-dark'>{p.productId} <AiFillCaretRight className='m-0' /></button></td>
+                        <td><button onClick={() => { window.location = `/product/${p.productId}`; }} type='button' style={{ minWidth: "10ch" }} className='btn btn-dark'>{p.productId} <AiFillCaretRight className='m-0' /></button></td>
                         <td>{p.productName}</td>
                         <td>{p.quantity}</td>
                         <td>{Number(p.unitPrice) * p.quantity}</td>
@@ -288,5 +288,5 @@ export default function MyOrder() {
         </Modal.Body>
       </Modal>
     </Container>
-  )
+  );
 }

@@ -19,7 +19,7 @@ const Home = () => {
 
   useEffect(() => {
     axios
-      .get("https://app.vinamall.vn/products/fe")
+      .get("http://wdp.bachgiaphat.vn/products/fe")
       .then((res) => res.data)
       .then((data) => {
         console.log(data);
@@ -27,14 +27,14 @@ const Home = () => {
       });
 
     axios
-      .get("https://app.vinamall.vn/products?featured=true")
+      .get("http://wdp.bachgiaphat.vn/products?featured=true")
       .then((res) => res.data.docs)
       .then((data) => {
         setlast8Product(data.slice(-8));
       });
 
     axios
-      .get("https://app.vinamall.vn/blogs")
+      .get("http://wdp.bachgiaphat.vn/blogs")
       .then((res) => res.data.docs)
       .then((data) => {
         setLast4Blogs(data.slice(-4));

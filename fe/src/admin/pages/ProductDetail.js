@@ -17,7 +17,7 @@ const ProductDetail = () => {
   const { images } = products;
 
   useEffect(() => {
-    axios(`https://app.vinamall.vn/products/${id}`)
+    axios(`http://wdp.bachgiaphat.vn/products/${id}`)
       .then((res) => {
         console.log(res);
         setProducts(res.data);
@@ -26,7 +26,7 @@ const ProductDetail = () => {
   }, [id]);
 
   useEffect(() => {
-    axios(`https://app.vinamall.vn/feedbacks?product=${id}`)
+    axios(`http://wdp.bachgiaphat.vn/feedbacks?product=${id}`)
       .then((res) => {
         setFeedbacks(res.data?.docs);
       })
@@ -34,7 +34,7 @@ const ProductDetail = () => {
   }, []);
 
   useEffect(() => {
-    axios(`https://app.vinamall.vn/users`)
+    axios(`http://wdp.bachgiaphat.vn/users`)
       .then((res) => {
         setUsers(res.data);
       })

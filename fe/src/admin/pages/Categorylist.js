@@ -49,7 +49,7 @@ const Categorylist = () => {
     const { name } = values;
 
     axios
-      .post(`https://app.vinamall.vn/categories`, {
+      .post(`http://wdp.bachgiaphat.vn/categories`, {
         name,
       }, {
         headers: {
@@ -67,7 +67,7 @@ const Categorylist = () => {
     const { name } = values;
 
     axios
-      .patch(`https://app.vinamall.vn/categories/${category._id}`, {
+      .patch(`http://wdp.bachgiaphat.vn/categories/${category._id}`, {
         name,
       }, {
         headers: {
@@ -103,7 +103,7 @@ const Categorylist = () => {
   };
 
   const fetchCategories = (page) => {
-    let url = `https://app.vinamall.vn/categories/all?page=${page}`;
+    let url = `http://wdp.bachgiaphat.vn/categories/all?page=${page}`;
 
     if (nameSearch) {
       url += `&name=${nameSearch}`;
@@ -215,7 +215,7 @@ const Categorylist = () => {
                       onClick={() => {
                         setAction("Edit");
                         formik.setFieldValue("name", c.name);
-                        setCategory(c)
+                        setCategory(c);
                         handleShow();
                       }}
                     >

@@ -18,7 +18,7 @@ const Productlist = () => {
 
   useEffect(() => {
     axios
-      .get("https://app.vinamall.vn/brands")
+      .get("http://wdp.bachgiaphat.vn/brands")
       .then((res) => res.data)
       .then((data) => {
         setBrands(data);
@@ -27,7 +27,7 @@ const Productlist = () => {
 
   useEffect(() => {
     axios
-      .get("https://app.vinamall.vn/categories")
+      .get("http://wdp.bachgiaphat.vn/categories")
       .then((res) => res.data)
       .then((data) => {
         setCategories(data);
@@ -35,7 +35,7 @@ const Productlist = () => {
   }, []);
 
   const fetchProducts = (page) => {
-    let url = `https://app.vinamall.vn/products?page=${page}`;
+    let url = `http://wdp.bachgiaphat.vn/products?page=${page}`;
 
     if (nameSearch) {
       url += `&name=${nameSearch}`;
@@ -100,7 +100,7 @@ const Productlist = () => {
 
   const deleteProduct = (productId) => {
     axios
-      .delete(`https://app.vinamall.vn/products/${productId}`, {
+      .delete(`http://wdp.bachgiaphat.vn/products/${productId}`, {
         headers: {
           'Authorization': `Bearer ${JSON.parse(localStorage.getItem("data")).accessToken}`
         }
@@ -116,7 +116,7 @@ const Productlist = () => {
 
   const changeStatus = (productId, status) => {
     axios
-      .patch(`https://app.vinamall.vn/products/${productId}`, {
+      .patch(`http://wdp.bachgiaphat.vn/products/${productId}`, {
         status: !status,
       }, {
         headers: {
@@ -130,7 +130,7 @@ const Productlist = () => {
       .catch((error) => {
         toast.error(error.message);
       });
-    // fetch(`https://app.vinamall.vn/products/${productId}`, {
+    // fetch(`http://wdp.bachgiaphat.vn/products/${productId}`, {
     //   method: "PATCH",
     //   body: JSON.stringify({
     //     status: !status,
@@ -154,7 +154,7 @@ const Productlist = () => {
 
   const changeFeatured = (productId, featured) => {
     axios
-      .patch(`https://app.vinamall.vn/products/${productId}`, {
+      .patch(`http://wdp.bachgiaphat.vn/products/${productId}`, {
         featured: !featured,
       }, {
         headers: {

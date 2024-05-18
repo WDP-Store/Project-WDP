@@ -11,7 +11,7 @@ import Modal from "react-bootstrap/Modal";
 import { toast } from "react-toastify";
 import { AiFillCaretRight } from "react-icons/ai";
 import { date } from "yup";
-import axios from 'axios'
+import axios from 'axios';
 
 export default function Orders() {
   const [orders, setOrders] = useState([]); //fetched orders
@@ -65,17 +65,17 @@ export default function Orders() {
 
   useEffect(
     () => {
-      fetch(`https://app.vinamall.vn/status`)
+      fetch(`http://wdp.bachgiaphat.vn/status`)
         .then(res => res.json())
         .then(json => {
-          setStatus(json)
+          setStatus(json);
         }
         );
     }, []
   );
 
   const openDetail = (index) => {
-    // fetch(`https://app.vinamall.vn/order/` + id)
+    // fetch(`http://wdp.bachgiaphat.vn/order/` + id)
     //   .then((res) => res.json())
     //   .then((json) => {
     //     setCurrentDetail(json);
@@ -89,22 +89,22 @@ export default function Orders() {
   }, [currentPage, orderIdFilter, statusFilter, fromDate, toDate, refresh]);
 
   const filterOrder = (page) => {
-    var url = (`https://app.vinamall.vn/orders/all?page=1`);
+    var url = (`http://wdp.bachgiaphat.vn/orders/all?page=1`);
 
     if (fromDate === '' && toDate === '') url += `&page=${page}`;
 
     if (statusFilter !== '') {
-      url += ('&status=' + statusFilter)
+      url += ('&status=' + statusFilter);
     }
     if (orderIdFilter !== '') {
-      url += ('&id=' + orderIdFilter)
+      url += ('&id=' + orderIdFilter);
     }
 
     axios.get(url)
       .then(res => {
         setTotalPages(res.data.totalPages);
         setOrders(res.data.docs);
-        return res.data.docs
+        return res.data.docs;
       }
       )
       .then(json => {
@@ -120,7 +120,7 @@ export default function Orders() {
         }
       })
       .catch((err) => toast.error(err));
-  }
+  };
   console.log(orders);
   console.log(status);
   useEffect(() => {
@@ -140,7 +140,7 @@ export default function Orders() {
 
   const updateStatus = (value, index, id) => {
     //index is index of orders in orders useState , id is its order id
-    fetch("https://app.vinamall.vn/orders/" + id, {
+    fetch("http://wdp.bachgiaphat.vn/orders/" + id, {
       method: "PUT",
       body: JSON.stringify({
         ...orders[index],

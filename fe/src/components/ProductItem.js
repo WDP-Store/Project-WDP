@@ -17,10 +17,10 @@ const ProductItem = (props) => {
 
   useEffect(() => {
     axios
-      .get(`https://app.vinamall.vn/wishlists?product=${product?._id}&user=${JSON.parse(localStorage.getItem("data"))?._id}`)
+      .get(`http://wdp.bachgiaphat.vn/wishlists?product=${product?._id}&user=${JSON.parse(localStorage.getItem("data"))?._id}`)
       .then((res) => res.data.docs[0])
       .then((data) => {
-        if (data) setIsWish(true)
+        if (data) setIsWish(true);
         setWish(data);
       });
   }, [isWish]);
@@ -32,10 +32,10 @@ const ProductItem = (props) => {
         icon: 'error',
         title: 'Failed',
         text: 'You have already added this item to wishlist',
-      })
+      });
     } else {
       axios
-        .post(`https://app.vinamall.vn/wishlists`, {
+        .post(`http://wdp.bachgiaphat.vn/wishlists`, {
           // user: JSON.parse(localStorage.getItem("data"))._id,
           user: JSON.parse(localStorage.getItem("data"))._id,
           product: product._id
@@ -45,14 +45,14 @@ const ProductItem = (props) => {
             icon: 'success',
             title: 'Added',
             text: 'Added item to wishlist',
-          })
+          });
         }).catch((e) => {
           Swal.fire({
             icon: 'error',
             title: 'Failed',
             text: `Failed to add wishlist ${e}`,
-          })
-        })
+          });
+        });
     }
     // } else { //not logged in
     //   Swal.fire({
@@ -70,31 +70,31 @@ const ProductItem = (props) => {
     //     }
     //   })
     // }
-  }
+  };
 
   const removeFromWishList = () => {
-    console.log("wish delete")
-    console.log(wish)
+    console.log("wish delete");
+    console.log(wish);
     // if (JSON.parse(localStorage.getItem("data"))) { //if user is logged in
     axios
-      .delete(`https://app.vinamall.vn/wishlists/${wish._id}`, {
+      .delete(`http://wdp.bachgiaphat.vn/wishlists/${wish._id}`, {
         // user: JSON.parse(localStorage.getItem("data"))._id,
         user: JSON.parse(localStorage.getItem("data"))._id,
         product: product._id
       }).then(() => {
-        setIsWish(false)
+        setIsWish(false);
         Swal.fire({
           icon: 'success',
           title: 'Removed',
           text: 'Removed item to wishlist',
-        })
+        });
       }).catch((e) => {
         Swal.fire({
           icon: 'error',
           title: 'Failed',
           text: `Failed to remove from wishlist ${e}`,
-        })
-      })
+        });
+      });
     // } else { //not logged in
     //   Swal.fire({
     //     icon: 'error',
@@ -111,7 +111,7 @@ const ProductItem = (props) => {
     //     }
     //   })
     // }
-  }
+  };
 
   return (
     <>

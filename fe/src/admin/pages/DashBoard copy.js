@@ -3,7 +3,7 @@ import { AiOutlineFall, AiOutlineRise } from "react-icons/ai";
 import { Line, Pie, DualAxes } from "@ant-design/plots";
 import InputGroup from "react-bootstrap/InputGroup";
 import { Button, Col, Form, Row } from "react-bootstrap";
-import axios from "axios"
+import axios from "axios";
 
 export default function Dashboard() {
   const Currentdate = new Date(); //current date
@@ -49,32 +49,32 @@ export default function Dashboard() {
   const [orders, setOrders] = useState([]); //fetched orders
   useEffect(() => {
     axios.get(
-      `https://app.vinamall.vn/orders/find-order-by-status/successful
+      `http://wdp.bachgiaphat.vn/orders/find-order-by-status/successful
       `
     )
       .then((res) => res.data)
       .then((json) => setOrders(json));
 
-    axios.get(`https://app.vinamall.vn/brands`)
+    axios.get(`http://wdp.bachgiaphat.vn/brands`)
       .then((res) => res.data)
       .then((json) => {
-        setBrands(json)
+        setBrands(json);
       });
 
-    axios.get(`https://app.vinamall.vn/categories`)
+    axios.get(`http://wdp.bachgiaphat.vn/categories`)
       .then((res) => res.data)
       .then((json) => {
-        setCategories(json.data)
+        setCategories(json.data);
       });
     document.getElementById("btnradiocate1").checked = true;
     document.getElementById("btnradiozcate1").checked = true;
   }, []);
 
   const getStatisticNumber = (from, to) => {
-    console.log("ordersorders")
-    console.log(orders)
-    console.log(from)
-    console.log(to)
+    console.log("ordersorders");
+    console.log(orders);
+    console.log(from);
+    console.log(to);
     let temp = [...orders];
     temp = temp.filter((o) => new Date(o.date) >= new Date(from));
     temp = temp.filter((o) => new Date(o.date) < new Date(to));
@@ -110,8 +110,8 @@ export default function Dashboard() {
           .map((tp) => (tp.unitPrice - tp.originalPrice) * tp.quantity)
           .reduce((a, b) => a + b)),
         t.productList.map((tp) => {
-          console.log("tppppppppppppppppppppppp")
-          console.log(tp)
+          console.log("tppppppppppppppppppppppp");
+          console.log(tp);
           return [
             // console.log(...data.category.map((c,index) => c._id == tp.categoryId ? index : '' ).filter(c=> c != ''))
             data.category?.map((c, index) =>
@@ -140,7 +140,7 @@ export default function Dashboard() {
                 ? [(c.revenue += tp.originalPrice * tp.quantity)]
                 : []
             ),
-          ]
+          ];
         }),
       ]);
     console.log("datadatadatadatadatadata");
