@@ -26,7 +26,7 @@ const Login = () => {
     const isValid = handleValidate(formData);
     if (isValid) {
       axios
-        .post("http://wdp.bachgiaphat.vn/auth/login", formData)
+        .post("https://wdp.bachgiaphat.vn/auth/login", formData)
         .then((response) => {
           localStorage.setItem("data", JSON.stringify(response.data));
           const userTest = localStorage.getItem("data");

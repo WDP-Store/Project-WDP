@@ -65,7 +65,7 @@ export default function Orders() {
 
   useEffect(
     () => {
-      fetch(`http://wdp.bachgiaphat.vn/status`)
+      fetch(`https://wdp.bachgiaphat.vn/status`)
         .then(res => res.json())
         .then(json => {
           setStatus(json);
@@ -75,7 +75,7 @@ export default function Orders() {
   );
 
   const openDetail = (index) => {
-    // fetch(`http://wdp.bachgiaphat.vn/order/` + id)
+    // fetch(`https://wdp.bachgiaphat.vn/order/` + id)
     //   .then((res) => res.json())
     //   .then((json) => {
     //     setCurrentDetail(json);
@@ -89,7 +89,7 @@ export default function Orders() {
   }, [currentPage, orderIdFilter, statusFilter, fromDate, toDate, refresh]);
 
   const filterOrder = (page) => {
-    var url = (`http://wdp.bachgiaphat.vn/orders/all?page=1`);
+    var url = (`https://wdp.bachgiaphat.vn/orders/all?page=1`);
 
     if (fromDate === '' && toDate === '') url += `&page=${page}`;
 
@@ -140,7 +140,7 @@ export default function Orders() {
 
   const updateStatus = (value, index, id) => {
     //index is index of orders in orders useState , id is its order id
-    fetch("http://wdp.bachgiaphat.vn/orders/" + id, {
+    fetch("https://wdp.bachgiaphat.vn/orders/" + id, {
       method: "PUT",
       body: JSON.stringify({
         ...orders[index],

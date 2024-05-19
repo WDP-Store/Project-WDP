@@ -49,19 +49,19 @@ export default function Dashboard() {
   const [orders, setOrders] = useState([]); //fetched orders
   useEffect(() => {
     axios.get(
-      `http://wdp.bachgiaphat.vn/orders/find-order-by-status/successful
+      `https://wdp.bachgiaphat.vn/orders/find-order-by-status/successful
       `
     )
       .then((res) => res.data)
       .then((json) => setOrders(json));
 
-    axios.get(`http://wdp.bachgiaphat.vn/brands`)
+    axios.get(`https://wdp.bachgiaphat.vn/brands`)
       .then((res) => res.data)
       .then((json) => {
         setBrands(json);
       });
 
-    axios.get(`http://wdp.bachgiaphat.vn/categories`)
+    axios.get(`https://wdp.bachgiaphat.vn/categories`)
       .then((res) => res.data)
       .then((json) => {
         setCategories(json.data);

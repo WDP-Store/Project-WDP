@@ -93,7 +93,7 @@ const AddProduct = () => {
 
   useEffect(() => {
     axios
-      .get("http://wdp.bachgiaphat.vn/brands")
+      .get("https://wdp.bachgiaphat.vn/brands")
       .then((res) => res.data)
       .then((data) => {
         const br = [];
@@ -104,7 +104,7 @@ const AddProduct = () => {
 
   useEffect(() => {
     axios
-      .get("http://wdp.bachgiaphat.vn/categories")
+      .get("https://wdp.bachgiaphat.vn/categories")
       .then((res) => res.data)
       .then((data) => {
         const c = [];
@@ -173,7 +173,7 @@ const AddProduct = () => {
     const { color, images } = product;
 
     axios
-      .post(`http://wdp.bachgiaphat.vn/products`, {
+      .post(`https://wdp.bachgiaphat.vn/products`, {
         name,
         price: Number(price),
         originalPrice: Number(originalPrice),

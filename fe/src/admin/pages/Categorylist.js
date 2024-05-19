@@ -49,7 +49,7 @@ const Categorylist = () => {
     const { name } = values;
 
     axios
-      .post(`http://wdp.bachgiaphat.vn/categories`, {
+      .post(`https://wdp.bachgiaphat.vn/categories`, {
         name,
       }, {
         headers: {
@@ -67,7 +67,7 @@ const Categorylist = () => {
     const { name } = values;
 
     axios
-      .patch(`http://wdp.bachgiaphat.vn/categories/${category._id}`, {
+      .patch(`https://wdp.bachgiaphat.vn/categories/${category._id}`, {
         name,
       }, {
         headers: {
@@ -103,7 +103,7 @@ const Categorylist = () => {
   };
 
   const fetchCategories = (page) => {
-    let url = `http://wdp.bachgiaphat.vn/categories/all?page=${page}`;
+    let url = `https://wdp.bachgiaphat.vn/categories/all?page=${page}`;
 
     if (nameSearch) {
       url += `&name=${nameSearch}`;

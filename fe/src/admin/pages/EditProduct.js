@@ -75,7 +75,7 @@ const EditProduct = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    axios(`http://wdp.bachgiaphat.vn/products/${id}`)
+    axios(`https://wdp.bachgiaphat.vn/products/${id}`)
       .then((res) => {
         return res.data;
       })
@@ -125,7 +125,7 @@ const EditProduct = () => {
 
   useEffect(() => {
     axios
-      .get("http://wdp.bachgiaphat.vn/brands")
+      .get("https://wdp.bachgiaphat.vn/brands")
       .then((res) => res.data)
       .then((data) => {
         const br = [];
@@ -136,7 +136,7 @@ const EditProduct = () => {
 
   useEffect(() => {
     axios
-      .get("http://wdp.bachgiaphat.vn/categories")
+      .get("https://wdp.bachgiaphat.vn/categories")
       .then((res) => res.data)
       .then((data) => {
         const c = [];
@@ -216,7 +216,7 @@ const EditProduct = () => {
     }
 
     axios
-      .patch(`http://wdp.bachgiaphat.vn/products/${id}`, {
+      .patch(`https://wdp.bachgiaphat.vn/products/${id}`, {
         name,
         price: Number(price),
         originalPrice: Number(originalPrice),
@@ -269,7 +269,7 @@ const EditProduct = () => {
 
     setIsLoading(true);
     axios
-      .patch(`http://wdp.bachgiaphat.vn/products/${id}`, {
+      .patch(`https://wdp.bachgiaphat.vn/products/${id}`, {
         color,
         images,
       }, {

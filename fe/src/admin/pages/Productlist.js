@@ -18,7 +18,7 @@ const Productlist = () => {
 
   useEffect(() => {
     axios
-      .get("http://wdp.bachgiaphat.vn/brands")
+      .get("https://wdp.bachgiaphat.vn/brands")
       .then((res) => res.data)
       .then((data) => {
         setBrands(data);
@@ -27,7 +27,7 @@ const Productlist = () => {
 
   useEffect(() => {
     axios
-      .get("http://wdp.bachgiaphat.vn/categories")
+      .get("https://wdp.bachgiaphat.vn/categories")
       .then((res) => res.data)
       .then((data) => {
         setCategories(data);
@@ -35,7 +35,7 @@ const Productlist = () => {
   }, []);
 
   const fetchProducts = (page) => {
-    let url = `http://wdp.bachgiaphat.vn/products?page=${page}`;
+    let url = `https://wdp.bachgiaphat.vn/products?page=${page}`;
 
     if (nameSearch) {
       url += `&name=${nameSearch}`;
@@ -100,7 +100,7 @@ const Productlist = () => {
 
   const deleteProduct = (productId) => {
     axios
-      .delete(`http://wdp.bachgiaphat.vn/products/${productId}`, {
+      .delete(`https://wdp.bachgiaphat.vn/products/${productId}`, {
         headers: {
           'Authorization': `Bearer ${JSON.parse(localStorage.getItem("data")).accessToken}`
         }
@@ -116,7 +116,7 @@ const Productlist = () => {
 
   const changeStatus = (productId, status) => {
     axios
-      .patch(`http://wdp.bachgiaphat.vn/products/${productId}`, {
+      .patch(`https://wdp.bachgiaphat.vn/products/${productId}`, {
         status: !status,
       }, {
         headers: {
@@ -130,7 +130,7 @@ const Productlist = () => {
       .catch((error) => {
         toast.error(error.message);
       });
-    // fetch(`http://wdp.bachgiaphat.vn/products/${productId}`, {
+    // fetch(`https://wdp.bachgiaphat.vn/products/${productId}`, {
     //   method: "PATCH",
     //   body: JSON.stringify({
     //     status: !status,
@@ -154,7 +154,7 @@ const Productlist = () => {
 
   const changeFeatured = (productId, featured) => {
     axios
-      .patch(`http://wdp.bachgiaphat.vn/products/${productId}`, {
+      .patch(`https://wdp.bachgiaphat.vn/products/${productId}`, {
         featured: !featured,
       }, {
         headers: {

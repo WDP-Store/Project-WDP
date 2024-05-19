@@ -69,7 +69,7 @@ export default function MyOrder() {
 
   useEffect(
     () => {
-      fetch(`http://wdp.bachgiaphat.vn/status`)
+      fetch(`https://wdp.bachgiaphat.vn/status`)
         .then(res => res.json())
         .then(json => {
           setStatus(json);
@@ -79,7 +79,7 @@ export default function MyOrder() {
   );
 
   const openDetail = (index) => {
-    // fetch(`http://wdp.bachgiaphat.vn/order/` + id)
+    // fetch(`https://wdp.bachgiaphat.vn/order/` + id)
     //   .then(res => res.json())
     //   .then(json => {
     //     setCurrentDetail(json)
@@ -94,7 +94,7 @@ export default function MyOrder() {
   );
 
   const filterOrder = (page) => {
-    var url = (`http://wdp.bachgiaphat.vn/orders/all?page=1&user=${user._id}`);
+    var url = (`https://wdp.bachgiaphat.vn/orders/all?page=1&user=${user._id}`);
 
     if (fromDate === '' && toDate === '') url += `&page=${page}`;
 

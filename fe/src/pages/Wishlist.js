@@ -13,7 +13,7 @@ const Wishlist = () => {
 
   const fetchData = () => {
     axios
-      .get(`http://wdp.bachgiaphat.vn/wishlists?user=${user._id}`)
+      .get(`https://wdp.bachgiaphat.vn/wishlists?user=${user._id}`)
       .then((res) => res.data.docs)
       .then((data) => {
         setWishList(data);
@@ -38,7 +38,7 @@ const Wishlist = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`http://wdp.bachgiaphat.vn/wishlists/${wishlistId}`)
+          .delete(`https://wdp.bachgiaphat.vn/wishlists/${wishlistId}`)
           .then(() => {
             Swal.fire(
               'Deleted!',

@@ -14,17 +14,17 @@ const VnpayReturn = () => {
   useEffect(() => {
     if (vnpayResponseCode === '00') {
       axios
-        .get(`http://wdp.bachgiaphat.vn/orders/vnpay-return${location.search}`)
+        .get(`https://wdp.bachgiaphat.vn/orders/vnpay-return${location.search}`)
         .then((res) => {
           console.log("res return");
           console.log(res);
           if (res.data.code === '00') {
             axios
-              .get(`http://wdp.bachgiaphat.vn/orders/find-by-order-vnpay-id/${searchParams.get('vnp_OrderInfo')}`)
+              .get(`https://wdp.bachgiaphat.vn/orders/find-by-order-vnpay-id/${searchParams.get('vnp_OrderInfo')}`)
               .then((res) => {
                 if (res.data) {
                   axios
-                    .patch(`http://wdp.bachgiaphat.vn/orders/${res.data._id}`, {
+                    .patch(`https://wdp.bachgiaphat.vn/orders/${res.data._id}`, {
                       isPaid: true
                     },)
                     .then(() => {

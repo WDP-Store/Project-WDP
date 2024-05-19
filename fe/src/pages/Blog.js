@@ -48,7 +48,7 @@ const Blog = () => {
   };
 
   const handleFilter = (page) => {
-    var url = `http://wdp.bachgiaphat.vn/blogs?page=${page}`;
+    var url = `https://wdp.bachgiaphat.vn/blogs?page=${page}`;
 
     if (category_f.length != 0) {
       category_f?.map((b) => (url += "&category=" + b));
@@ -69,7 +69,7 @@ const Blog = () => {
 
   useEffect(() => {
     axios
-      .get("http://wdp.bachgiaphat.vn/categories")
+      .get("https://wdp.bachgiaphat.vn/categories")
       .then((res) => res.data)
       .then((data) => {
         setCategories(data);

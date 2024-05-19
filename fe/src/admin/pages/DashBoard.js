@@ -48,7 +48,7 @@ export default function Dashboard() {
   const [orders, setOrders] = useState([]); //fetched orders
   useEffect(() => {
     fetch(
-      `http://wdp.bachgiaphat.vn/orders/find-order-by-status/successful
+      `https://wdp.bachgiaphat.vn/orders/find-order-by-status/successful
       `
     )
       .then((res) => res.json())
@@ -56,7 +56,7 @@ export default function Dashboard() {
         setOrders(json);
       });
 
-    fetch(`http://wdp.bachgiaphat.vn/brands`)
+    fetch(`https://wdp.bachgiaphat.vn/brands`)
       .then((res) => res.json())
       .then((json) => {
         console.log("jsonjsonjson");
@@ -64,7 +64,7 @@ export default function Dashboard() {
         setBrands(json);
       });
 
-    fetch(`http://wdp.bachgiaphat.vn/categories`)
+    fetch(`https://wdp.bachgiaphat.vn/categories`)
       .then((res) => res.json())
       .then((json) => setCategories(json));
     document.getElementById("btnradiocate1").checked = true;

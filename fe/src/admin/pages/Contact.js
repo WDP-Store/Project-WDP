@@ -15,17 +15,17 @@ export default function Contact() {
 
   const handleClose = () => setShow(false);
   const handleShow = (id) => {
-    axios.get(`http://wdp.bachgiaphat.vn/contacts/${id}`)
+    axios.get(`https://wdp.bachgiaphat.vn/contacts/${id}`)
       .then((res) => res.data)
       .then((json) => {
         setComment(json.comment);
         if (json.status === "New") {
-          axios.patch("http://wdp.bachgiaphat.vn/contacts/" + id, {
+          axios.patch("https://wdp.bachgiaphat.vn/contacts/" + id, {
             status: "Read",
           }).catch(() => toast.error("Something went wrong!"));
 
           // axios.get(
-          //   `http://wdp.bachgiaphat.vn/contacts?page=${currentPage}`
+          //   `https://wdp.bachgiaphat.vn/contacts?page=${currentPage}`
           // )
           //   .then((res) => {
           //     setTotalPages(res.data.totalPages);
@@ -40,7 +40,7 @@ export default function Contact() {
   };
 
   const fetchContacts = (page) => {
-    let url = `http://wdp.bachgiaphat.vn/contacts?page=${page}`;
+    let url = `https://wdp.bachgiaphat.vn/contacts?page=${page}`;
 
     if (emailSearch) {
       url += `&email=${emailSearch}`;

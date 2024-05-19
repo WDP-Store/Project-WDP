@@ -25,7 +25,7 @@ const Contact = () => {
     };
 
     // Gửi yêu cầu POST để lưu dữ liệu mới
-    axios.post("http://wdp.bachgiaphat.vn/contacts", newContact)
+    axios.post("https://wdp.bachgiaphat.vn/contacts", newContact)
       .then((response) => response.data)
       .then((data) => {
         toast.success("Successfully submit contact");

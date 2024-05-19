@@ -27,7 +27,7 @@ const Signup = () => {
     e.preventDefault();
     const isValid = handleValidate(formData);
     if (isValid) {
-      axios.post("http://wdp.bachgiaphat.vn/auth/register", formData)
+      axios.post("https://wdp.bachgiaphat.vn/auth/register", formData)
         .then(response => {
           navigate("/login");
         })

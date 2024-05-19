@@ -23,7 +23,7 @@ const Bloglist = () => {
 
   useEffect(() => {
     axios
-      .get("http://wdp.bachgiaphat.vn/categories")
+      .get("https://wdp.bachgiaphat.vn/categories")
       .then((res) => res.data)
       .then((data) => {
         setCategories(data);
@@ -31,7 +31,7 @@ const Bloglist = () => {
   }, []);
 
   const fetchBlogs = async (page) => {
-    let url = `http://wdp.bachgiaphat.vn/blogs/admin?page=${page}`;
+    let url = `https://wdp.bachgiaphat.vn/blogs/admin?page=${page}`;
 
     if (titleSearch) {
       url += `&title=${titleSearch}`;
@@ -113,7 +113,7 @@ const Bloglist = () => {
 
   const deleteBlog = (blogId) => {
     axios
-      .patch(`http://wdp.bachgiaphat.vn/blogs/${blogId}`, { isDeleted: true }, {
+      .patch(`https://wdp.bachgiaphat.vn/blogs/${blogId}`, { isDeleted: true }, {
         headers: {
           'Authorization': `Bearer ${JSON.parse(localStorage.getItem("data")).accessToken}`
         }

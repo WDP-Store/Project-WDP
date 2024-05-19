@@ -36,7 +36,7 @@ export default function Customer() {
   };
 
   const fetchUsers = (page) => {
-    let url = `http://wdp.bachgiaphat.vn/users?page=${page}`;
+    let url = `https://wdp.bachgiaphat.vn/users?page=${page}`;
 
     if (nameSearch) {
       url += `&name=${nameSearch}`;
@@ -66,7 +66,7 @@ export default function Customer() {
 
   const changeStatus = (userId, status) => {
     axios
-      .patch(`http://wdp.bachgiaphat.vn/users/${userId}`, {
+      .patch(`https://wdp.bachgiaphat.vn/users/${userId}`, {
         status: !status,
       })
       .then((res) => {

@@ -16,7 +16,7 @@ const ProductCard = (props) => {
 
   useEffect(() => {
     axios
-      .get("http://wdp.bachgiaphat.vn/brands")
+      .get("https://wdp.bachgiaphat.vn/brands")
       .then((res) => res.data)
       .then((data) => {
         setBrands(data);

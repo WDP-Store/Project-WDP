@@ -52,7 +52,7 @@ const OurStore = () => {
   //category & brand
   useEffect(() => {
     axios
-      .get("http://wdp.bachgiaphat.vn/categories")
+      .get("https://wdp.bachgiaphat.vn/categories")
       .then((res) => res.data)
       .then((data) => {
         setCategories(data);
@@ -61,7 +61,7 @@ const OurStore = () => {
 
   useEffect(() => {
     axios
-      .get("http://wdp.bachgiaphat.vn/brands")
+      .get("https://wdp.bachgiaphat.vn/brands")
       .then((res) => res.data)
       .then((data) => {
         setBrands(data);
@@ -103,7 +103,7 @@ const OurStore = () => {
   };
 
   const handleFilter = (page) => {
-    var url = `http://wdp.bachgiaphat.vn/products?page=${page}`;
+    var url = `https://wdp.bachgiaphat.vn/products?page=${page}`;
 
     if (nameSearch) {
       url += `&name=${nameSearch}`;
