@@ -24,7 +24,7 @@ const VnpayReturn = () => {
               .then((res) => {
                 if (res.data) {
                   axios
-                    .post(`https://wdp.bachgiaphat.vn/orders/${res.data._id}`, {
+                    .put(`https://wdp.bachgiaphat.vn/orders/${res.data._id}`, {
                       isPaid: true
                     },)
                     .then(() => {
