@@ -24,25 +24,25 @@ const VnpayReturn = () => {
               .then((res) => {
                 if (res.data) {
                   axios
-                    .patch(`https://wdp.bachgiaphat.vn/orders/${res.data._id}`, {
+                    .post(`https://wdp.bachgiaphat.vn/orders/${res.data._id}`, {
                       isPaid: true
                     },)
                     .then(() => {
-                      // localStorage.removeItem('cart')
-                      // toast.success('Success payment');
-                      // navigate('/myOrder');
+                      localStorage.removeItem('cart')
+                      toast.success('Success payment');
+                      navigate('/myOrder');
                     })
                     .catch((err) => {
                       console.log(err);
-                      // toast.success('Failed to update paid status. Please contact to admin!');
+                      toast.success('Failed to update paid status. Please contact to admin!');
                       navigate('/myOrder');
                     });
                 }
               });
 
-            localStorage.removeItem('cart');
-            toast.success('Success payment');
-            navigate('/myOrder');
+            // localStorage.removeItem('cart');
+            // toast.success('Success payment');
+            // navigate('/myOrder');
           } else {
             toast.error('Failed payment');
             navigate('/checkout');
