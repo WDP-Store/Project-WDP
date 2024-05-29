@@ -34,7 +34,7 @@ const VnpayReturn = () => {
                     })
                     .catch((err) => {
                       console.log(err);
-                      toast.success('Failed to update paid status. Please contact to admin!');
+                      toast.error('Failed to update paid status. Please contact to admin!');
                       navigate('/myOrder');
                     });
                 }
