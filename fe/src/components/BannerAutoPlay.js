@@ -10,10 +10,11 @@ const BannerAutoPlay = () => {
     height: "30px",
     margin: "auto",
     overflow: "hidden",
-    position: "relative",
+    position: "relative",  
     width: "100%",
   };
 
+  
   const whiteGradientMixin = {
     background:
       "linear-gradient(to right,  rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%)",
