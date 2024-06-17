@@ -86,7 +86,7 @@ const Home = () => {
       </div>
       <div class1="home-wrapper-1 py-5" className="container block-item">
         <div className="row">
-          <div className="col-12">
+          {/* <div className="col-12">
             <div className="main-banner position-relative ">
               <img
                 src={logoBanner1}
@@ -100,7 +100,7 @@ const Home = () => {
                 <Link className="button">BUY NOW</Link>
               </div>
             </div>
-          </div>
+          </div> */}
           {/* <div className="col-6">
             <div className="d-flex flex-wrap gap-10 justify-content-between align-items-center">
               {products.map((p, index) => (
