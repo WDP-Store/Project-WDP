@@ -8,11 +8,11 @@
   --color-131921: #131921;
   /* --color-131921: #ffba00; */
   --color-3b4149: #3b4149;
-  --color-febd69: #febd69;
+  --color-febd69: #e7a650;
   --color-232f3e: #232f3e;
   --color-232f3e: #ffba00;
   /* --color-232f3e: #2561CF; */
-  --color-bf4800: #bf4800;
+  --color-bf4800: #db7a3d;
   --color-f5f5f7: #f5f5f7;
   --color-ededed: #ededed;
   --color-777777: #777777;
@@ -76,11 +76,11 @@ a {
   display: flex;
   flex-direction: column;
   position: absolute;
-  background: #67767f
+  background: #3ca2e0
 }
 
 .button {
-  background-color: var(--color-232f3e);
+  background-color: var(--color-febd69);
   color: white;
   font-size: 14px;
   padding: 13px 33px;
@@ -89,10 +89,63 @@ a {
 
 .button:hover {
   background-color: var(--color-febd69);
-  color: #131921;
+  color: #366366;
 }
 
 /* Header Part */
+.nav-link-custom {
+  color: white !important;
+  font-size: 1.25rem; /* Adjust the size as needed */
+  text-decoration: none;
+}
+
+.nav-link-custom:hover {
+  color: #f0f0f0; /* Optional: Add hover effect */
+}
+
+/*shop by categories*/
+.filter-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.filter-title {
+  font-size: 1.5em;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btn-check:checked + .btn-outline-primary {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.btn-outline-primary {
+  transition: all 0.3s ease;
+  padding: 10px;
+  font-size: 1em;
+  border-radius: 5px;
+}
+
+.btn-outline-primary:hover {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+
+
+
 
 .header-top-strip {
   border-bottom: 1px solid var(--color-3b4149);
@@ -102,7 +155,7 @@ a {
 .header-upper {
   /* background-color: var(--color-131921); */
   /* background-color: #4a90e2; */
-  background-color: #161880;
+  background-color: #28a39d;
 }
 
 .header-bottom {
@@ -312,7 +365,7 @@ footer .service_wrapper span{
 /* BLog Part */
 
 .blog-card {
-  background-color: white;
+  background-color: rgb(255, 255, 255);
 
   border-radius: 10px;
   padding-top: 1rem;

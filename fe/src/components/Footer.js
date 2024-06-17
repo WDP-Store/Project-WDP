@@ -154,8 +154,8 @@ const Footer = () => {
             <div className="col-12">
               <p className="text-center mb-0 text-white">
                 &copy; {new Date().getFullYear()} Copyright: Made with{" "}
-                <BsFire style={{ marginBottom: 0 }} size="20px" /> by group 4
-                SDN from FPT University
+                <BsFire style={{ marginBottom: 0 }} size="20px" /> by group 5
+                WDP301 from FPT University
               </p>
             </div>
           </div>

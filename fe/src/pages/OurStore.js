@@ -210,26 +210,31 @@ const OurStore = () => {
 
             </div>
           </div>
-        </div>
+        </div
+        >
         <div className="row">
           <div className="col-3">
             <div className="filter-card mb-3">
               <h3 className="filter-title">Shop By Categories</h3>
-
               <div className="btn-group d-flex flex-column" role="group" aria-label="Basic checkbox toggle button group">
                 {
                   categories.map((c) =>
                     <div key={c._id}>
                       <input onChange={() => handleFilterValue("category")
-                      } name="cate-Filter-Box" type="checkbox" className="btn-check" id={"btncheck" + c._id} autoComplete="off" value={c._id} />
+                      } 
+                      name="cate-Filter-Box" 
+                      type="checkbox" 
+                      className="btn-check" 
+                      id={"btncheck" + c._id} 
+                      autoComplete="off" 
+                      value={c._id} />
                       <label style={{ width: "150px" }} className="btn btn-outline-primary" htmlFor={"btncheck" + c._id}>{c.name}</label>
                     </div>
                   )
                 }
-
               </div>
-
             </div>
+
             <div className="filter-card mb-3">
               <h3 className="filter-title">Filter By</h3>
               <div>
