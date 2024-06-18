@@ -44,7 +44,7 @@ export default function AdminSideNav(props) {
       ></div>
 
       <Accordion>
-        <Link style={{ width: "100%" }} to={"/admin/dashboard"}>
+        {/* <Link style={{ width: "100%" }} to={"/admin/dashboard"}>
           <Accordion.Item eventKey="0">
             <Accordion.Header>
               <AiOutlineStock
@@ -65,7 +65,7 @@ export default function AdminSideNav(props) {
               Orders
             </Accordion.Header>
           </Accordion.Item>
-        </Link>
+        </Link> */}
         <div style={{ width: "100%" }}>
           <Accordion.Item eventKey="2">
             <Accordion.Header>
