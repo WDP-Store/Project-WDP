@@ -124,6 +124,12 @@ a {
   gap: 10px;
 }
 
+.btn-group2 {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
 .btn-check:checked + .btn-outline-primary {
   background-color: #007bff;
   color: white;

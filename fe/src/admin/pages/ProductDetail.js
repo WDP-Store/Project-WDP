@@ -132,7 +132,7 @@ const ProductDetail = () => {
               <div className=" py-3">
                 <h3 className="product-heading pb-2">Color :</h3>
                 <div
-                  className="btn-group"
+                  className="btn-group2"
                   role="group"
                   aria-label="Basic radio toggle button group"
                 >
