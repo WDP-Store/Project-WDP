@@ -1,4 +1,4 @@
-import logo from "../../images/logo_full_black.png";
+import logo from "../../images/new-logo.png";
 import { Link, useLocation } from "react-router-dom";
 import { AiOutlineStock } from "react-icons/ai";
 import { AiOutlineShopping } from "react-icons/ai";
