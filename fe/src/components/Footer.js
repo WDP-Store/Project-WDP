@@ -8,7 +8,7 @@ const Footer = () => {
   return (
     <>
       <footer className="py-4">
-        <div className="row justify-content-between service_wrapper">
+        <div className="row justify-content-between service_wrapper w-100">
           <div className="col-12 mb-5" style={{marginBottom: "0.3rem"}}>
             <h3 className="text-center">
               <span>
