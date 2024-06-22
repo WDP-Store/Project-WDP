@@ -22,13 +22,6 @@ const DefaultAdminLayout = () => {
       >
         <AdminSideNav className={"p-2 flex-column row"} />
         <Layout>
-          {/* <Header
-          style={{
-            padding: 0,
-            background: colorBgContainer,
-          }}
-        >
-        </Header> */}
           <AdminTopNav />
           <Content
             style={{
