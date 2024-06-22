@@ -5,6 +5,8 @@ import Paginate from "../components/Paginate";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
+import exportToExcel from "../../util/exportToExcel.js";
+
 
 const Productlist = () => {
   const [products, setProducts] = useState([]);
@@ -169,6 +171,35 @@ const Productlist = () => {
         toast.error(error.message);
       });
   };
+console.log(products);
+  const handleExport = () => {
+    const exportData = products.map((product) => {
+      const images = product.images.reduce((acc, img, index) => {
+        acc[`Image ${index + 1}`] = img;
+        return acc;
+      }, {});
+  
+      return {
+        Id: product._id,
+        Name: product.name,
+        Price: product.price,
+        OriginalPrice: product.originalPrice,
+        Category: product.category.name,
+        Brand: product.brand.name,
+        Status: product.status ? "Active" : "Inactive",
+        Feature: product.featured ? "Yes" : "No",
+        ...images,
+      };
+    });
+    console.log(exportData);
+
+    exportToExcel(
+      "Danh Sách Sản Phẩm",
+      exportData,
+      "Danh Sách Sản Phẩm",
+      "products.xlsx"
+    );
+  };
 
   return (
     <Col lg={12}>
@@ -184,7 +215,7 @@ const Productlist = () => {
             />
           </Form.Group>
         </Col>
-        <Col xs={12} md={3}>
+        <Col xs={12} md={2}>
           <Form.Select
             aria-label="status"
             value={statusFilter}
@@ -210,6 +241,11 @@ const Productlist = () => {
               </option>
             ))}
           </Form.Select>
+        </Col>
+        <Col xs={12} md={1} className="text-end">
+          <Button variant="success" className="ms-2" onClick={handleExport}>
+            Export
+          </Button>
         </Col>
         <Col xs={12} md={2} style={{ textAlign: "right" }}>
           <Button variant="primary">

@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { Badge, Button, Col, Form, Modal, Row, Table } from "react-bootstrap";
 import { toast } from "react-toastify";
 import Paginate from "../components/Paginate";
-import axios from 'axios';
+import axios from "axios";
+import exportToExcel from "../../util/exportToExcel.js";
 
 export default function Contact() {
   const [contacts, setContacts] = useState([]);
@@ -15,14 +16,17 @@ export default function Contact() {
 
   const handleClose = () => setShow(false);
   const handleShow = (id) => {
-    axios.get(`https://wdp.bachgiaphat.vn/contacts/${id}`)
+    axios
+      .get(`https://wdp.bachgiaphat.vn/contacts/${id}`)
       .then((res) => res.data)
       .then((json) => {
         setComment(json.comment);
         if (json.status === "New") {
-          axios.patch("https://wdp.bachgiaphat.vn/contacts/" + id, {
-            status: "Read",
-          }).catch(() => toast.error("Something went wrong!"));
+          axios
+            .patch("https://wdp.bachgiaphat.vn/contacts/" + id, {
+              status: "Read",
+            })
+            .catch(() => toast.error("Something went wrong!"));
 
           // axios.get(
           //   `https://wdp.bachgiaphat.vn/contacts?page=${currentPage}`
@@ -50,7 +54,8 @@ export default function Contact() {
       url += `&status=${statusFilter}`;
     }
 
-    axios.get(url)
+    axios
+      .get(url)
       .then((res) => {
         setTotalPages(res.data.totalPages);
         return res.data.docs;
@@ -79,6 +84,24 @@ export default function Contact() {
     }
   };
 
+  const handleExport = () => {
+    const exportData = contacts.map((contact) => ({
+      Id: contact._id,
+      Name: contact.name,
+      Email: contact.email,
+      Phone: contact.phone,
+      Status: contact.status,
+    }));
+    console.log(exportData);
+
+    exportToExcel(
+      "Danh Sách Liên Lạc",
+      exportData,
+      "Danh Sách Liên Lạc",
+      "contacts.xlsx"
+    );
+  };
+
   return (
     <Col lg={12}>
       <h3 className="mt-2 text-center">Contacts List</h3>
@@ -103,6 +126,11 @@ export default function Contact() {
             <option value="New">New</option>
             <option value="Read">Read</option>
           </Form.Select>
+        </Col>
+        <Col xs={12} md={5} className="text-end">
+          <Button variant="success" className="ms-2" onClick={handleExport}>
+            Export Excel
+          </Button>
         </Col>
       </Row>
       <Table striped bordered hover variant="light">
