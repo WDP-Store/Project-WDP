@@ -4,6 +4,8 @@ import { toast } from "react-toastify";
 import Paginate from "../components/Paginate";
 import axios from "axios";
 import exportToExcel from "../../util/exportToExcel.js";
+import { DownloadOutlined } from '@ant-design/icons';
+import { Divider, Flex, Radio } from 'antd';
 
 export default function Contact() {
   const [contacts, setContacts] = useState([]);
@@ -128,11 +130,11 @@ export default function Contact() {
           </Form.Select>
         </Col>
         <Col xs={12} md={5} className="text-end">
-          <Button variant="success" className="ms-2" onClick={handleExport}>
-            Export Excel
+          <Button onClick={handleExport} style={{height: '38px'}}>
+            <DownloadOutlined /> Export
           </Button>
         </Col>
-      </Row>
+      </Row>  
       <Table striped bordered hover variant="light">
         <thead>
           <tr>

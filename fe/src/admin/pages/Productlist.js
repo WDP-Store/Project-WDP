@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 import exportToExcel from "../../util/exportToExcel.js";
+import { DownloadOutlined } from '@ant-design/icons';
 
 
 const Productlist = () => {
@@ -243,8 +244,8 @@ console.log(products);
           </Form.Select>
         </Col>
         <Col xs={12} md={1} className="text-end">
-          <Button variant="success" className="ms-2" onClick={handleExport}>
-            Export
+          <Button onClick={handleExport} style={{height: '38px'}}>
+            <DownloadOutlined /> Export
           </Button>
         </Col>
         <Col xs={12} md={2} style={{ textAlign: "right" }}>
