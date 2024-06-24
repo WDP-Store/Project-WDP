@@ -27,7 +27,7 @@ const exportToExcel = (title, data, sheetName, fileName) => {
     if (headerCell) {
       headerCell.s = {
         font: { bold: true, color: { rgb: "0000FF" } },
-        alignment: { horizontal: "center", vertical: "center" }
+        alignment: { horizontal: "center", vertical: "center" },
       };
     }
   }
