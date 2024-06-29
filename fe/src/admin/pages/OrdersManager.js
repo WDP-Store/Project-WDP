@@ -132,6 +132,21 @@ export default function OrdersManager() {
       .catch((err) => toast.error(err));
   };
 
+
+const updateStatus = (value, index, id) => {
+    console.log("status: ", value)
+    console.log("status: ", typeof value)
+    axios.put(`https://wdp.bachgiaphat.vn/orders/${id}`, {
+      ...orders[index],
+      status: value,
+    })
+    .then(() => {
+      setRefresh(!refresh);
+      toast.success("Order status updated successfully");
+    })
+    .catch((err) => toast.error(err));
+  };
+
   return (
     <Container lg={10}>
       <h3 className="mt-2">My orders</h3>
@@ -205,10 +220,27 @@ export default function OrdersManager() {
                 <div className="col-3">
                   <div style={{ color: "black" }}>ID: {o._id}</div>
                 </div>
-                <div className="col-3">
+                <div className="col-1">
                   <Badge bg={effectBadge[o.status.name]}>{o.status.name}</Badge>
                 </div>
-                <div className="col-4">
+                <div className="col-3">
+                <InputGroup>
+                  <InputGroup.Text style={{ backgroundColor: "#008DDA" }}>
+                    Change status
+                  </InputGroup.Text>
+                  <Form.Select
+                    value={o.status._id}
+                    onChange={(e) => updateStatus(e.target.value, index, o._id)}
+                  >
+                    {status?.map((s) => (
+                      <option key={s.id} value={s._id}>
+                        {s.name}
+                      </option>
+                    ))}
+                  </Form.Select>{" "}
+                </InputGroup>
+              </div>
+                <div className="col-3">
                   <p style={{ color: "black" }}>Create date: {new Date(o.date).toLocaleString()}</p>
                 </div>
 
