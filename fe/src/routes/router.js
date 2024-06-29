@@ -45,8 +45,8 @@ const allRoutes = createBrowserRouter([
       { path: '/admin/feedback', element: <Feedback /> },
       { path: '/admin/dashboard', element: <Dashboard /> },
       { path: '/admin/contact', element: <Contact /> },
-      { path: '/admin/order', element: <Orders /> },
-      { path: '/admin/orders', element: <OrdersManager /> },
+      // { path: '/admin/order', element: <Orders /> },
+      { path: '/admin/order', element: <OrdersManager /> },
 
       //product
       { path: '/admin/product', element: <Productlist /> },
