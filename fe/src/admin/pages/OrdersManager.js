@@ -141,6 +141,9 @@ const updateStatus = (value, index, id) => {
       status: value,
     })
     .then(() => {
+      const updatedOrders = [...orders];
+      updatedOrders[index].status._id = value;
+      setOrders(updatedOrders);
       setRefresh(!refresh);
       toast.success("Order status updated successfully");
     })
