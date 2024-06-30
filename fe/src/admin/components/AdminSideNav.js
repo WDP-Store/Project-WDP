@@ -31,6 +31,7 @@ import { CiBoxList } from "react-icons/ci";
 import { IoAddCircleOutline } from "react-icons/io5";
 import { TbBrandAdobe } from "react-icons/tb";
 import { MdOutlineCategory } from "react-icons/md";
+import styles from '../admin2.css';
 
 export default function AdminSideNav(props) {
   const location = useLocation();
