@@ -11,12 +11,14 @@ import Modal from "react-bootstrap/Modal";
 import { toast } from "react-toastify";
 import { AiFillCaretRight } from "react-icons/ai";
 import { date } from "yup";
-import axios from 'axios';
+import axios from "axios";
 
-export default function Orders() {
+export default function OrdersManager() {
   const [orders, setOrders] = useState([]); //fetched orders
   const [status, setStatus] = useState([]); //fetched status
   const [lgShow, setLgShow] = useState(false); //modal
+  // const effectBadge = ["warning", "warning", "primary", "success", "danger"]; // each status has it badge
+  // const colorBadge = ["#9ea954db", "#9ea954db", "#3876a9", "#248e5cd6", "#7c3c3cd6"];  // each status has it color
   const effectBadge = {
     preparing: "warning",
     pending: "primary",
@@ -24,7 +26,7 @@ export default function Orders() {
     preparing: "warning",
     successful: "success",
     failed: "danger",
-  };  // each status has it color
+  }; // each status has it color
   const colorBadge = {
     preparing: "#9ea954db",
     pending: "#3876a9",
@@ -32,8 +34,9 @@ export default function Orders() {
     preparing: "#9ea954db",
     successful: "#248e5cd6",
     failed: "#7c3c3cd6",
-  };  // each status has it color
+  }; // each status has it color
   const [currentDetail, setCurrentDetail] = useState([]);
+  const user = JSON.parse(localStorage.getItem("data"));
 
   //for filtering
   const [statusFilter, setStatusFilter] = useState("");
@@ -63,23 +66,21 @@ export default function Orders() {
   };
   //
 
-  useEffect(
-    () => {
-      fetch(`https://wdp.bachgiaphat.vn/status`)
-        .then(res => res.json())
-        .then(json => {
-          setStatus(json);
-        }
-        );
-    }, []
-  );
+  useEffect(() => {
+    fetch(`https://wdp.bachgiaphat.vn/status`)
+      .then((res) => res.json())
+      .then((json) => {
+        setStatus(json);
+      });
+  }, []);
 
   const openDetail = (index) => {
     // fetch(`https://wdp.bachgiaphat.vn/order/` + id)
-    //   .then((res) => res.json())
-    //   .then((json) => {
-    //     setCurrentDetail(json);
-    //   });
+    //   .then(res => res.json())
+    //   .then(json => {
+    //     setCurrentDetail(json)
+    //   }
+    //   );
     setCurrentDetail(orders[index]);
   };
 
@@ -89,31 +90,36 @@ export default function Orders() {
   }, [currentPage, orderIdFilter, statusFilter, fromDate, toDate, refresh]);
 
   const filterOrder = (page) => {
-    var url = (`https://wdp.bachgiaphat.vn/orders/all?page=1`);
+    // var url = (`https://wdp.bachgiaphat.vn/orders/all?page=1&user=${user._id}`);
+    // var url = (`https://wdp.bachgiaphat.vn/orders/all?page=1`);
+    var url = `https://wdp.bachgiaphat.vn/orders/all?`;
+    console.log("data order:");
+    if (fromDate === "" && toDate === "") url += `&page=${page}`;
 
-    if (fromDate === '' && toDate === '') url += `&page=${page}`;
-
-    if (statusFilter !== '') {
-      url += ('&status=' + statusFilter);
+    if (statusFilter !== "") {
+      url += "&status=" + statusFilter;
     }
-    if (orderIdFilter !== '') {
-      url += ('&id=' + orderIdFilter);
+    if (orderIdFilter !== "") {
+      url += "&id=" + orderIdFilter;
     }
 
-    axios.get(url)
-      .then(res => {
+    axios
+      .get(url)
+      .then((res) => {
+        console.log("data order:", res);
         setTotalPages(res.data.totalPages);
         setOrders(res.data.docs);
         return res.data.docs;
-      }
-      )
-      .then(json => {
-        if (fromDate !== '') {
+      })
+      .then((json) => {
+        console.log("jsonjsonjsonjson");
+        console.log(json);
+        if (fromDate !== "") {
           let temp = [...json];
-          temp = temp.filter((o) => (new Date(o.date)) >= (new Date(fromDate)));
+          temp = temp.filter((o) => new Date(o.date) >= new Date(fromDate));
           setOrders(temp);
         }
-        if (toDate !== '') {
+        if (toDate !== "") {
           let temp = [...json];
           temp = temp.filter((o) => new Date(o.date) <= new Date(toDate));
           setOrders(temp);
@@ -121,48 +127,41 @@ export default function Orders() {
       })
       .catch((err) => toast.error(err));
   };
-  console.log(orders);
-  console.log(status);
-  useEffect(() => {
-    //date filtering
-    if (fromDate !== "") {
-      let temp = [...orders];
-      temp = temp.filter((o) => new Date(o.date) >= new Date(fromDate));
-      setOrders(temp);
-      console.log(temp);
-    }
-    if (toDate !== "") {
-      let temp = [...orders];
-      temp = temp.filter((o) => new Date(o.date) <= new Date(toDate));
-      setOrders(temp);
-    }
-  }, [fromDate, toDate]);
 
   const updateStatus = (value, index, id) => {
-    //index is index of orders in orders useState , id is its order id
-    fetch("https://wdp.bachgiaphat.vn/orders/" + id, {
-      method: "PUT",
-      body: JSON.stringify({
+    console.log("status: ", value);
+    console.log("status: ", typeof value);
+    axios
+      .put(`https://wdp.bachgiaphat.vn/orders/${id}`, {
         ...orders[index],
-        statusId: value,
-      }),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    }).then(setRefresh(!refresh));
+        status: value,
+      })
+      .then(() => {
+        const updatedOrders = [...orders];
+        updatedOrders[index].status._id = value;
+        setOrders(updatedOrders);
+        setRefresh(!refresh);
+        toast.success("Order status updated successfully");
+      })
+      .catch((err) => toast.error(err));
   };
 
   return (
-    <Col lg={10}>
-      <h3 className="mt-2 text-center">Orders</h3>
+    <Container lg={10}>
+      <h3 className="mt-2">My orders</h3>
       <Row className="my-4">
         <Col xs={6} md={2}>
           <InputGroup className="mb-3">
             <InputGroup.Text>Status</InputGroup.Text>
-            <Form.Select onChange={(e) => setStatusFilter(e.target.value)}>
+            <Form.Select
+              onChange={(e) => {
+                setStatusFilter(e.target.value);
+                setCurrentPage(1);
+              }}
+            >
               <option value={""}>all</option>
               {status?.map((s) => (
-                <option key={s.id} value={s.id}>
+                <option key={s._id} value={s._id}>
                   {s.name}
                 </option>
               ))}
@@ -173,7 +172,10 @@ export default function Orders() {
           <InputGroup className="mb-3">
             <InputGroup.Text>Order id</InputGroup.Text>
             <Form.Control
-              onChange={(e) => setOrderIdFilter(e.target.value)}
+              onChange={(e) => {
+                setOrderIdFilter(e.target.value);
+                setCurrentPage(1);
+              }}
             ></Form.Control>
           </InputGroup>
         </Col>
@@ -183,7 +185,10 @@ export default function Orders() {
             <InputGroup.Text>From</InputGroup.Text>
             <Form.Control
               type="date"
-              onChange={(e) => setfromDate(e.target.value)}
+              onChange={(e) => {
+                setfromDate(e.target.value);
+                setCurrentPage(1);
+              }}
             ></Form.Control>
           </InputGroup>
         </Col>
@@ -192,7 +197,10 @@ export default function Orders() {
             <InputGroup.Text>to</InputGroup.Text>
             <Form.Control
               type="date"
-              onChange={(e) => settoDate(e.target.value)}
+              onChange={(e) => {
+                settoDate(e.target.value);
+                setCurrentPage(1);
+              }}
             ></Form.Control>
           </InputGroup>
         </Col>
@@ -212,23 +220,15 @@ export default function Orders() {
         <div key={index} className="m-2 mb-4">
           <Card
             className="m-2"
-            style={{ background: o.status._id && colorBadge[o.status._id - 1] }}
+            style={{ background: colorBadge[o.status.name] }}
           >
             <Card.Header className="row">
-              <div className="col-4">
+              <div className="col-3">
                 <div style={{ color: "black" }}>ID: {o._id}</div>
               </div>
-              <div className="col-4">
-                <Badge bg={effectBadge[o.status.name]}>
-                  {o.status.name}
-                </Badge>
+              <div className="col-1">
+                <Badge bg={effectBadge[o.status.name]}>{o.status.name}</Badge>
               </div>
-              <div className="col-4">
-                <p style={{ color: "black" }}>
-                  Create date: {new Date(o.date).toLocaleString()}
-                </p>
-              </div>
-              <div className="col-4"></div>
               <div className="col-3">
                 <InputGroup>
                   <InputGroup.Text style={{ backgroundColor: "#008DDA" }}>
@@ -245,6 +245,11 @@ export default function Orders() {
                     ))}
                   </Form.Select>{" "}
                 </InputGroup>
+              </div>
+              <div className="col-3">
+                <p style={{ color: "black" }}>
+                  Create date: {new Date(o.date).toLocaleString()}
+                </p>
               </div>
             </Card.Header>
             <Card.Body className="row m-1" style={{ background: "white" }}>
@@ -289,17 +294,17 @@ export default function Orders() {
       >
         <Modal.Header closeButton>
           <Modal.Title id="example-modal-sizes-title-lg">
-            Order id: {currentDetail.id}
+            Order id: {currentDetail._id}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Card className="m-2">
             <Card.Header
-              style={{ background: colorBadge[currentDetail.statusId - 1] }}
+              style={{ background: colorBadge[currentDetail.status?.name] }}
             >
-              <div style={{ color: "white" }}>Status</div>{" "}
-              <Badge bg={effectBadge[currentDetail.statusId - 1]}>
-                {status[currentDetail.statusId - 1]?.name}
+              <div style={{ color: "black" }}>Status</div>{" "}
+              <Badge bg={effectBadge[currentDetail.status?.name]}>
+                {status[currentDetail.status]?.name}
               </Badge>
             </Card.Header>
             <Card.Body>
@@ -367,6 +372,6 @@ export default function Orders() {
           </Card>
         </Modal.Body>
       </Modal>
-    </Col>
+    </Container>
   );
 }

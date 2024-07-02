@@ -8,7 +8,7 @@ const Footer = () => {
   return (
     <>
       <footer className="py-4">
-        <div className="row justify-content-between service_wrapper">
+        <div className="row justify-content-between service_wrapper w-100">
           <div className="col-12 mb-5" style={{marginBottom: "0.3rem"}}>
             <h3 className="text-center">
               <span>
@@ -154,8 +154,8 @@ const Footer = () => {
             <div className="col-12">
               <p className="text-center mb-0 text-white">
                 &copy; {new Date().getFullYear()} Copyright: Made with{" "}
-                <BsFire style={{ marginBottom: 0 }} size="20px" /> by group 4
-                SDN from FPT University
+                <BsFire style={{ marginBottom: 0 }} size="20px" /> by group 5
+                WDP301 from FPT University
               </p>
             </div>
           </div>

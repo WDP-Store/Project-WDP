@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import Paginate from "../components/Paginate";
 import { toast } from "react-toastify";
-import { Col, Form, Row, Table, Badge } from "react-bootstrap";
+import { Col, Form, Row, Table, Badge, Button} from "react-bootstrap";
 import { AiOutlineSortAscending } from "react-icons/ai";
 import InputGroup from "react-bootstrap/InputGroup";
 import axios from "axios";
+import { DownloadOutlined } from '@ant-design/icons';
+import exportToExcel from "../../util/exportToExcel.js";
+
 
 export default function Customer() {
   const [users, setUsers] = useState([]);
@@ -36,7 +39,7 @@ export default function Customer() {
   };
 
   const fetchUsers = (page) => {
-    let url = `https://app.vinamall.vn/users?page=${page}`;
+    let url = `https://wdp.bachgiaphat.vn/users?page=${page}`;
 
     if (nameSearch) {
       url += `&name=${nameSearch}`;
@@ -66,7 +69,7 @@ export default function Customer() {
 
   const changeStatus = (userId, status) => {
     axios
-      .patch(`https://app.vinamall.vn/users/${userId}`, {
+      .patch(`https://wdp.bachgiaphat.vn/users/${userId}`, {
         status: !status,
       })
       .then((res) => {
@@ -91,6 +94,25 @@ export default function Customer() {
       else newUserList.sort((a, b) => b.email.localeCompare(a.email));
     }
     setUsers(newUserList);
+  };
+
+  const handleExport = () => {
+    const exportData = users.map((user) => ({
+      Id: user._id,
+      Name: user.name,
+      Email: user.email,
+      Phone: user.phone,
+      Address: user.address,
+      Status: user.status ? "Active" : "Inactive",
+    }));
+    console.log(exportData);
+
+    exportToExcel(
+      "Danh Sách Người Dùng",
+      exportData,
+      "Danh Sách Người Dùng",
+      "customers.xlsx"
+    );
   };
 
   var i = 1; // number on users
@@ -119,6 +141,11 @@ export default function Customer() {
               onChange={(e) => setNameSearch(e.target.value)}
             />
           </InputGroup>
+        </Col>
+        <Col xs={12} md={4} className="text-end">
+        <Button onClick={handleExport} style={{height: '38px'}}>
+            <DownloadOutlined /> Export
+          </Button>
         </Col>
       </Row>
       <Table striped bordered hover variant="light">

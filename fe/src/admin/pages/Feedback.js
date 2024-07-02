@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { Col, Form, Row, Table } from "react-bootstrap";
+import { Col, Form, Row, Table, Button} from "react-bootstrap";
 import { AiFillStar } from "react-icons/ai";
 import { AiFillCaretRight } from "react-icons/ai";
 import Paginate from "../components/Paginate";
 import InputGroup from "react-bootstrap/InputGroup";
+import { DownloadOutlined } from '@ant-design/icons';
+import exportToExcel from "../../util/exportToExcel.js";
 
 export default function Feedback() {
   const [feedbacks, setFeedbacks] = useState([]);
@@ -33,7 +35,7 @@ export default function Feedback() {
   //
 
   const handleFilter = (page) => {
-    var url = `https://app.vinamall.vn/feedbacks/?_sort=id&_order=desc&_page=${page}&_limit=10`;
+    var url = `https://wdp.bachgiaphat.vn/feedbacks/?_sort=id&_order=desc&_page=${page}&_limit=10`;
     if (product !== "") {
       url += "&productId=" + product;
     }
@@ -53,6 +55,25 @@ export default function Feedback() {
   useEffect(() => {
     handleFilter(currentPage);
   }, [currentPage, product, rating]);
+
+  const handleExport = () => {
+    console.log("export feedbacks", feedbacks);
+    const exportData = feedbacks.map((feedback) => ({
+      Id: feedback._id,
+      User: feedback?.user,
+      Product: feedback?.product?.name,
+      Rating: feedback.rating,
+      Comment: feedback.comment,
+    }));
+    console.log(exportData);
+
+    exportToExcel(
+      "Danh Sách Đánh Giá",
+      exportData,
+      "Danh Sách Đánh Giá",
+      "feedbacks.xlsx"
+    );
+  };
 
   return (
     <Col lg={10}>
@@ -85,6 +106,11 @@ export default function Feedback() {
               <option value={1}>1</option>
             </Form.Select>
           </InputGroup>
+        </Col>
+        <Col xs={12} md={4} className="text-end">
+        <Button onClick={handleExport} style={{height: '38px'}}>
+            <DownloadOutlined /> Export
+          </Button>
         </Col>
       </Row>
       <Table striped bordered hover variant="light">

@@ -48,23 +48,23 @@ export default function Dashboard() {
   const [orders, setOrders] = useState([]); //fetched orders
   useEffect(() => {
     fetch(
-      `https://app.vinamall.vn/orders/find-order-by-status/successful
+      `https://wdp.bachgiaphat.vn/orders/find-order-by-status/successful
       `
     )
       .then((res) => res.json())
       .then((json) => {
-        setOrders(json)
+        setOrders(json);
       });
 
-    fetch(`https://app.vinamall.vn/brands`)
+    fetch(`https://wdp.bachgiaphat.vn/brands`)
       .then((res) => res.json())
       .then((json) => {
-        console.log("jsonjsonjson")
-        console.log(json)
-        setBrands(json)
+        console.log("jsonjsonjson");
+        console.log(json);
+        setBrands(json);
       });
 
-    fetch(`https://app.vinamall.vn/categories`)
+    fetch(`https://wdp.bachgiaphat.vn/categories`)
       .then((res) => res.json())
       .then((json) => setCategories(json));
     document.getElementById("btnradiocate1").checked = true;
@@ -76,7 +76,7 @@ export default function Dashboard() {
     temp = temp.filter((o) => (new Date(o.date)) >= (new Date(from)));
     temp = temp.filter((o) => (new Date(o.date)) < (new Date(to)));
     var ok = [];
-    temp.map(t => t.productList.map(tp => [ok.push(tp.quantity)]))
+    temp.map(t => t.productList.map(tp => [ok.push(tp.quantity)]));
     let data = {
       from: from,
       to: to,
@@ -86,10 +86,10 @@ export default function Dashboard() {
       order: temp.length,
       category: categories.map(c => ({ name: c.name, id: c._id, quantity: 0, profit: 0, revenue: 0 })),
       brand: brands.map(b => ({ name: b.name, id: b._id, quantity: 0, profit: 0, revenue: 0 }))
-    }
+    };
 
-    console.log("data.brand")
-    console.log(temp)
+    console.log("data.brand");
+    console.log(temp);
     data.brand.length > 0 && data.category.length > 0 && temp.map(t => [
       data.revenue += t.totalAmount,
       data.profit += t.productList.map(tp => (tp.unitPrice - tp.originalPrice) * tp.quantity).reduce((a, b) => a + b),
@@ -104,10 +104,10 @@ export default function Dashboard() {
       ]
       )
     ]
-    )
-    console.log(data)
-    return data
-  }
+    );
+    console.log(data);
+    return data;
+  };
 
   const currentMonthReport = () =>
     getStatisticNumber(

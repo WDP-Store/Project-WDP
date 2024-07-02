@@ -6,8 +6,8 @@ export default function AdminFooter() {
         className="text-center p-3"
         style={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}
       >
-        &copy; {new Date().getFullYear()} Copyright: Made with by group 4
-        SDN301m from FPT University
+        &copy; {new Date().getFullYear()} Copyright: Made with by group 5
+       WDP301 from FPT University
       </div>
     </footer>
   );

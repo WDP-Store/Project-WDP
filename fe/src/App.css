@@ -91,6 +91,65 @@ a {
 }
 
 /* Header Part */
+.nav-link-custom {
+  color: white !important;
+  font-size: 1.25rem; /* Adjust the size as needed */
+  text-decoration: none;
+}
+
+.nav-link-custom:hover {
+  color: #f0f0f0; /* Optional: Add hover effect */
+}
+
+/*shop by categories*/
+.filter-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.filter-title {
+  font-size: 1.5em;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btn-group2 {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.btn-check:checked + .btn-outline-primary {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.btn-outline-primary {
+  transition: all 0.3s ease;
+  padding: 10px;
+  font-size: 1em;
+  border-radius: 5px;
+}
+
+.btn-outline-primary:hover {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+
+
+
 
 .header-top-strip {
     border-bottom: 1px solid var(--color-3b4149);

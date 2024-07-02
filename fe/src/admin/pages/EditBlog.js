@@ -63,7 +63,7 @@ const EditBlog = () => {
 
   useEffect(() => {
     axios
-      .get("https://app.vinamall.vn/categories")
+      .get("https://wdp.bachgiaphat.vn/categories")
       .then((res) => res.data)
       .then((data) => {
         const c = [];
@@ -73,7 +73,7 @@ const EditBlog = () => {
   }, []);
   useEffect(() => {
     axios
-      .get(`https://app.vinamall.vn/blogs/${id}`)
+      .get(`https://wdp.bachgiaphat.vn/blogs/${id}`)
       .then((res) => res.data)
       .then((data) => {
         setBlog(data);
@@ -121,7 +121,7 @@ const EditBlog = () => {
     formData.append('image', newBlog.image);
     formData.append('isDeleted', newBlog.isDeleted);
     axios
-      .patch(`https://app.vinamall.vn/blogs/${id}`, formData, {
+      .patch(`https://wdp.bachgiaphat.vn/blogs/${id}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${JSON.parse(localStorage.getItem("data")).accessToken}`
@@ -134,7 +134,7 @@ const EditBlog = () => {
       .catch(() => {
         setIsLoading(false);
         toast.error("Something went wrong!");
-      })
+      });
   };
 
   const removeImagePreview = () => {

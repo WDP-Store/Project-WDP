@@ -13,16 +13,16 @@ const Wishlist = () => {
 
   const fetchData = () => {
     axios
-      .get(`https://app.vinamall.vn/wishlists?user=${user._id}`)
+      .get(`https://wdp.bachgiaphat.vn/wishlists?user=${user._id}`)
       .then((res) => res.data.docs)
       .then((data) => {
         setWishList(data);
       });
-  }
+  };
 
   useEffect(
     () => {
-      fetchData()
+      fetchData();
     }, []
   );
 
@@ -38,25 +38,25 @@ const Wishlist = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`https://app.vinamall.vn/wishlists/${wishlistId}`)
+          .delete(`https://wdp.bachgiaphat.vn/wishlists/${wishlistId}`)
           .then(() => {
             Swal.fire(
               'Deleted!',
               'Your item has been deleted.',
               'success'
-            )
+            );
             // setWishList(wishlist.filter(w => w.id != wishlistId));
-            fetchData()
+            fetchData();
           }).catch((e) => {
             Swal.fire({
               icon: 'error',
               title: 'Failed',
               text: `Failed to remove from wishlist ${e}`,
-            })
-          })
+            });
+          });
       }
-    })
-  }
+    });
+  };
 
   return (
     <>

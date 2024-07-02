@@ -75,7 +75,7 @@ const EditProduct = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    axios(`https://app.vinamall.vn/products/${id}`)
+    axios(`https://wdp.bachgiaphat.vn/products/${id}`)
       .then((res) => {
         return res.data;
       })
@@ -125,7 +125,7 @@ const EditProduct = () => {
 
   useEffect(() => {
     axios
-      .get("https://app.vinamall.vn/brands")
+      .get("https://wdp.bachgiaphat.vn/brands")
       .then((res) => res.data)
       .then((data) => {
         const br = [];
@@ -136,7 +136,7 @@ const EditProduct = () => {
 
   useEffect(() => {
     axios
-      .get("https://app.vinamall.vn/categories")
+      .get("https://wdp.bachgiaphat.vn/categories")
       .then((res) => res.data)
       .then((data) => {
         const c = [];
@@ -203,8 +203,8 @@ const EditProduct = () => {
       describe,
       year,
     } = values;
-    console.log("savecate")
-    console.log(category)
+    console.log("savecate");
+    console.log(category);
     let c, i;
     if (p) {
       const { color, images } = p;
@@ -216,7 +216,7 @@ const EditProduct = () => {
     }
 
     axios
-      .patch(`https://app.vinamall.vn/products/${id}`, {
+      .patch(`https://wdp.bachgiaphat.vn/products/${id}`, {
         name,
         price: Number(price),
         originalPrice: Number(originalPrice),
@@ -269,7 +269,7 @@ const EditProduct = () => {
 
     setIsLoading(true);
     axios
-      .patch(`https://app.vinamall.vn/products/${id}`, {
+      .patch(`https://wdp.bachgiaphat.vn/products/${id}`, {
         color,
         images,
       }, {

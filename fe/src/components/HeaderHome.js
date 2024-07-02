@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import { BsSearch } from "react-icons/bs";
 import compare from "../images/compare.svg";
 import wishlist from "../images/wishlist.svg";
 import user from "../images/user.svg";
-import { createContext, useContext, useState, useEffect } from "react";
 import cart from "../images/cart.svg";
 import menu from "../images/menu.svg";
 import { useAuthentication } from "../util/use-authentication";

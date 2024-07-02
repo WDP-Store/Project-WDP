@@ -8,12 +8,12 @@ import Container from "../components/Container";
 import { useParams } from "react-router-dom";
 import ProductItem from "../components/ProductItem";
 import Swal from "sweetalert2";
-import { CartContext } from '../components/CartContext'
+import { CartContext } from '../components/CartContext';
 import { toast } from "react-toastify";
 import axios from "axios";
 
 const SingleProduct = () => {
-  const { cartQuantity, setCartQuantity } = useContext(CartContext)
+  const { cartQuantity, setCartQuantity } = useContext(CartContext);
   const { id } = useParams();
   const [products, setProducts] = useState([]);
   const [relatedProducts, setRelatedProduct] = useState([]);
@@ -28,7 +28,7 @@ const SingleProduct = () => {
   const [isWish, setIsWish] = useState(false);
 
   useEffect(() => {
-    axios(`https://app.vinamall.vn/feedbacks?product=${id}`)
+    axios(`https://wdp.bachgiaphat.vn/feedbacks?product=${id}`)
       .then((res) => {
         setFeedbacks(res.data?.docs);
       })
@@ -37,12 +37,12 @@ const SingleProduct = () => {
 
   useEffect( //fetch product data by id
     () => {
-      axios.get(`https://app.vinamall.vn/products/` + id)
+      axios.get(`https://wdp.bachgiaphat.vn/products/` + id)
         .then(res => res.data)
         .then(
           json => {
             setProducts(json);
-            // axios.get(`https://app.vinamall.vn/products?&page=1&category=${json.category._id}`)
+            // axios.get(`https://wdp.bachgiaphat.vn/products?&page=1&category=${json.category._id}`)
             //   .then(res => res.data)
             //   .then(json => {
             //     console.log("json")
@@ -52,7 +52,7 @@ const SingleProduct = () => {
           }
         );
 
-      axios.get(`https://app.vinamall.vn/brands`)
+      axios.get(`https://wdp.bachgiaphat.vn/brands`)
         .then(res => res.data)
         .then(json => setBrands(json));
     }, [id]
@@ -72,10 +72,10 @@ const SingleProduct = () => {
       if (JSON.parse(localStorage.getItem("data"))) {
         const user = JSON.parse(localStorage.getItem("data"));
         axios
-          .get(`https://app.vinamall.vn/wishlists?user=` + user._id)
+          .get(`https://wdp.bachgiaphat.vn/wishlists?user=` + user._id)
           .then((res) => res.data)
           .then(json => {
-            setWishList(json)
+            setWishList(json);
           });
       }
     }, []
@@ -83,7 +83,7 @@ const SingleProduct = () => {
 
   useEffect(() => {
     axios
-      .get(`https://app.vinamall.vn/wishlists?product=${id}&user=${JSON.parse(localStorage.getItem("data"))._id}`)
+      .get(`https://wdp.bachgiaphat.vn/wishlists?product=${id}&user=${JSON.parse(localStorage.getItem("data"))._id}`)
       .then((res) => res.data.docs[0])
       .then((data) => {
         setWishList(data);
@@ -98,27 +98,27 @@ const SingleProduct = () => {
         icon: 'error',
         title: 'Failed',
         text: 'You have already added this item to wishlist',
-      })
+      });
     } else {
       axios
-        .post(`https://app.vinamall.vn/wishlists`, {
+        .post(`https://wdp.bachgiaphat.vn/wishlists`, {
           user: JSON.parse(localStorage.getItem("data"))._id,
           // user: "65c6e0400a9390c33d67b2c1",
           product: id
         }).then(() => {
-          setIsWish(true)
+          setIsWish(true);
           Swal.fire({
             icon: 'success',
             title: 'Added',
             text: 'Added item to wishlist',
-          })
+          });
         }).catch((e) => {
           Swal.fire({
             icon: 'error',
             title: 'Failed',
             text: `Failed to add wishlist ${e}`,
-          })
-        })
+          });
+        });
     }
     // } else { //not logged in
     //   Swal.fire({
@@ -136,7 +136,7 @@ const SingleProduct = () => {
     //     }
     //   })
     // }
-  }
+  };
   //local storage cart :
   const [cart, setCart] = useState([]);
 
@@ -147,27 +147,27 @@ const SingleProduct = () => {
         var index = JSON.parse(localStorage.getItem("cart")).length;
         var localCart = [
           ...JSON.parse(localStorage.getItem("cart"))
-        ]
-        localCart.map((s) => s.id = index--)
+        ];
+        localCart.map((s) => s.id = index--);
         if (localCart.some(item => item.product == id && item.color == recentColor)) { //if product is duplicate
           Swal.fire({
             icon: 'error',
             title: 'Failed',
             text: 'You have already added this item to cart',
-          })
+          });
         }
         else {
           if (Object.keys(cart).length != 0) { //if cart(state) is not empty 
             localCart = [
               cart, // new item on the top
               ...localCart
-            ]
+            ];
             Swal.fire({
               icon: 'success',
               title: 'Added',
               text: 'Added item to cart',
-            })
-            setCartQuantity(cartQuantity + 1)
+            });
+            setCartQuantity(cartQuantity + 1);
           }
         }
         localStorage.setItem("cart", JSON.stringify(localCart));
@@ -175,7 +175,7 @@ const SingleProduct = () => {
       else localStorage.setItem("cart", JSON.stringify(cart));
       console.log(JSON.parse(localStorage.getItem("cart")));
     }, [cart]
-  )
+  );
 
   const addToCart = () => { //cart fearture
     // if (JSON.parse(localStorage.getItem("data"))) { //logged in
@@ -186,7 +186,7 @@ const SingleProduct = () => {
         color: recentColor,
         quantity: quantity,
       }
-    )
+    );
     // }
     // else {
     //   Swal.fire({
@@ -205,7 +205,7 @@ const SingleProduct = () => {
     //   })
     // }
     //localStorage.setItem("cart", JSON.stringify(cart));
-  }
+  };
   return (
     <>
       <Meta title={"Product Name"} />
@@ -264,10 +264,10 @@ const SingleProduct = () => {
               </div>
               <div className=" py-3">
                 <h3 className="product-heading pb-2">Color :</h3>
-                <div className="btn-group flex-wrap" role="group" aria-label="Basic radio toggle button group">
+                <div className="btn-group2 flex-wrap" role="group" aria-label="Basic radio toggle button group">
                   {color && color.length > 0 && color.map((cl, index) =>
                     <div key={cl}>
-                      <input onChange={(e) => { setMainImage(images[e.target.value]); setRecentColor(color[index]) }} value={index} type="radio" className="btn-check" name="btnradio-color" id={"btnradio" + index} autoComplete="off" />
+                      <input onChange={(e) => { setMainImage(images[e.target.value]); setRecentColor(color[index]); }} value={index} type="radio" className="btn-check" name="btnradio-color" id={"btnradio" + index} autoComplete="off" />
                       <label className="btn btn-outline-primary" htmlFor={"btnradio" + index}>{cl}</label>
                     </div>
                   )}

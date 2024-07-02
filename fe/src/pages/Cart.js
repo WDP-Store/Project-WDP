@@ -3,18 +3,18 @@ import { useState, useEffect } from "react";
 import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
 import { AiOutlineDelete } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import Container from "../components/Container";
 import Swal from "sweetalert2";
-import { CartContext } from '../components/CartContext'
-import axios from 'axios'
+import { CartContext } from '../components/CartContext';
+import axios from 'axios';
 
 const Cart = () => {
   const { cartQuantity, setCartQuantity } = useContext(CartContext); //update cart globaly
   // const user = JSON.parse(localStorage.getItem("data"));
   // console.log(user.name);
   const [cart, setCart] = useState(JSON.parse(localStorage.getItem("cart")));
-  const [quantity, setQuantity] = useState(cart?.map(c => c.quantity))
+  const [quantity, setQuantity] = useState(cart?.map(c => c.quantity));
   const [products, setProducts] = useState([]);
   const [subTotal, setSubTotal] = useState(0);
 
@@ -22,7 +22,7 @@ const Cart = () => {
     Promise.all(  //wait for all of the fetch requests to complete before updating the state with the fetched data.
       cart?.map((c) => {
         return axios
-          .get(`https://app.vinamall.vn/products/${c.product}`)
+          .get(`https://wdp.bachgiaphat.vn/products/${c.product}`)
           .then((res) => res.data)
           .then(json => {
             json.index = c.id;  // index of products will match cart id
@@ -39,12 +39,12 @@ const Cart = () => {
       var temp = 0;
       products.map((p, index) =>
         temp += Number(p.price) * quantity[index]
-      )
+      );
       setSubTotal(temp); //update subtotal each time cart changes
-      localStorage.setItem("cart", JSON.stringify(cart)) //when cart changes , update cart in session
+      localStorage.setItem("cart", JSON.stringify(cart)); //when cart changes , update cart in session
       //console.log(products);
     }, [cart, products]
-  )
+  );
 
   const deleteCart = (index) => {
     //console.log(cart.filter((c) => c.id !== id));
@@ -58,19 +58,19 @@ const Cart = () => {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        localStorage.setItem("cart", JSON.stringify(cart.filter((c, idx) => idx !== index)))
-        setCart(JSON.parse(localStorage.getItem("cart")))
-        setProducts(products.filter((p, idx) => idx != index)) //when delete cart , update the product array
-        setQuantity(quantity.filter((q, idx) => idx != index)) //when delete cart , update the quantity array
+        localStorage.setItem("cart", JSON.stringify(cart.filter((c, idx) => idx !== index)));
+        setCart(JSON.parse(localStorage.getItem("cart")));
+        setProducts(products.filter((p, idx) => idx != index)); //when delete cart , update the product array
+        setQuantity(quantity.filter((q, idx) => idx != index)); //when delete cart , update the quantity array
         Swal.fire(
           'Deleted!',
           'Your item has been deleted.',
           'success'
-        )
-        setCartQuantity(cartQuantity - 1)
+        );
+        setCartQuantity(cartQuantity - 1);
       }
-    })
-  }
+    });
+  };
 
   const changeQuantity = (value, index) => {
     var tempCart =  //this temp will save a cart item will new value 
@@ -78,11 +78,11 @@ const Cart = () => {
       productId: cart[index].productId,
       color: cart[index].color,
       quantity: value,
-    }
-    setQuantity(quantity.map((q, idx) => idx == index ? value : q))
-    var tempFullCart = cart.map((c, idx) => idx == index ? tempCart : c) // this temp update cart list with new quality value
+    };
+    setQuantity(quantity.map((q, idx) => idx == index ? value : q));
+    var tempFullCart = cart.map((c, idx) => idx == index ? tempCart : c); // this temp update cart list with new quality value
     setCart(tempFullCart);
-  }
+  };
 
   return (
     <div>
@@ -140,9 +140,9 @@ const Cart = () => {
           </div>
           <div style={{ position: "sticky", bottom: 0, background: "#ffcccc", borderRadius: "10px" }} className="col-12 py-2 mt-4">
             <div className="d-flex justify-content-between align-items-baseline">
-              <Link to="/product" className="button">
+              <NavLink to="/product" className="button">
                 Continue To Shopping
-              </Link>
+              </NavLink>
               <div className="d-flex flex-column align-items-end">
                 <h4>SubTotal: $ {subTotal.toFixed(2)}</h4>
                 <p>Taxes and shipping calculated at checkout</p>

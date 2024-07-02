@@ -30,7 +30,7 @@ const Forgotpassword = () => {
         onSubmit: async (values) => {
             try {
                 setEmail(values.user_email);
-                const response = await axios.post(`https://app.vinamall.vn/users/forgot-password`, { email: values.user_email })
+                const response = await axios.post(`https://wdp.bachgiaphat.vn/users/forgot-password`, { email: values.user_email });
                 console.log("testResponseForgotPassword", response.data);
                 // Handle response
                 toast.success('Code send to your email');

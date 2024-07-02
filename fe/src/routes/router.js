@@ -15,6 +15,7 @@ import Feedback from '../admin/pages/Feedback';
 import Dashboard from '../admin/pages/DashBoard';
 import Contact from '../admin/pages/Contact';
 import Orders from '../admin/pages/Orders';
+import OrdersManager from '../admin/pages/OrdersManager';
 import Productlist from '../admin/pages/Productlist';
 import ProductDetail from '../admin/pages/ProductDetail';
 import EditProduct from '../admin/pages/EditProduct';
@@ -44,7 +45,8 @@ const allRoutes = createBrowserRouter([
       { path: '/admin/feedback', element: <Feedback /> },
       { path: '/admin/dashboard', element: <Dashboard /> },
       { path: '/admin/contact', element: <Contact /> },
-      { path: '/admin/order', element: <Orders /> },
+      // { path: '/admin/order', element: <Orders /> },
+      { path: '/admin/order', element: <OrdersManager /> },
 
       //product
       { path: '/admin/product', element: <Productlist /> },

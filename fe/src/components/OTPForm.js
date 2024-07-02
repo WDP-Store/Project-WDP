@@ -16,7 +16,7 @@ const OTPModal = ({ show, onClose, email }) => {
     console.log(otp);
     console.log(email);
     axios
-      .post("https://app.vinamall.vn/users/verify-otp", { email, otp })
+      .post("https://wdp.bachgiaphat.vn/users/verify-otp", { email, otp })
       .then((res) => {
         console.log(res.data);
         // Handle successful OTP verification (e.g., show success message)

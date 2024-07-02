@@ -4,38 +4,48 @@ import { Link } from "react-router-dom";
 import whiteWish from "../images/wish.svg";
 import pinkWish from "../images/pink-wishlist.png";
 import axios from "axios";
-import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import { useAuthentication } from "../util/use-authentication";
 
-// import prodcompare from "../images/prodcompare.svg";
-// import addcart from "../images/add-cart.svg";
-// import view from "../images/view.svg";
 const ProductItem = (props) => {
+  const { isLogged } = useAuthentication();
   const { product, brand } = props;
   const [wish, setWish] = useState({});
   const [isWish, setIsWish] = useState(false);
 
   useEffect(() => {
-    axios
-      .get(`https://app.vinamall.vn/wishlists?product=${product?._id}&user=${JSON.parse(localStorage.getItem("data"))?._id}`)
-      .then((res) => res.data.docs[0])
-      .then((data) => {
-        if (data) setIsWish(true)
-        setWish(data);
-      });
+    if (isLogged) {
+      axios
+        .get(`https://wdp.bachgiaphat.vn/wishlists?product=${product?._id}&user=${JSON.parse(localStorage.getItem("data"))?._id}`)
+        .then((res) => res.data.docs[0])
+        .then((data) => {
+          if (data) setIsWish(true);
+          setWish(data);
+        });
+    }
   }, [isWish]);
 
   const addToWishList = () => {
     // if (JSON.parse(localStorage.getItem("data"))) { //if user is logged in
+    if (!isLogged) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Failed',
+        text: 'Please login to add item to wishlist',
+      });
+
+      return;
+    }
+
     if (wish?.product?._id === product?._id) {
       Swal.fire({
         icon: 'error',
         title: 'Failed',
         text: 'You have already added this item to wishlist',
-      })
+      });
     } else {
       axios
-        .post(`https://app.vinamall.vn/wishlists`, {
+        .post(`https://wdp.bachgiaphat.vn/wishlists`, {
           // user: JSON.parse(localStorage.getItem("data"))._id,
           user: JSON.parse(localStorage.getItem("data"))._id,
           product: product._id
@@ -45,14 +55,14 @@ const ProductItem = (props) => {
             icon: 'success',
             title: 'Added',
             text: 'Added item to wishlist',
-          })
+          });
         }).catch((e) => {
           Swal.fire({
             icon: 'error',
             title: 'Failed',
             text: `Failed to add wishlist ${e}`,
-          })
-        })
+          });
+        });
     }
     // } else { //not logged in
     //   Swal.fire({
@@ -70,31 +80,40 @@ const ProductItem = (props) => {
     //     }
     //   })
     // }
-  }
+  };
 
   const removeFromWishList = () => {
-    console.log("wish delete")
-    console.log(wish)
+    if (!isLogged) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Failed',
+        text: 'Please login to remove item from wishlist',
+      });
+
+      return;
+    }
+    console.log("wish delete");
+    console.log(wish);
     // if (JSON.parse(localStorage.getItem("data"))) { //if user is logged in
     axios
-      .delete(`https://app.vinamall.vn/wishlists/${wish._id}`, {
+      .delete(`https://wdp.bachgiaphat.vn/wishlists/${wish._id}`, {
         // user: JSON.parse(localStorage.getItem("data"))._id,
         user: JSON.parse(localStorage.getItem("data"))._id,
         product: product._id
       }).then(() => {
-        setIsWish(false)
+        setIsWish(false);
         Swal.fire({
           icon: 'success',
           title: 'Removed',
           text: 'Removed item to wishlist',
-        })
+        });
       }).catch((e) => {
         Swal.fire({
           icon: 'error',
           title: 'Failed',
           text: `Failed to remove from wishlist ${e}`,
-        })
-      })
+        });
+      });
     // } else { //not logged in
     //   Swal.fire({
     //     icon: 'error',
@@ -111,7 +130,7 @@ const ProductItem = (props) => {
     //     }
     //   })
     // }
-  }
+  };
 
   return (
     <>

@@ -23,7 +23,7 @@ const OurStore = () => {
   const [year_f, setYear_f] = useState([]);
   const [category_f, setCategory_f] = useState([]);
   const [max_f, setMax_f] = useState('');
-  const [min_f, setMin_f] = useState('')
+  const [min_f, setMin_f] = useState('');
 
   // sorting 
   const [urlSortKey, setUrlSortKey] = useState('');
@@ -52,7 +52,7 @@ const OurStore = () => {
   //category & brand
   useEffect(() => {
     axios
-      .get("https://app.vinamall.vn/categories")
+      .get("https://wdp.bachgiaphat.vn/categories")
       .then((res) => res.data)
       .then((data) => {
         setCategories(data);
@@ -61,7 +61,7 @@ const OurStore = () => {
 
   useEffect(() => {
     axios
-      .get("https://app.vinamall.vn/brands")
+      .get("https://wdp.bachgiaphat.vn/brands")
       .then((res) => res.data)
       .then((data) => {
         setBrands(data);
@@ -73,37 +73,37 @@ const OurStore = () => {
 
   const SortProduct = (index) => {
     if (index == 0) {
-      setUrlSortKey('featured_s')
-      setUrlSortValue('desc')
+      setUrlSortKey('featured_s');
+      setUrlSortValue('desc');
     };
     if (index == 1) {
-      setUrlSortKey('name_s')
-      setUrlSortValue('asc')
+      setUrlSortKey('name_s');
+      setUrlSortValue('asc');
     };
     if (index == 2) {
-      setUrlSortKey('name_s')
-      setUrlSortValue('desc')
+      setUrlSortKey('name_s');
+      setUrlSortValue('desc');
     };
     if (index == 3) {
-      setUrlSortKey('price_s')
-      setUrlSortValue('asc')
+      setUrlSortKey('price_s');
+      setUrlSortValue('asc');
     };
     if (index == 4) {
-      setUrlSortKey('price_s')
-      setUrlSortValue('desc')
+      setUrlSortKey('price_s');
+      setUrlSortValue('desc');
     };
     if (index == 5) {
-      setUrlSortKey('year_s')
-      setUrlSortValue('asc')
+      setUrlSortKey('year_s');
+      setUrlSortValue('asc');
     };
     if (index == 6) {
-      setUrlSortKey('featured_s')
-      setUrlSortValue('desc')
+      setUrlSortKey('featured_s');
+      setUrlSortValue('desc');
     };
-  }
+  };
 
   const handleFilter = (page) => {
-    var url = `https://app.vinamall.vn/products?page=${page}`;
+    var url = `https://wdp.bachgiaphat.vn/products?page=${page}`;
 
     if (nameSearch) {
       url += `&name=${nameSearch}`;
@@ -112,31 +112,31 @@ const OurStore = () => {
     if (brand_f.length != 0) {
       brand_f?.map(b =>
         url += ('&brand=' + b)
-      )
+      );
     }
 
     if (category_f.length != 0) {
       category_f?.map(b =>
         url += ('&category=' + b)
-      )
+      );
     }
 
     if (year_f.length != 0) {
       year_f?.map(b =>
         url += ('&year=' + b)
-      )
+      );
     }
 
     if (min_f != '') {
-      url += ('&price_gte=' + min_f)
+      url += ('&price_gte=' + min_f);
     }
 
     if (max_f != '') {
-      url += ('&price_lte=' + max_f)
+      url += ('&price_lte=' + max_f);
     }
 
     if (urlSortValue != '' && urlSortKey != '') {
-      url += (`&${urlSortKey}=` + urlSortValue)
+      url += (`&${urlSortKey}=` + urlSortValue);
     }
 
     axios(url)
@@ -145,48 +145,48 @@ const OurStore = () => {
         setProducts(res.data.docs);
       })
       .catch((err) => toast.error(err));
-  }
+  };
 
   useEffect(
     () => {
       handleFilter(currentPage);
     }, [currentPage, year_f, category_f, brand_f, max_f, min_f, nameSearch, urlSortKey, urlSortValue]
-  )
+  );
 
   const handleFilterValue = (attr) => {
     if (attr === "brand") {
       let box = document.getElementsByName("brand-Filter-Box");
-      let temp = []
+      let temp = [];
       for (let i = 0; i < box.length; i++) {
         if (box[i].checked == true) {
-          temp = [...temp, box[i].value]
+          temp = [...temp, box[i].value];
         }
       }
-      setBrand_f(temp)
+      setBrand_f(temp);
     }
 
     if (attr === "category") {
       let box = document.getElementsByName("cate-Filter-Box");
-      let temp = []
+      let temp = [];
       for (let i = 0; i < box.length; i++) {
         if (box[i].checked == true) {
-          temp = [...temp, box[i].value]
+          temp = [...temp, box[i].value];
         }
       }
-      setCategory_f(temp)
+      setCategory_f(temp);
     }
 
     if (attr === "year") {
       let box = document.getElementsByName("year-Filter-Box");
-      let temp = []
+      let temp = [];
       for (let i = 0; i < box.length; i++) {
         if (box[i].checked == true) {
-          temp = [...temp, box[i].value]
+          temp = [...temp, box[i].value];
         }
       }
-      setYear_f(temp)
+      setYear_f(temp);
     }
-  }
+  };
   return (
     <>
       <Meta title={"Our Store"} />
@@ -210,26 +210,31 @@ const OurStore = () => {
 
             </div>
           </div>
-        </div>
+        </div
+        >
         <div className="row">
           <div className="col-3">
             <div className="filter-card mb-3">
               <h3 className="filter-title">Shop By Categories</h3>
-
               <div className="btn-group d-flex flex-column" role="group" aria-label="Basic checkbox toggle button group">
                 {
                   categories.map((c) =>
                     <div key={c._id}>
                       <input onChange={() => handleFilterValue("category")
-                      } name="cate-Filter-Box" type="checkbox" className="btn-check" id={"btncheck" + c._id} autoComplete="off" value={c._id} />
+                      } 
+                      name="cate-Filter-Box" 
+                      type="checkbox" 
+                      className="btn-check" 
+                      id={"btncheck" + c._id} 
+                      autoComplete="off" 
+                      value={c._id} />
                       <label style={{ width: "150px" }} className="btn btn-outline-primary" htmlFor={"btncheck" + c._id}>{c.name}</label>
                     </div>
                   )
                 }
-
               </div>
-
             </div>
+
             <div className="filter-card mb-3">
               <h3 className="filter-title">Filter By</h3>
               <div>

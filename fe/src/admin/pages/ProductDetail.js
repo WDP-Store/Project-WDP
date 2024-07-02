@@ -17,7 +17,7 @@ const ProductDetail = () => {
   const { images } = products;
 
   useEffect(() => {
-    axios(`https://app.vinamall.vn/products/${id}`)
+    axios(`https://wdp.bachgiaphat.vn/products/${id}`)
       .then((res) => {
         console.log(res);
         setProducts(res.data);
@@ -26,7 +26,7 @@ const ProductDetail = () => {
   }, [id]);
 
   useEffect(() => {
-    axios(`https://app.vinamall.vn/feedbacks?product=${id}`)
+    axios(`https://wdp.bachgiaphat.vn/feedbacks?product=${id}`)
       .then((res) => {
         setFeedbacks(res.data?.docs);
       })
@@ -34,7 +34,7 @@ const ProductDetail = () => {
   }, []);
 
   useEffect(() => {
-    axios(`https://app.vinamall.vn/users`)
+    axios(`https://wdp.bachgiaphat.vn/users`)
       .then((res) => {
         setUsers(res.data);
       })
@@ -132,7 +132,7 @@ const ProductDetail = () => {
               <div className=" py-3">
                 <h3 className="product-heading pb-2">Color :</h3>
                 <div
-                  className="btn-group"
+                  className="btn-group2"
                   role="group"
                   aria-label="Basic radio toggle button group"
                 >

@@ -15,7 +15,7 @@ const Profile = () => {
   const [editedData, setEditedData] = useState({});
   useEffect(() => {
     axios
-      .get(`https://app.vinamall.vn/users/${id}`, {
+      .get(`https://wdp.bachgiaphat.vn/users/${id}`, {
         headers: { Authorization: `Bearer ${currentUser.accessToken}` },
       })
       .then((response) => {
@@ -37,7 +37,7 @@ const Profile = () => {
 
   const handleSave = () => {
     axios
-      .patch(`https://app.vinamall.vn/users/${id}`, editedData)
+      .patch(`https://wdp.bachgiaphat.vn/users/${id}`, editedData)
       .then((response) => {
         setUserData(response.data.data);
         setIsEditing(false);

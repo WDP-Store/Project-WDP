@@ -5,6 +5,9 @@ import Paginate from "../components/Paginate";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
+import exportToExcel from "../../util/exportToExcel.js";
+import { DownloadOutlined } from '@ant-design/icons';
+
 
 const Productlist = () => {
   const [products, setProducts] = useState([]);
@@ -18,7 +21,7 @@ const Productlist = () => {
 
   useEffect(() => {
     axios
-      .get("https://app.vinamall.vn/brands")
+      .get("https://wdp.bachgiaphat.vn/brands")
       .then((res) => res.data)
       .then((data) => {
         setBrands(data);
@@ -27,7 +30,7 @@ const Productlist = () => {
 
   useEffect(() => {
     axios
-      .get("https://app.vinamall.vn/categories")
+      .get("https://wdp.bachgiaphat.vn/categories")
       .then((res) => res.data)
       .then((data) => {
         setCategories(data);
@@ -35,7 +38,7 @@ const Productlist = () => {
   }, []);
 
   const fetchProducts = (page) => {
-    let url = `https://app.vinamall.vn/products?page=${page}`;
+    let url = `https://wdp.bachgiaphat.vn/products?page=${page}`;
 
     if (nameSearch) {
       url += `&name=${nameSearch}`;
@@ -100,7 +103,7 @@ const Productlist = () => {
 
   const deleteProduct = (productId) => {
     axios
-      .delete(`https://app.vinamall.vn/products/${productId}`, {
+      .delete(`https://wdp.bachgiaphat.vn/products/${productId}`, {
         headers: {
           'Authorization': `Bearer ${JSON.parse(localStorage.getItem("data")).accessToken}`
         }
@@ -116,7 +119,7 @@ const Productlist = () => {
 
   const changeStatus = (productId, status) => {
     axios
-      .patch(`https://app.vinamall.vn/products/${productId}`, {
+      .patch(`https://wdp.bachgiaphat.vn/products/${productId}`, {
         status: !status,
       }, {
         headers: {
@@ -130,7 +133,7 @@ const Productlist = () => {
       .catch((error) => {
         toast.error(error.message);
       });
-    // fetch(`https://app.vinamall.vn/products/${productId}`, {
+    // fetch(`https://wdp.bachgiaphat.vn/products/${productId}`, {
     //   method: "PATCH",
     //   body: JSON.stringify({
     //     status: !status,
@@ -154,7 +157,7 @@ const Productlist = () => {
 
   const changeFeatured = (productId, featured) => {
     axios
-      .patch(`https://app.vinamall.vn/products/${productId}`, {
+      .patch(`https://wdp.bachgiaphat.vn/products/${productId}`, {
         featured: !featured,
       }, {
         headers: {
@@ -168,6 +171,35 @@ const Productlist = () => {
       .catch((error) => {
         toast.error(error.message);
       });
+  };
+console.log(products);
+  const handleExport = () => {
+    const exportData = products.map((product) => {
+      const images = product.images.reduce((acc, img, index) => {
+        acc[`Image ${index + 1}`] = img;
+        return acc;
+      }, {});
+  
+      return {
+        Id: product._id,
+        Name: product.name,
+        Price: product.price,
+        OriginalPrice: product.originalPrice,
+        Category: product.category.name,
+        Brand: product.brand.name,
+        Status: product.status ? "Active" : "Inactive",
+        Feature: product.featured ? "Yes" : "No",
+        ...images,
+      };
+    });
+    console.log(exportData);
+
+    exportToExcel(
+      "Danh Sách Sản Phẩm",
+      exportData,
+      "Danh Sách Sản Phẩm",
+      "products.xlsx"
+    );
   };
 
   return (
@@ -184,7 +216,7 @@ const Productlist = () => {
             />
           </Form.Group>
         </Col>
-        <Col xs={12} md={3}>
+        <Col xs={12} md={2}>
           <Form.Select
             aria-label="status"
             value={statusFilter}
@@ -210,6 +242,11 @@ const Productlist = () => {
               </option>
             ))}
           </Form.Select>
+        </Col>
+        <Col xs={12} md={1} className="text-end">
+          <Button onClick={handleExport} style={{height: '38px'}}>
+            <DownloadOutlined /> Export
+          </Button>
         </Col>
         <Col xs={12} md={2} style={{ textAlign: "right" }}>
           <Button variant="primary">

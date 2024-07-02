@@ -23,7 +23,7 @@ const Bloglist = () => {
 
   useEffect(() => {
     axios
-      .get("https://app.vinamall.vn/categories")
+      .get("https://wdp.bachgiaphat.vn/categories")
       .then((res) => res.data)
       .then((data) => {
         setCategories(data);
@@ -31,7 +31,7 @@ const Bloglist = () => {
   }, []);
 
   const fetchBlogs = async (page) => {
-    let url = `https://app.vinamall.vn/blogs/admin?page=${page}`;
+    let url = `https://wdp.bachgiaphat.vn/blogs/admin?page=${page}`;
 
     if (titleSearch) {
       url += `&title=${titleSearch}`;
@@ -44,7 +44,7 @@ const Bloglist = () => {
     axios(url)
       .then((res) => {
         setTotalPages(res.data.totalPages);
-        const blogActive = res.data.docs.filter(b => !b.isDeleted)
+        const blogActive = res.data.docs.filter(b => !b.isDeleted);
         setBlogs(blogActive);
       })
       .catch((err) => toast.error(err));
@@ -113,7 +113,7 @@ const Bloglist = () => {
 
   const deleteBlog = (blogId) => {
     axios
-      .patch(`https://app.vinamall.vn/blogs/${blogId}`, { isDeleted: true }, {
+      .patch(`https://wdp.bachgiaphat.vn/blogs/${blogId}`, { isDeleted: true }, {
         headers: {
           'Authorization': `Bearer ${JSON.parse(localStorage.getItem("data")).accessToken}`
         }
@@ -124,7 +124,7 @@ const Bloglist = () => {
       })
       .catch(() => {
         toast.error("Something went wrong!");
-      })
+      });
   };
 
 

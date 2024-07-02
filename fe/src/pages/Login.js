@@ -26,7 +26,7 @@ const Login = () => {
     const isValid = handleValidate(formData);
     if (isValid) {
       axios
-        .post("https://app.vinamall.vn/auth/login", formData)
+        .post("https://wdp.bachgiaphat.vn/auth/login", formData)
         .then((response) => {
           localStorage.setItem("data", JSON.stringify(response.data));
           const userTest = localStorage.getItem("data");
@@ -108,7 +108,7 @@ const Login = () => {
                 <div>
                   <Link to="/forgot-password">Forgot Password?</Link>
                   <div className="mt-3 d-flex justify-content-center gap-15 align-items-center">
-                    <button className="button border-0" type="submit">
+                    <button className="button signup" type="submit">
                       Login
                     </button>
                     <Link to="/signup" className="button signup">
