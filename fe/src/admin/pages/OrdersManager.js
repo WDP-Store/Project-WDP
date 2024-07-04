@@ -43,6 +43,7 @@ export default function OrdersManager() {
   const [orderIdFilter, setOrderIdFilter] = useState("");
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
+  const [email, setEmail] = useState("");
 
   const [refresh, setRefresh] = useState(true);
   //pagination
@@ -95,7 +96,7 @@ export default function OrdersManager() {
   useEffect(() => {
     //filter with status, order id
     filterOrder(currentPage);
-  }, [currentPage, orderIdFilter, statusFilter, fromDate, toDate, refresh]);
+  }, [currentPage, orderIdFilter, statusFilter, fromDate, toDate, refresh, email]);
 
   const filterOrder = (page) => {
     let url = `http://localhost:9999/orders/all?page=${page}`;
@@ -107,6 +108,11 @@ export default function OrdersManager() {
     if (statusFilter !== "") {
       url += "&status=" + statusFilter;
     }
+
+    if (email !== "") {
+      url += "&email=" + email;
+    }
+
     if (orderIdFilter !== "") {
       url += "&id=" + orderIdFilter;
     }
@@ -164,11 +170,11 @@ export default function OrdersManager() {
         </Col>
         <Col xs={6} md={2}>
           <InputGroup className="mb-3">
-            <InputGroup.Text>Order id</InputGroup.Text>
+            <InputGroup.Text>Email</InputGroup.Text>
             <Form.Control
               onChange={(e) => {
-                setOrderIdFilter(e.target.value);
-                setCurrentPage(1);
+                setEmail(e.target.value);
+                // setCurrentPage(1);
               }}
             ></Form.Control>
           </InputGroup>
@@ -234,14 +240,15 @@ export default function OrdersManager() {
               </div>
             </Card.Header>
             <Card.Body className="row m-1" style={{ background: "white" }}>
-              <Card.Title className="col-3">
+              <Card.Title className="col-4">
                 {o.name} <br></br>
-                (+1) {o.phone}
+                {o.user?.email} <br></br>
+                {o.phone}
               </Card.Title>
-              <Card.Text className="col-5">
-                {"zipcode: " +
+              <Card.Text className="col-4">
+                {"Zipcode: " +
                   o.address?.zipcode +
-                  ", " +
+                  ". Address: " +
                   o.address?.detailAddress +
                   ", " +
                   o.address?.city +
@@ -291,12 +298,12 @@ export default function OrdersManager() {
             <Card.Body>
               <Card.Title>
                 {currentDetail.name} <br></br>
-                (+1) {currentDetail.phone}
+                {currentDetail.phone}
               </Card.Title>
               <Card.Text>
-                {"zipcode: " +
+                {"Zipcode: " +
                   currentDetail.address?.zipcode +
-                  ", " +
+                  ". Address: " +
                   currentDetail.address?.detailAddress +
                   ", " +
                   currentDetail.address?.city +

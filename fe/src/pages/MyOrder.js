@@ -213,10 +213,10 @@ export default function MyOrder() {
               <Card.Body className="row m-1" style={{ background: "white" }}>
                 <Card.Title className="col-3">
                   {o.name} <br></br>
-                  (+1) {o.phone}
+                  {o.phone}
                 </Card.Title>
                 <Card.Text className="col-5">
-                  {'zipcode: ' + o.address?.zipcode + ', ' + o.address?.detailAddress + ', ' + o.address?.city + ", " + o.address?.state + ', ' + o.address?.country}
+                  {'Zipcode: ' + o.address?.zipcode + '. Address' + o.address?.detailAddress + ', ' + o.address?.city + ", " + o.address?.state + ', ' + o.address?.country}
                 </Card.Text>
                 <Card.Text className="col-2">
                   {o.productList?.length} x products
@@ -247,10 +247,10 @@ export default function MyOrder() {
             <Card.Body>
               <Card.Title>
                 {currentDetail.name} <br></br>
-                (+1) {currentDetail.phone}
+                {currentDetail.phone}
               </Card.Title>
               <Card.Text>
-                {'zipcode: ' + currentDetail.address?.zipcode + ', ' + currentDetail.address?.detailAddress + ', ' + currentDetail.address?.city + ", " + currentDetail.address?.state + ', ' + currentDetail.address?.country}
+                {'zipcode: ' + currentDetail.address?.zipcode + '. Address' + currentDetail.address?.detailAddress + ', ' + currentDetail.address?.city + ", " + currentDetail.address?.state + ', ' + currentDetail.address?.country}
               </Card.Text>
               <Card.Text>
                 {currentDetail.productList?.length} x products
