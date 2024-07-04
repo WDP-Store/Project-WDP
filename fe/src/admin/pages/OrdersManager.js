@@ -168,7 +168,7 @@ export default function OrdersManager() {
             </Form.Select>
           </InputGroup>
         </Col>
-        <Col xs={6} md={2}>
+        <Col xs={6} md={4}>
           <InputGroup className="mb-3">
             <InputGroup.Text>Email</InputGroup.Text>
             <Form.Control
