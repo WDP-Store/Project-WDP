@@ -1,9 +1,10 @@
+import User from "../model/User.js";
 import Order from "../model/Order.js";
 import Status from "../model/Status.js";
 
 const findAll = async (req, res) => {
   try {
-    const { page, user, status, fromDate, toDate, name, id, _sort, _order } = req.query;
+    const { page, user, status, fromDate, toDate, name, id, _sort, _order, email } = req.query;
 
     const query = {};
     if (status !== undefined) query.status = status === "true";
@@ -15,9 +16,23 @@ const findAll = async (req, res) => {
       query.date = {
         $gte: new Date(fromDate),
         $lte: new Date(toDate)
-      }
+      };
     }
-
+    if (email) {
+      if (email) {
+        const userDoc = await User.findOne({ email: { $regex: email, $options: 'i' } });
+        if (userDoc) {
+          query.user= userDoc._id;
+        } else {
+          // return res.status(404).json({ message: "User not found" });
+        }
+      }
+      // query['user.email'] = { $regex: email, $options: "i" };
+      // query.user = {
+      //   email: { $regex: email, $options: "i" }
+      // }
+    }
+console.log(query)
     let sort = {};
     if (_sort) {
       sort[_sort] = _order === "desc" ? -1 : 1;
