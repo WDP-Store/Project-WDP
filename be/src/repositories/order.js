@@ -3,7 +3,7 @@ import Status from "../model/Status.js";
 
 const findAll = async (req, res) => {
   try {
-    const { page, user, status, date_s, name, id, _sort, _order } = req.query;
+    const { page, user, status, fromDate, toDate, name, id, _sort, _order } = req.query;
 
     const query = {};
     if (status !== undefined) query.status = status === "true";
@@ -11,6 +11,12 @@ const findAll = async (req, res) => {
     if (id) query._id = id;
     if (status) query.status = status;
     if (name) query.name = { $regex: name, $options: "i" };
+    if (fromDate && toDate) {
+      query.date = {
+        $gte: new Date(fromDate),
+        $lte: new Date(toDate)
+      }
+    }
 
     let sort = {};
     if (_sort) {

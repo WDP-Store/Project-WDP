@@ -10,8 +10,8 @@ import Badge from "react-bootstrap/Badge";
 import Modal from "react-bootstrap/Modal";
 import { toast } from "react-toastify";
 import { AiFillCaretRight } from "react-icons/ai";
-import { date } from "yup";
 import axios from "axios";
+import { DatePicker } from 'antd';
 
 export default function OrdersManager() {
   const [orders, setOrders] = useState([]); //fetched orders
@@ -41,13 +41,21 @@ export default function OrdersManager() {
   //for filtering
   const [statusFilter, setStatusFilter] = useState("");
   const [orderIdFilter, setOrderIdFilter] = useState("");
-  const [fromDate, setfromDate] = useState("");
-  const [toDate, settoDate] = useState("");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
 
   const [refresh, setRefresh] = useState(true);
   //pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+
+  const { RangePicker } = DatePicker;
+
+  const onOk = (value) => {
+    console.log('onOk: ', value);
+    setFromDate(value[0]);
+    setToDate(value[1]);
+  };
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -90,11 +98,11 @@ export default function OrdersManager() {
   }, [currentPage, orderIdFilter, statusFilter, fromDate, toDate, refresh]);
 
   const filterOrder = (page) => {
-    // var url = (`https://wdp.bachgiaphat.vn/orders/all?page=1&user=${user._id}`);
-    // var url = (`https://wdp.bachgiaphat.vn/orders/all?page=1`);
-    var url = `https://wdp.bachgiaphat.vn/orders/all?`;
-    console.log("data order:");
-    if (fromDate === "" && toDate === "") url += `&page=${page}`;
+    let url = `http://localhost:9999/orders/all?page=${page}`;
+
+    if (fromDate && toDate) {
+      url += `&fromDate=${fromDate}&toDate=${toDate}`;
+    }
 
     if (statusFilter !== "") {
       url += "&status=" + statusFilter;
@@ -110,20 +118,6 @@ export default function OrdersManager() {
         setTotalPages(res.data.totalPages);
         setOrders(res.data.docs);
         return res.data.docs;
-      })
-      .then((json) => {
-        console.log("jsonjsonjsonjson");
-        console.log(json);
-        if (fromDate !== "") {
-          let temp = [...json];
-          temp = temp.filter((o) => new Date(o.date) >= new Date(fromDate));
-          setOrders(temp);
-        }
-        if (toDate !== "") {
-          let temp = [...json];
-          temp = temp.filter((o) => new Date(o.date) <= new Date(toDate));
-          setOrders(temp);
-        }
       })
       .catch((err) => toast.error(err));
   };
@@ -179,30 +173,17 @@ export default function OrdersManager() {
             ></Form.Control>
           </InputGroup>
         </Col>
-        <Col xs={12} md={2}></Col>
-        <Col xs={6} md={3}>
-          <InputGroup className="mb-3">
-            <InputGroup.Text>From</InputGroup.Text>
-            <Form.Control
-              type="date"
-              onChange={(e) => {
-                setfromDate(e.target.value);
-                setCurrentPage(1);
-              }}
-            ></Form.Control>
-          </InputGroup>
-        </Col>
-        <Col xs={12} md={3}>
-          <InputGroup className="mb-3">
-            <InputGroup.Text>to</InputGroup.Text>
-            <Form.Control
-              type="date"
-              onChange={(e) => {
-                settoDate(e.target.value);
-                setCurrentPage(1);
-              }}
-            ></Form.Control>
-          </InputGroup>
+        <Col xs={12} md={6} className="text-right">
+          <RangePicker
+            showTime={{ format: 'HH:mm' }}
+            format="YYYY-MM-DD HH:mm"
+            size='large'
+            onChange={(value, dateString) => {
+              console.log('Selected Time: ', value);
+              console.log('Formatted Selected Time: ', dateString);
+              onOk(dateString);
+            }}
+          />
         </Col>
         <Col xs={12} md={12}>
           <div className="pagination mb-3 justify-content-end">
