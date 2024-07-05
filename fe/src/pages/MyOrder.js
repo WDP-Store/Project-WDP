@@ -12,6 +12,7 @@ import { toast } from 'react-toastify';
 import { AiFillCaretRight } from "react-icons/ai";
 import { date } from "yup";
 import axios from "axios";
+import { DatePicker } from 'antd';
 
 export default function MyOrder() {
 
@@ -42,13 +43,22 @@ export default function MyOrder() {
   //for filtering
   const [statusFilter, setStatusFilter] = useState('');
   const [orderIdFilter, setOrderIdFilter] = useState('');
-  const [fromDate, setfromDate] = useState('');
-  const [toDate, settoDate] = useState('');
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+  const [email, setEmail] = useState("");
 
   const [refresh, setRefresh] = useState(true);
   //pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+
+  const { RangePicker } = DatePicker;
+
+  const onOk = (value) => {
+    console.log('onOk: ', value);
+    setFromDate(value[0]);
+    setToDate(value[1]);
+  };
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -94,37 +104,31 @@ export default function MyOrder() {
   );
 
   const filterOrder = (page) => {
-    var url = (`https://wdp.bachgiaphat.vn/orders/all?page=1&user=${user._id}`);
+    let url = `https://wdp.bachgiaphat.vn/orders/all?page=${page}&user=${user._id}`;
 
-    if (fromDate === '' && toDate === '') url += `&page=${page}`;
-
-    if (statusFilter !== '') {
-      url += ('&status=' + statusFilter);
-    }
-    if (orderIdFilter !== '') {
-      url += ('&id=' + orderIdFilter);
+    if (fromDate && toDate) {
+      url += `&fromDate=${fromDate}&toDate=${toDate}`;
     }
 
-    axios.get(url)
-      .then(res => {
+    if (statusFilter !== "") {
+      url += "&status=" + statusFilter;
+    }
+
+    if (email !== "") {
+      url += "&email=" + email;
+    }
+
+    if (orderIdFilter !== "") {
+      url += "&id=" + orderIdFilter;
+    }
+
+    axios
+      .get(url)
+      .then((res) => {
+        console.log("data order:", res);
         setTotalPages(res.data.totalPages);
         setOrders(res.data.docs);
         return res.data.docs;
-      }
-      )
-      .then(json => {
-        console.log("jsonjsonjsonjson");
-        console.log(json);
-        if (fromDate !== '') {
-          let temp = [...json];
-          temp = temp.filter((o) => (new Date(o.date)) >= (new Date(fromDate)));
-          setOrders(temp);
-        }
-        if (toDate !== '') {
-          let temp = [...json];
-          temp = temp.filter((o) => new Date(o.date) <= new Date(toDate));
-          setOrders(temp);
-        }
       })
       .catch((err) => toast.error(err));
   };
@@ -133,7 +137,7 @@ export default function MyOrder() {
     <Container lg={10}>
       <h3 className="mt-2">My orders</h3>
       <Row className='my-4'>
-        <Col xs={6} md={2}>
+        <Col xs={6} md={4}>
           <InputGroup className="mb-3">
             <InputGroup.Text>
               Status
@@ -150,37 +154,17 @@ export default function MyOrder() {
             </Form.Select>
           </InputGroup>
         </Col>
-        <Col xs={6} md={2}>
-          <InputGroup className="mb-3">
-            <InputGroup.Text>
-              Order id
-            </InputGroup.Text>
-            <Form.Control onChange={(e) => setOrderIdFilter(e.target.value)}>
-
-            </Form.Control>
-          </InputGroup>
-        </Col>
-        <Col xs={12} md={2}>
-        </Col>
-        <Col xs={6} md={3}>
-          <InputGroup className="mb-3">
-            <InputGroup.Text>
-              From
-            </InputGroup.Text>
-            <Form.Control type="date" onChange={(e) => setfromDate(e.target.value)}>
-
-            </Form.Control>
-          </InputGroup>
-        </Col>
-        <Col xs={12} md={3}>
-          <InputGroup className="mb-3">
-            <InputGroup.Text>
-              to
-            </InputGroup.Text>
-            <Form.Control type="date" onChange={(e) => settoDate(e.target.value)}>
-
-            </Form.Control>
-          </InputGroup>
+        <Col xs={12} md={6}>
+          <RangePicker
+            showTime={{ format: 'HH:mm' }}
+            format="YYYY-MM-DD HH:mm"
+            size='large'
+            onChange={(value, dateString) => {
+              console.log('Selected Time: ', value);
+              console.log('Formatted Selected Time: ', dateString);
+              onOk(dateString);
+            }}
+          />
         </Col>
         <Col xs={12} md={12}>
           <div className="pagination mb-3 justify-content-end">

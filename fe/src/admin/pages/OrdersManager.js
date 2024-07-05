@@ -99,7 +99,7 @@ export default function OrdersManager() {
   }, [currentPage, orderIdFilter, statusFilter, fromDate, toDate, refresh, email]);
 
   const filterOrder = (page) => {
-    let url = `http://localhost:9999/orders/all?page=${page}`;
+    let url = `https://wdp.bachgiaphat.vn/orders/all?page=${page}`;
 
     if (fromDate && toDate) {
       url += `&fromDate=${fromDate}&toDate=${toDate}`;
