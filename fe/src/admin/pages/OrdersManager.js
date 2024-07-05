@@ -191,17 +191,6 @@ export default function OrdersManager() {
             }}
           />
         </Col>
-        <Col xs={12} md={12}>
-          <div className="pagination mb-3 justify-content-end">
-            <Paginate
-              currentPage={currentPage}
-              totalPages={totalPages}
-              handlePageChange={handlePageChange}
-              handlePrevPage={handlePrevPage}
-              handleNextPage={handleNextPage}
-            />
-          </div>
-        </Col>
       </Row>
       {orders.map((o, index) => (
         <div key={index} className="m-2 mb-4">
@@ -274,6 +263,19 @@ export default function OrdersManager() {
           </Card>
         </div>
       ))}
+      <Row>
+        <Col xs={12} md={12}>
+          <div className="pagination mb-3 justify-content-end">
+            <Paginate
+              currentPage={currentPage}
+              totalPages={totalPages}
+              handlePageChange={handlePageChange}
+              handlePrevPage={handlePrevPage}
+              handleNextPage={handleNextPage}
+            />
+          </div>
+        </Col>
+      </Row>
       <Modal
         size="lg"
         show={lgShow}
