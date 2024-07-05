@@ -80,7 +80,7 @@ export default function AdminTopNav(props) {
       </li>
     </ul>
   );
-  const clickContent = <div>This is click content.</div>;
+  const clickContent = <div></div>;
 
   return (
     <Header style={headerStyle}>
