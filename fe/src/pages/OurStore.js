@@ -155,45 +155,48 @@ const OurStore = () => {
     urlSortValue,
   ]);
 
-  const handleFilterValue = (attr) => {
+  const [brandFilters, setBrandFilters] = useState({});
+  const [categoryFilters, setCategoryFilters] = useState({});
+  const [yearFilters, setYearFilters] = useState({});
+
+  const handleFilterChange = (attr, value) => {
+    const filterState =
+      attr === "brand"
+        ? brandFilters
+        : attr === "category"
+        ? categoryFilters
+        : yearFilters;
+    const newFilters = { ...filterState, [value]: !filterState[value] };
+
     if (attr === "brand") {
-      let box = document.getElementsByName("brand-Filter-Box");
-      let temp = [];
-      for (let i = 0; i < box.length; i++) {
-        if (box[i].checked == true) {
-          temp = [...temp, box[i].value];
-        }
-      }
-      setBrand_f(temp);
+      setBrandFilters(newFilters);
+    } else if (attr === "category") {
+      setCategoryFilters(newFilters);
+    } else if (attr === "year") {
+      setYearFilters(newFilters);
     }
 
-    if (attr === "category") {
-      let box = document.getElementsByName("cate-Filter-Box");
-      let temp = [];
-      for (let i = 0; i < box.length; i++) {
-        if (box[i].checked == true) {
-          temp = [...temp, box[i].value];
-        }
-      }
-      setCategory_f(temp);
-    }
+    // Extract selected filters
+    const selectedFilters = Object.keys(newFilters).filter(
+      (key) => newFilters[key]
+    );
 
-    if (attr === "year") {
-      let box = document.getElementsByName("year-Filter-Box");
-      let temp = [];
-      for (let i = 0; i < box.length; i++) {
-        if (box[i].checked == true) {
-          temp = [...temp, box[i].value];
-        }
-      }
-      setYear_f(temp);
+    if (attr === "brand") {
+      setBrand_f(selectedFilters);
+    } else if (attr === "category") {
+      setCategory_f(selectedFilters);
+    } else if (attr === "year") {
+      setYear_f(selectedFilters);
     }
   };
   return (
     <>
       <Meta title={"Our Store"} />
       <BreadCrumb title="Our Store" />
-      <Container className="store-wrapper home-wrapper-2 py-5">
+      <Container
+        className="store-wrapper home-wrapper-2 py-5 zoom-appear-active"
+        style={{ backgroundColor: "#DEF9C4" }} // Updated background color
+      >
         <div className="row">
           <div className="col-lg-3 col-md-4 mb-4">
             {/* Filters */}
@@ -202,21 +205,21 @@ const OurStore = () => {
               <div className="product-tags d-flex flex-column gap-2">
                 {brands.map((b) => (
                   <div key={b._id}>
-                    <input
-                      onChange={() => handleFilterValue("brand")}
-                      name="brand-Filter-Box"
-                      type="checkbox"
-                      className="btn-check"
-                      id={"brandCheck" + b._id}
-                      autoComplete="off"
-                      value={b._id}
-                    />
-                    <label
-                      className="btn btn-outline-primary w-100 text-start"
-                      htmlFor={"brandCheck" + b._id}
-                    >
-                      {b.name}
-                    </label>
+                    <div className="form-check form-switch">
+                      <input
+                        onChange={() => handleFilterChange("brand", b._id)}
+                        className="form-check-input"
+                        type="checkbox"
+                        id={"brandSwitch" + b._id}
+                        checked={brandFilters[b._id] || false}
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor={"brandSwitch" + b._id}
+                      >
+                        {b.name}
+                      </label>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -226,19 +229,17 @@ const OurStore = () => {
               <h3 className="filter-title mb-3">Shop By Categories</h3>
               <div className="btn-group d-flex flex-column gap-2">
                 {categories.map((c) => (
-                  <div key={c._id}>
+                  <div key={c._id} className="form-check form-switch">
                     <input
-                      onChange={() => handleFilterValue("category")}
-                      name="cate-Filter-Box"
+                      onChange={() => handleFilterChange("category", c._id)}
+                      className="form-check-input"
                       type="checkbox"
-                      className="btn-check"
-                      id={"btncheck" + c._id}
-                      autoComplete="off"
-                      value={c._id}
+                      id={"categorySwitch" + c._id}
+                      checked={categoryFilters[c._id] || false}
                     />
                     <label
-                      className="btn btn-outline-primary w-100 text-start"
-                      htmlFor={"btncheck" + c._id}
+                      className="form-check-label"
+                      htmlFor={"categorySwitch" + c._id}
                     >
                       {c.name}
                     </label>
@@ -252,19 +253,17 @@ const OurStore = () => {
               <h5 className="sub-title mb-2">Release Year</h5>
               <div className="btn-group d-flex flex-column gap-2">
                 {years.map((y) => (
-                  <div key={y}>
+                  <div key={y} className="form-check form-switch">
                     <input
-                      onChange={() => handleFilterValue("year")}
-                      name="year-Filter-Box"
-                      value={y}
+                      onChange={() => handleFilterChange("year", y)}
+                      className="form-check-input"
                       type="checkbox"
-                      className="btn-check"
-                      id={"yearCheck" + y}
-                      autoComplete="off"
+                      id={"yearSwitch" + y}
+                      checked={yearFilters[y] || false}
                     />
                     <label
-                      className="btn btn-outline-primary w-100 text-start"
-                      htmlFor={"yearCheck" + y}
+                      className="form-check-label"
+                      htmlFor={"yearSwitch" + y}
                     >
                       {y}
                     </label>
@@ -300,16 +299,30 @@ const OurStore = () => {
 
           <div className="col-lg-9 col-md-8">
             {/* Sorting and Search */}
-            <div className="filter-sort-grid mb-4">
+            <div
+              className="filter-sort-grid mb-4"
+              style={{ fontFamily: "Arial, sans-serif" }}
+            >
               <div className="d-flex justify-content-between align-items-center mb-4">
-                <div className="d-flex align-items-center gap-2">
-                  <p className="mb-0">Sort By:</p>
+                <div
+                  className="d-flex align-items-center gap-3"
+                  style={{ marginRight: "10px" }}
+                >
+                  <p className="mb-0" style={{ fontWeight: "100" }}>
+                    Sort By:
+                  </p>
                   <select
                     onChange={(e) => SortProduct(e.target.value)}
                     name="sort"
                     defaultValue={"manual"}
                     className="form-control form-select"
                     id="sort-box"
+                    style={{
+                      border: "1px solid #ced4da",
+                      borderRadius: "0.25rem",
+                      boxShadow: "none",
+                      fontFamily: "Arial, sans-serif",
+                    }}
                   >
                     <option value="0">Featured</option>
                     <option value="1">Alphabetically, A-Z</option>
@@ -320,8 +333,15 @@ const OurStore = () => {
                     <option value="6">Date, new to old</option>
                   </select>
                 </div>
-                <InputGroup>
-                  <InputGroup.Text>
+                <InputGroup className="search-group">
+                  <InputGroup.Text
+                    style={{
+                      backgroundColor: "#f8f9fa",
+                      borderEndEndRadius: "0",
+                      border: "1px solid #ced4da",
+                      borderRight: "0",
+                    }}
+                  >
                     <BsSearch size={20} />
                   </InputGroup.Text>
                   <Form.Control
@@ -329,6 +349,13 @@ const OurStore = () => {
                     placeholder="Search by name..."
                     value={nameSearch}
                     onChange={(e) => setNameSearch(e.target.value)}
+                    style={{
+                      border: "1px solid #ced4da",
+                      borderStartStartRadius: "0",
+                      borderStartEndRadius: "0.25rem",
+                      borderLeft: "0",
+                      fontFamily: "Arial, sans-serif",
+                    }}
                   />
                 </InputGroup>
               </div>

@@ -167,6 +167,7 @@ const ProductItem = (props) => {
           boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
           transition: "transform 0.3s ease, box-shadow 0.3s ease",
           position: "relative",
+          textAlign: "center", // Center-align text within the card
         }}
         onMouseEnter={(e) => {
           e.currentTarget.style.transform = "translateY(-5px)";
@@ -211,6 +212,9 @@ const ProductItem = (props) => {
               borderTopLeftRadius: "8px",
               borderTopRightRadius: "8px",
               position: "relative",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center", // Center-align image within the wrapper
             }}
           >
             {product.images && product.images.length > 0 && (
@@ -219,7 +223,7 @@ const ProductItem = (props) => {
                 alt={product.name}
                 style={{
                   width: "100%",
-                  height: "80%",
+                  height: "87%",
                   objectFit: "cover",
                   transition: "transform 0.3s ease",
                 }}
@@ -234,7 +238,13 @@ const ProductItem = (props) => {
           </div>
           <div
             className="product-details p-3"
-            style={{ textAlign: "center", backgroundColor: "#fff" }}
+            style={{
+              textAlign: "center",
+              backgroundColor: "#fff",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center", // Center-align content within product details
+            }}
           >
             <h6 className="brand text-uppercase text-secondary">{brand}</h6>
             <h5 className="product-title text-dark">{product.name}</h5>
@@ -256,7 +266,7 @@ const ProductItem = (props) => {
             <p className="price text-primary">${product.price}</p>
           </div>
         </Link>
-      </div>{" "}
+      </div>
       <ToastContainer />
     </>
   );
