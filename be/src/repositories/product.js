@@ -11,8 +11,9 @@ const findAll = async (req, res) => {
     if (brand) query.brand = brand;
     if (featured) query.featured = featured;
     if (name) query.name = { $regex: name, $options: "i" };
-    if (price_gte) query.price = { $gte: price_gte };
-    if (price_lte) query.price = { $lte: price_lte };
+    if (price_gte) query.price = { $gte: Number(price_gte) };
+    if (price_lte) query.price = { $lte: Number(price_lte) };
+    if (price_gte && price_lte) query.price = { $gte: Number(price_gte), $lte: Number(price_lte) };
 
     let sort = {};
     if (price_s) sort = { price: price_s };
@@ -45,7 +46,7 @@ const fetchAll = async (req, res) => {
     console.log(error);
     throw new Error("Couldn't fetch all products: " + error);
   }
-}
+};
 
 const findOne = async (id) => {
   try {
