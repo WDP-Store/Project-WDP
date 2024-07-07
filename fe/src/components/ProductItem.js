@@ -162,7 +162,7 @@ const ProductItem = (props) => {
       <div
         className="product-card position-relative mb-4"
         style={{
-          backgroundColor: "#f9f9f9", // Light background color for the card
+          // backgroundColor: "#f9f9f9", // Light background color for the card
           borderRadius: "8px",
           boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
           transition: "transform 0.3s ease, box-shadow 0.3s ease",
@@ -267,7 +267,6 @@ const ProductItem = (props) => {
           </div>
         </Link>
       </div>
-      <ToastContainer />
     </>
   );
 };

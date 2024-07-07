@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React, { useEffect, useState } from "react";
 import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
@@ -9,6 +10,7 @@ import { Col, Form, InputGroup } from "react-bootstrap";
 import { BsSearch } from "react-icons/bs";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import Select from "react-select";
 
 const OurStore = () => {
   const { key } = useParams(); //search key from header
@@ -158,140 +160,122 @@ const OurStore = () => {
   const [brandFilters, setBrandFilters] = useState({});
   const [categoryFilters, setCategoryFilters] = useState({});
   const [yearFilters, setYearFilters] = useState({});
+  const brandOptions = brands.map((b) => ({ value: b._id, label: b.name }));
+  const categoryOptions = categories.map((c) => ({
+    value: c._id,
+    label: c.name,
+  }));
+  const handleFilterChange = (attr, selectedOptions) => {
+    // Nếu selectedOptions là null hoặc undefined, gán nó thành một mảng rỗng
+    const selectedValues = (selectedOptions || []).map(
+      (option) => option.value
+    );
 
-  const handleFilterChange = (attr, value) => {
     const filterState =
       attr === "brand"
         ? brandFilters
         : attr === "category"
         ? categoryFilters
         : yearFilters;
-    const newFilters = { ...filterState, [value]: !filterState[value] };
+
+    const newFilters = Object.keys(filterState).reduce((acc, key) => {
+      acc[key] = selectedValues.includes(key);
+      return acc;
+    }, {});
 
     if (attr === "brand") {
       setBrandFilters(newFilters);
+      setBrand_f(selectedValues);
     } else if (attr === "category") {
       setCategoryFilters(newFilters);
+      setCategory_f(selectedValues);
     } else if (attr === "year") {
       setYearFilters(newFilters);
-    }
-
-    // Extract selected filters
-    const selectedFilters = Object.keys(newFilters).filter(
-      (key) => newFilters[key]
-    );
-
-    if (attr === "brand") {
-      setBrand_f(selectedFilters);
-    } else if (attr === "category") {
-      setCategory_f(selectedFilters);
-    } else if (attr === "year") {
-      setYear_f(selectedFilters);
+      setYear_f(selectedValues);
     }
   };
+
   return (
     <>
       <Meta title={"Our Store"} />
       <BreadCrumb title="Our Store" />
       <Container
         className="store-wrapper home-wrapper-2 py-5 zoom-appear-active"
-        style={{ backgroundColor: "#DEF9C4" }} // Updated background color
+        style={{}} // Updated background color
       >
-        <div className="row">
+        <div className="row" style={{ paddingTop: "20px" }}>
           <div className="col-lg-3 col-md-4 mb-4">
             {/* Filters */}
             <div className="filter-card p-4 rounded shadow-sm">
               <h3 className="filter-title mb-3">Shop By Brands</h3>
               <div className="product-tags d-flex flex-column gap-2">
-                {brands.map((b) => (
-                  <div key={b._id}>
-                    <div className="form-check form-switch">
-                      <input
-                        onChange={() => handleFilterChange("brand", b._id)}
-                        className="form-check-input"
-                        type="checkbox"
-                        id={"brandSwitch" + b._id}
-                        checked={brandFilters[b._id] || false}
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor={"brandSwitch" + b._id}
-                      >
-                        {b.name}
-                      </label>
-                    </div>
-                  </div>
-                ))}
+                <Select
+                  isMulti
+                  options={brandOptions}
+                  onChange={(selectedOptions) =>
+                    handleFilterChange("brand", selectedOptions)
+                  }
+                  value={brandOptions.filter((option) =>
+                    brand_f.includes(option.value)
+                  )}
+                />
               </div>
             </div>
-
             <div className="filter-card p-4 rounded shadow-sm mt-4">
               <h3 className="filter-title mb-3">Shop By Categories</h3>
               <div className="btn-group d-flex flex-column gap-2">
-                {categories.map((c) => (
-                  <div key={c._id} className="form-check form-switch">
-                    <input
-                      onChange={() => handleFilterChange("category", c._id)}
-                      className="form-check-input"
-                      type="checkbox"
-                      id={"categorySwitch" + c._id}
-                      checked={categoryFilters[c._id] || false}
-                    />
-                    <label
-                      className="form-check-label"
-                      htmlFor={"categorySwitch" + c._id}
-                    >
-                      {c.name}
-                    </label>
-                  </div>
-                ))}
+                <Select
+                  isMulti
+                  options={categoryOptions}
+                  onChange={(selectedOptions) =>
+                    handleFilterChange("category", selectedOptions)
+                  }
+                  value={categoryOptions.filter((option) =>
+                    category_f.includes(option.value)
+                  )}
+                />
               </div>
             </div>
-
-            <div className="filter-card p-4 rounded shadow-sm mt-4">
-              <h3 className="filter-title mb-3">Filter By</h3>
-              <h5 className="sub-title mb-2">Release Year</h5>
-              <div className="btn-group d-flex flex-column gap-2">
-                {years.map((y) => (
-                  <div key={y} className="form-check form-switch">
-                    <input
-                      onChange={() => handleFilterChange("year", y)}
-                      className="form-check-input"
-                      type="checkbox"
-                      id={"yearSwitch" + y}
-                      checked={yearFilters[y] || false}
-                    />
-                    <label
-                      className="form-check-label"
-                      htmlFor={"yearSwitch" + y}
-                    >
-                      {y}
-                    </label>
-                  </div>
-                ))}
-              </div>
-
-              <h5 className="sub-title mt-4 mb-2">Price</h5>
-              <div className="d-flex gap-2">
-                <div className="form-floating flex-grow-1">
-                  <input
-                    onChange={(e) => setMin_f(e.target.value)}
-                    type="number"
-                    className="form-control"
-                    id="floatingInput"
-                    placeholder="From"
+            <div>
+              <div className="filter-card p-4 rounded shadow-sm mt-4">
+                <h3 className="filter-title mb-3">Filter By</h3>
+                <h5 className="sub-title mb-2">Release Year</h5>
+                <div className="d-flex flex-column gap-2">
+                  <Select
+                    isMulti
+                    options={years.map((y) => ({ value: y, label: y }))}
+                    onChange={(selectedOptions) =>
+                      handleFilterChange("year", selectedOptions)
+                    }
+                    value={years
+                      .map((y) => ({ value: y, label: y }))
+                      .filter((option) => year_f.includes(option.value))}
                   />
-                  <label htmlFor="floatingInput">From</label>
                 </div>
-                <div className="form-floating flex-grow-1">
-                  <input
-                    onChange={(e) => setMax_f(e.target.value)}
-                    type="number"
-                    className="form-control"
-                    id="floatingInput1"
-                    placeholder="To"
-                  />
-                  <label htmlFor="floatingInput1">To</label>
+              </div>
+              <div className="filter-card p-4 rounded shadow-sm mt-4">
+                <h5 className="sub-title mt-4 mb-2">Price</h5>
+                <div className="d-flex gap-2">
+                  <div className="form-floating flex-grow-1">
+                    <input
+                      onChange={(e) => setMin_f(e.target.value)}
+                      type="number"
+                      className="form-control"
+                      id="floatingInput"
+                      placeholder="From"
+                    />
+                    <label htmlFor="floatingInput">From</label>
+                  </div>
+                  <div className="form-floating flex-grow-1">
+                    <input
+                      onChange={(e) => setMax_f(e.target.value)}
+                      type="number"
+                      className="form-control"
+                      id="floatingInput1"
+                      placeholder="To"
+                    />
+                    <label htmlFor="floatingInput1">To</label>
+                  </div>
                 </div>
               </div>
             </div>
