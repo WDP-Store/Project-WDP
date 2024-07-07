@@ -218,6 +218,7 @@ const OurStore = () => {
                   value={brandOptions.filter((option) =>
                     brand_f.includes(option.value)
                   )}
+                  placeholder="Select brand"
                 />
               </div>
             </div>
@@ -233,6 +234,7 @@ const OurStore = () => {
                   value={categoryOptions.filter((option) =>
                     category_f.includes(option.value)
                   )}
+                  placeholder="Select category"
                 />
               </div>
             </div>
@@ -250,6 +252,7 @@ const OurStore = () => {
                     value={years
                       .map((y) => ({ value: y, label: y }))
                       .filter((option) => year_f.includes(option.value))}
+                    placeholder="Select year"
                   />
                 </div>
               </div>
