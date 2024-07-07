@@ -18,15 +18,13 @@ const findAll = async (req, res) => {
     const query = {};
     if (name) query.name = { $regex: name, $options: "i" };
 
-    let sort = {};
 
     const data = await Brand.paginate(query, {
       page: page || 1,
-      limit: 3,
-      sort: {
-        ...sort,
-        createdAt: "desc",
-      },
+      limit: 5,
+      // sort: {
+      //   createdAt: "desc",
+      // },
     });
 
     return data;
