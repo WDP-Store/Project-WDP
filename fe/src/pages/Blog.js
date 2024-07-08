@@ -6,30 +6,77 @@ import Container from "../components/Container";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Paginate from "../admin/components/Paginate";
+import Select from "react-select";
 
 const Blog = () => {
   const [blogs, setBlogs] = useState([]);
   const [categories, setCategories] = useState([]);
   const [filterBy, setFilterBy] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [category_f, setCategory_f] = useState([]);
 
   // pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const [category_f, setCategory_f] = useState([]);
+  // const [category_f, setCategory_f] = useState([]);
 
-  const handleFilterValue = (attr) => {
-    if (attr === "category") {
-      let box = document.getElementsByName("cate-Filter-Box");
-      let temp = [];
-      for (let i = 0; i < box.length; i++) {
-        if (box[i].checked == true) {
-          temp = [...temp, box[i].value];
-        }
-      }
-      setCategory_f(temp);
-    }
-  };
+  // const handleFilterValue = (attr) => {
+  //   if (attr === "category") {
+  //     let box = document.getElementsByName("cate-Filter-Box");
+  //     let temp = [];
+  //     for (let i = 0; i < box.length; i++) {
+  //       if (box[i].checked == true) {
+  //         temp = [...temp, box[i].value];
+  //       }
+  //     }
+  //     setCategory_f(temp);
+  //   }
+  // };
+
+  // const handlePageChange = (page) => {
+  //   setCurrentPage(page);
+  // };
+
+  // const handlePrevPage = () => {
+  //   if (currentPage > 1) {
+  //     setCurrentPage(currentPage - 1);
+  //   }
+  // };
+
+  // const handleNextPage = () => {
+  //   if (currentPage < totalPages) {
+  //     setCurrentPage(currentPage + 1);
+  //   }
+  // };
+
+  // const handleFilter = (page) => {
+  //   var url = `https://wdp.bachgiaphat.vn/blogs?page=${page}`;
+
+  //   if (category_f.length != 0) {
+  //     category_f?.map((b) => (url += "&category=" + b));
+  //   }
+
+  //   console.log(category_f);
+  //   axios(url)
+  //     .then((res) => {
+  //       setTotalPages(res.data.totalPages);
+  //       setBlogs(res.data.docs);
+  //     })
+  //     .catch((err) => toast.error(err));
+  // };
+
+  // useEffect(() => {
+  //   handleFilter(currentPage);
+  // }, [currentPage, category_f]);
+
+  // useEffect(() => {
+  //   axios
+  //     .get("https://wdp.bachgiaphat.vn/categories")
+  //     .then((res) => res.data)
+  //     .then((data) => {
+  //       setCategories(data);
+  //     });
+  // }, []);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -48,13 +95,12 @@ const Blog = () => {
   };
 
   const handleFilter = (page) => {
-    var url = `https://wdp.bachgiaphat.vn/blogs?page=${page}`;
+    let url = `https://wdp.bachgiaphat.vn/blogs?page=${page}`;
 
-    if (category_f.length != 0) {
-      category_f?.map((b) => (url += "&category=" + b));
+    if (category_f.length !== 0) {
+      category_f.forEach((category) => (url += `&category=${category}`));
     }
 
-    console.log(category_f);
     axios(url)
       .then((res) => {
         setTotalPages(res.data.totalPages);
@@ -76,6 +122,16 @@ const Blog = () => {
       });
   }, []);
 
+  const categoryOptions = categories.map((category) => ({
+    value: category._id,
+    label: category.name,
+  }));
+
+  const handleCategoryChange = (selectedOptions) => {
+    const selectedValues = selectedOptions ? selectedOptions.map(option => option.value) : [];
+    setCategory_f(selectedValues);
+  };
+
   return (
     <>
       <Meta title={"Blogs"} />
@@ -86,7 +142,7 @@ const Blog = () => {
             <div className="filter-card mb-3">
               <h3 className="filter-title">Find By Categories</h3>
               <div>
-                <ul className="ps-0">
+                {/* <ul className="ps-0">
                   {categories.map((c) => (
                     <div key={c._id}>
                       <input
@@ -107,10 +163,19 @@ const Blog = () => {
                       </label>
                     </div>
                   ))}
-                </ul>
+                </ul> */}
+
+                <Select
+                  isMulti
+                  options={categoryOptions}
+                  onChange={handleCategoryChange}
+                  value={categoryOptions.filter(option => category_f.includes(option.value))}
+                  placeholder="Select categories"
+                />
               </div>
             </div>
           </div>
+          
           <div className="col-9">
             <div className="row">
               {isLoading ? (
