@@ -62,12 +62,12 @@ const ProductItem = (props) => {
             autoClose: 2000,
             style: {
               backgroundColor: "#F5F7F8", // Green background
-              color: "#FF4191", // White text color
+              color: "#a5dc86", // White text color
               fontSize: "16px", // Font size
               borderRadius: "8px", // Rounded corners
             },
             progressStyle: {
-              backgroundColor: "#FF4191",
+              backgroundColor: "#a5dc86",
             },
           });
         })
