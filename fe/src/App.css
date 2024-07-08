@@ -149,8 +149,30 @@ a {
   border-color: #007bff;
 }
 
+/*User profile*/
+.profile-wrapper {
+  background-color: #f8f9fa;
+  padding: 2rem;
+  border-radius: 0.5rem;
+}
 
+.profile-container {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
 
+.profile-row {
+  align-items: center;
+}
+
+.profile-image {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border: 2px solid #dee2e6;
+}
 
 
 .header-top-strip {
