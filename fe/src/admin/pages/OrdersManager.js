@@ -9,9 +9,11 @@ import InputGroup from "react-bootstrap/InputGroup";
 import Badge from "react-bootstrap/Badge";
 import Modal from "react-bootstrap/Modal";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 import { AiFillCaretRight } from "react-icons/ai";
 import axios from "axios";
-import { DatePicker } from 'antd';
+import { DatePicker } from "antd";
+import { GrView } from "react-icons/gr";
 
 export default function OrdersManager() {
   const [orders, setOrders] = useState([]); //fetched orders
@@ -53,7 +55,7 @@ export default function OrdersManager() {
   const { RangePicker } = DatePicker;
 
   const onOk = (value) => {
-    console.log('onOk: ', value);
+    console.log("onOk: ", value);
     setFromDate(value[0]);
     setToDate(value[1]);
   };
@@ -96,7 +98,15 @@ export default function OrdersManager() {
   useEffect(() => {
     //filter with status, order id
     filterOrder(currentPage);
-  }, [currentPage, orderIdFilter, statusFilter, fromDate, toDate, refresh, email]);
+  }, [
+    currentPage,
+    orderIdFilter,
+    statusFilter,
+    fromDate,
+    toDate,
+    refresh,
+    email,
+  ]);
 
   const filterOrder = (page) => {
     let url = `https://wdp.bachgiaphat.vn/orders/all?page=${page}`;
@@ -181,18 +191,18 @@ export default function OrdersManager() {
         </Col>
         <Col xs={12} md={6} className="text-right">
           <RangePicker
-            showTime={{ format: 'HH:mm' }}
+            showTime={{ format: "HH:mm" }}
             format="YYYY-MM-DD HH:mm"
-            size='large'
+            size="large"
             onChange={(value, dateString) => {
-              console.log('Selected Time: ', value);
-              console.log('Formatted Selected Time: ', dateString);
+              console.log("Selected Time: ", value);
+              console.log("Formatted Selected Time: ", dateString);
               onOk(dateString);
             }}
           />
         </Col>
       </Row>
-      {orders.map((o, index) => (
+      {/* {orders.map((o, index) => (
         <div key={index} className="m-2 mb-4">
           <Card
             className="m-2"
@@ -262,7 +272,87 @@ export default function OrdersManager() {
             </Card.Body>
           </Card>
         </div>
-      ))}
+      ))} */}
+
+      {/* start table */}
+      <Table striped bordered hover variant="light">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Order Name</th>
+            <th>Customer</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Product</th>
+            <th>Total</th>
+            <th>Date</th>
+            <th className="text-center">Status</th>
+            <th className="text-center">Update</th>
+            <th className="text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {orders &&
+            orders.map((p, index) => (
+              <tr key={p._id}>
+                <td>{index + 1}</td>
+                <td>{p?.name}</td>
+                <td>{p?.user?.name}</td>
+                <td>{p?.user?.email}</td>
+                <td>{p?.phone}</td>
+                <td>{p?.productList.length} x product</td>
+                <td>{p?.totalAmount} $</td>
+                <td>{new Date(p?.date).toLocaleString()}</td>
+                <td className="text-center">
+                  <Badge bg={effectBadge[p?.status?.name]}>
+                    {p?.status?.name}
+                  </Badge>
+                </td>
+                <td><InputGroup>
+                        {/* <InputGroup.Text style={{ backgroundColor: "#008DDA", padding: "0.5rem"}}>
+                          Edit
+                        </InputGroup.Text> */}
+                        <Form.Select
+                          value={p.status._id}
+                          onChange={(e) =>
+                            updateStatus(e.target.value, index, p._id)
+                          }
+                        >
+                          {status?.map((s) => (
+                            <option key={s.id} value={s._id}>
+                              {s.name}
+                            </option>
+                          ))}
+                        </Form.Select>{" "}
+                      </InputGroup></td>
+                <td className="text-center" style={{maxHeight: "50px"}}>
+                  <GrView className="primary" onClick={() => {
+                      setLgShow(true);
+                      openDetail(index);
+                    }}/>
+                  {/* <Button
+                    variant="primary"
+                    onClick={() => {
+                      setLgShow(true);
+                      openDetail(index);
+                    }}
+                  >
+                    View
+                  </Button> */}
+                  {/* <Button variant="primary" className="mx-2"> */}
+                    {/* <Link
+                      className="text-white"
+                      to={"/admin/product/edit/" + p._id}
+                    >
+                      Edit
+                    </Link> */}
+                  {/* </Button> */}
+                </td>
+              </tr>
+            ))}
+        </tbody>
+      </Table>
+      {/* end table */}
       <Row>
         <Col xs={12} md={12}>
           <div className="pagination mb-3 justify-content-end">
