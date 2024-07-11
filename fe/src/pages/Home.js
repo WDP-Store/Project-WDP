@@ -54,6 +54,7 @@ const Home = () => {
           alt="Slider-image"
           width="1800"
           height="400"
+          className="w-100 object-fit-cover"
         />
         <div className="content-over-image">
           <h2

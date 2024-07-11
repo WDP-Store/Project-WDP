@@ -45,7 +45,6 @@ const BlogDetails = () => {
         </div>
         <div className="col-12 row">
           <h2 className="title">{blog.title}</h2>
-          <p>{blog.body}</p>
           <div className="col-12 my-3 text-center">
             {blog.image && (
               <img
@@ -54,6 +53,9 @@ const BlogDetails = () => {
                 style={{ width: "100%", maxWidth: "500px" }}
               />
             )}
+          </div>
+          <div
+            dangerouslySetInnerHTML={{ __html: blog?.body }}>
           </div>
         </div>
       </div>
