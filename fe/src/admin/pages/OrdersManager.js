@@ -279,7 +279,6 @@ export default function OrdersManager() {
         <thead>
           <tr>
             <th>#</th>
-            <th>Order Name</th>
             <th>Customer</th>
             <th>Email</th>
             <th>Phone</th>
@@ -296,7 +295,6 @@ export default function OrdersManager() {
             orders.map((p, index) => (
               <tr key={p._id}>
                 <td>{index + 1}</td>
-                <td>{p?.name}</td>
                 <td>{p?.user?.name}</td>
                 <td>{p?.user?.email}</td>
                 <td>{p?.phone}</td>
@@ -309,27 +307,27 @@ export default function OrdersManager() {
                   </Badge>
                 </td>
                 <td><InputGroup>
-                        {/* <InputGroup.Text style={{ backgroundColor: "#008DDA", padding: "0.5rem"}}>
+                  {/* <InputGroup.Text style={{ backgroundColor: "#008DDA", padding: "0.5rem"}}>
                           Edit
                         </InputGroup.Text> */}
-                        <Form.Select
-                          value={p.status._id}
-                          onChange={(e) =>
-                            updateStatus(e.target.value, index, p._id)
-                          }
-                        >
-                          {status?.map((s) => (
-                            <option key={s.id} value={s._id}>
-                              {s.name}
-                            </option>
-                          ))}
-                        </Form.Select>{" "}
-                      </InputGroup></td>
-                <td className="text-center" style={{maxHeight: "50px"}}>
+                  <Form.Select
+                    value={p.status._id}
+                    onChange={(e) =>
+                      updateStatus(e.target.value, index, p._id)
+                    }
+                  >
+                    {status?.map((s) => (
+                      <option key={s.id} value={s._id}>
+                        {s.name}
+                      </option>
+                    ))}
+                  </Form.Select>{" "}
+                </InputGroup></td>
+                <td className="text-center" style={{ maxHeight: "50px" }}>
                   <GrView className="primary" onClick={() => {
-                      setLgShow(true);
-                      openDetail(index);
-                    }}/>
+                    setLgShow(true);
+                    openDetail(index);
+                  }} />
                   {/* <Button
                     variant="primary"
                     onClick={() => {
@@ -340,7 +338,7 @@ export default function OrdersManager() {
                     View
                   </Button> */}
                   {/* <Button variant="primary" className="mx-2"> */}
-                    {/* <Link
+                  {/* <Link
                       className="text-white"
                       to={"/admin/product/edit/" + p._id}
                     >
