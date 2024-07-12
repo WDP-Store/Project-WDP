@@ -104,7 +104,9 @@ const Blog = () => {
     axios(url)
       .then((res) => {
         setTotalPages(res.data.totalPages);
-        setBlogs(res.data.docs);
+        const blogActive = res.data.docs.filter(b => !b.isDeleted);
+        setBlogs(blogActive);
+        // setBlogs(res.data.docs);
       })
       .catch((err) => toast.error(err));
   };
