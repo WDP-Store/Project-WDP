@@ -35,6 +35,7 @@ const countAll = async (req, res) => {
     const users = await User.countDocuments({
       ...query
     });
+    console.log("countAll", users);
     return users;
   } catch (error) {
     throw new Error(`Can't get all customers: ${error}`);

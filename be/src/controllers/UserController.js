@@ -17,7 +17,8 @@ const getAll = async (req, res) => {
 
 const countAll = async (req, res) => {
   try {
-    const users = userRepository.countAll(req, res);
+    const users = await userRepository.countAll(req, res);
+    console.log("users",users)
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({
