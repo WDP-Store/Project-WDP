@@ -3,6 +3,14 @@ import { Line, Pie, DualAxes } from "@ant-design/plots";
 import InputGroup from "react-bootstrap/InputGroup";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import axios from "axios";
+import styles from "../dashboard.css";
+import {
+  ShoppingCartOutlined,
+  DollarOutlined,
+  TagOutlined,
+  StarOutlined,
+  TeamOutlined,
+} from "@ant-design/icons";
 
 export default function Dashboard() {
   const Currentdate = new Date(); //current date
@@ -39,6 +47,8 @@ export default function Dashboard() {
     )
   );
 
+  const [totalUser, setTotalUser] = useState();
+  const [totalActiveUser, setTotalActiveUser] = useState();
   const [brands, setBrands] = useState([]);
   const [categories, setCategories] = useState([]);
   const [totalOrders, setTotalOrders] = useState([]);
@@ -56,6 +66,19 @@ export default function Dashboard() {
       .then((res) => res)
       .then((json) => {
         setBrands(json.data);
+      });
+
+    axios.get(`https://wdp.bachgiaphat.vn/users/count`)
+      .then((res) => res)
+      .then((json) => {
+        setTotalUser(json.data);
+      });
+
+    axios.get(`https://wdp.bachgiaphat.vn/users/count?status=true`)
+      .then((res) => res)
+      .then((json) => {
+        console.log("jsonactive", json.data);
+        setTotalActiveUser(json.data);
       });
 
     axios.get(`https://wdp.bachgiaphat.vn/categories`)
@@ -123,7 +146,7 @@ export default function Dashboard() {
   const [dataForYearly, setDataForYearly] = useState(
     dateArrayByYear(yearlySelected).map((a) => getStatisticNumber(a[0], a[1]))
   );
-  console.log(dataForYearly);
+  // console.log(dataForYearly);
   //category yearly
   const getTotalYearlyCategory = (year) => {
     //get total of a year for pie chart
@@ -135,8 +158,8 @@ export default function Dashboard() {
       d.category.map((dc) => ({ ...dc, to: d.to }))
     );
     let ak = [];
-    console.log("dataYearlyCategory");
-    console.log(dataYearlyCategory);
+    // console.log("dataYearlyCategory");
+    // console.log(dataYearlyCategory);
     dataYearlyCategory.map((d) => [ak.push(...d)]);
     return ak;
   };
@@ -163,6 +186,8 @@ export default function Dashboard() {
       dateArrayByYear(yearlySelected).map((a) => getStatisticNumber(a[0], a[1]))
     );
   }, [yearlySelected, orders, brands, categories]);
+
+
 
   return (
     <div>
@@ -230,7 +255,7 @@ export default function Dashboard() {
           </Button>
         </Col>
       </Row>
-      <div className="d-flex justify-content-between align-items-center gap-3 mt-4">
+      {/* <div className="d-flex justify-content-between align-items-center gap-3 mt-4">
         <div className="d-flex justify-content-between align-items-end flex-grow-1 bg-white p-3 roudned-3">
           <div>
             <p className="desc">Total revenue</p>
@@ -249,6 +274,58 @@ export default function Dashboard() {
           <div>
             <p className="desc">Total orders completed</p>
             <h4 className="mb-0 sub-title">{currentMonthReport().order}</h4>
+          </div>
+        </div>
+      </div> */}
+
+      <div class="row">
+        <div class="col-md-4 col-xl-3">
+          <div class="card bg-c-green order-card">
+            <div class="card-block">
+              <h6 class="m-b-20">Revenue</h6>
+              <h2 class="text-right d-flex justify-content-between"><DollarOutlined /><span>486</span></h2>
+              <p class="m-b-0">&nbsp;<span class="f-right"></span></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-xl-3">
+          <div class="card bg-c-blue order-card">
+            <div class="card-block">
+              <h6 class="m-b-20">Orders Received</h6>
+              <h2 class="text-right d-flex justify-content-between"><ShoppingCartOutlined /><span>{totalOrders}</span></h2>
+              <p class="m-b-0">Completed Orders<span class="f-right">{currentMonthReport().order}</span></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-xl-3">
+          <div class="card bg-c-yellow order-card">
+            <div class="card-block">
+              <h6 class="m-b-20">Brand</h6>
+              <h2 class="text-right d-flex justify-content-between"><TagOutlined /><span>{brands.length}</span></h2>
+              <p class="m-b-0">&nbsp;<span class="f-right"></span></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-xl-3">
+          <div class="card bg-c-pink order-card">
+            <div class="card-block">
+              <h6 class="m-b-20">Category</h6>
+              <h2 class="text-right d-flex justify-content-between"><StarOutlined /><span>{categories.length}</span></h2>
+              <p class="m-b-0">&nbsp;<span class="f-right"></span></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-xl-3">
+          <div class="card bg-c-green order-card">
+            <div class="card-block">
+              <h6 class="m-b-20">User</h6>
+              <h2 class="text-right d-flex justify-content-between"><TeamOutlined /><span>{totalUser}</span></h2>
+              <p class="m-b-0">Active users<span class="f-right">{totalActiveUser}</span></p>
+            </div>
           </div>
         </div>
       </div>
@@ -489,8 +566,8 @@ const DemoPie = (props) => {
 };
 const DemoLine = (props) => {
   const { data, spec } = props;
-  console.log("data");
-  console.log(data);
+  // console.log("data");
+  // console.log(data);
   const config = {
     data,
     autoFit: false,
