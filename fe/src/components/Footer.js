@@ -92,7 +92,7 @@ const Footer = () => {
                   href="mailto:minhdev@gmail.com"
                   className="mt-2 d-block mb-0 text-black"
                 >
-                  sdnstore@gmail.com
+                  wdpstore@gmail.com
                 </a>
                 <div className="social_icons d-flex align-items-center gap-30 mt-4">
                   <a className="text-black" href="#">
