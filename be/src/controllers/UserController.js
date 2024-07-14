@@ -15,6 +15,17 @@ const getAll = async (req, res) => {
   }
 };
 
+const countAll = async (req, res) => {
+  try {
+    const users = userRepository.countAll(req, res);
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({
+      message: error.toString(),
+    });
+  }
+};
+
 const getUserProfile = async (req, res) => {
   try {
     const { id } = req.params;
@@ -91,7 +102,7 @@ const changePassword = async (req, res) => {
     console.log("ChangePasswordController data", req.body, id);
     const data = await userRepository.replacePassword(id, req.body);
     console.log("data2", data);
-    if (!data){
+    if (!data) {
 
     }
     res.status(200).json({
@@ -116,7 +127,7 @@ const handleCheckOTP = async (req, res) => {
       return res.status(400).json({ message: "Invalid or expired OTP" });
     }
 
-    
+
 
     const password = generateRandomPassword();
     const hashedPassword = bcrypt.hashSync(password, 10);
@@ -194,4 +205,5 @@ export default {
   updateUser,
   changePassword,
   handleCheckOTP,
+  countAll,
 };

@@ -7,6 +7,7 @@ const userRouter = express.Router();
 userRouter.post("/forgot-password", userController.handleForgotPassword);
 userRouter.post("/verify-otp", userController.handleCheckOTP);
 userRouter.patch("/change-password/:id", userController.changePassword);
+userRouter.get("/count", userController.countAll);
 userRouter.get("/", userController.getAll);
 userRouter.get("/:id", check.checkLogin, userController.getUserProfile);
 userRouter.patch("/:id", userController.updateUser);

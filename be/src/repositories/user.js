@@ -25,6 +25,22 @@ const findAll = async (req, res) => {
   }
 };
 
+const countAll = async (req, res) => {
+  try {
+    const { status } = req.query;
+
+    const query = {};
+    if (status !== undefined) query.status = status === "true";
+
+    const users = await User.countDocuments({
+      ...query
+    });
+    return users;
+  } catch (error) {
+    throw new Error(`Can't get all customers: ${error}`);
+  }
+};
+
 const getUserProfile = async (id) => {
   try {
     const userProfile = await User.findById(id);
@@ -56,15 +72,15 @@ const update = async (id, data) => {
 const replacePassword = async (id, data) => {
   try {
 
-    const {currentPassword, newPassword, confirmPassword} = data;
+    const { currentPassword, newPassword, confirmPassword } = data;
 
     console.log("replace password", id, data);
-    const user = await User.findOne({_id: id});
+    const user = await User.findOne({ _id: id });
     console.log("replace password", user);
     if (!user) {
       throw new Error('User not found');
     }
-    
+
     const isMatch = await bcrypt.compare(currentPassword, user.password);
     console.log("replace password", isMatch);
     if (!isMatch) {
@@ -95,5 +111,6 @@ export default {
   getUserProfile,
   findByEmail,
   update,
-  replacePassword
+  replacePassword,
+  countAll
 };
