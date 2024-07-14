@@ -27,7 +27,7 @@ const Home = () => {
       });
 
     axios
-      .get("https://wdp.bachgiaphat.vn/products?featured=true")
+      .get("https://wdp.bachgiaphat.vn/products?featured=true&status=true")
       .then((res) => res.data.docs)
       .then((data) => {
         setlast8Product(data.slice(-8));
@@ -54,6 +54,7 @@ const Home = () => {
           alt="Slider-image"
           width="1800"
           height="400"
+          className="w-100 object-fit-cover"
         />
         <div className="content-over-image">
           <h2
@@ -232,13 +233,7 @@ const Home = () => {
         </div>
         {/* <h3 className="section-heading">Best Seller</h3> */}
         <div className="row">
-          {/* {last8Product.map((p, index) => (
-            <div key={index} className="col-3">
-              <ProductItem product={p} />
-            </div>
-          ))} */}
-          {console.log("last8Product", last8Product)}
-          <ProductCarouselV1 products={last8Product} />
+          <ProductCarouselV1 products={last8Product.reverse()} />
         </div>
         {/* <div className="row">
           <div className="col-3">

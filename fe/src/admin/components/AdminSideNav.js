@@ -42,7 +42,7 @@ export default function AdminSideNav(props) {
       key,
       icon,
       children,
-      label: to ? <Link to={to} style={{textDecoration: "none"}}>{label}</Link> : label,
+      label: to ? <Link to={to} style={{ textDecoration: "none" }}>{label}</Link> : label,
     };
   }
   const items = [
@@ -91,14 +91,14 @@ export default function AdminSideNav(props) {
         "blogs_list",
         <CiBoxList />,
         null,
-        "/admin/product"
+        "/admin/blogs"
       ),
       getItem(
         "Add New Blog",
         "blogs_add",
         <IoAddCircleOutline />,
         null,
-        "/admin/product/add-product"
+        "/admin/blogs/add-blog"
       ),
     ]),
     getItem("Contacts", "contacts", <MdContactPhone />, null, '/admin/contact'),

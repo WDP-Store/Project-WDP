@@ -103,7 +103,8 @@ const Cart = () => {
                 <div key={[p._id, cart[index].color]} className="cart-data py-3 mb-2 d-flex justify-content-between align-items-center">
                   <Link to={"/product/" + p._id} className="cart-col-1 gap-15 d-flex align-items-center">
                     <div className="w-25">
-                      <img src={(products && products.length > 0) ? (p.color.map((i, idx) => (i === cart[index].color ? p.images[idx] : ''))).filter((pt) => pt !== '') : ''} className="img-fluid" alt="product" />
+                      <img src={p.images[0]} className="img-fluid" alt="product" />
+                      {/* <img src={(products && products.length > 0) ? (p.color.map((i, idx) => (i === cart[index].color ? p.images[idx] : ''))).filter((pt) => pt !== '') : ''} className="img-fluid" alt="product" /> */}
                     </div>
                     <div className="w-75">
                       <p>{p.name}</p>
