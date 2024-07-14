@@ -16,7 +16,7 @@ const options = {
     definition: {
         openapi: '3.0.0',
         info: {
-            title: 'SDN Store API',
+            title: 'WDP Store API',
             description: "API endpoints documented on swagger",
             contact: {
                 name: "Nguyễn Quang Minh",
