@@ -22,7 +22,8 @@ const Layout = () => {
   const location = useLocation();
   return (
     <LayoutProvider>
-      {location.pathname === '/' ? <HeaderHome /> : <Header />}
+      {/* {location.pathname === '/' ? <HeaderHome /> : <Header />} */}
+      {location.pathname === '/' ? <Header /> : <Header />}
       <Outlet />
       <Footer />
     </LayoutProvider>
