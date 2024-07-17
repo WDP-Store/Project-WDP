@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import Paginate from "../components/Paginate";
 import { toast } from "react-toastify";
-import { Col, Form, Row, Table, Badge, Button} from "react-bootstrap";
+import { Col, Form, Row, Table, Badge, Button } from "react-bootstrap";
 import { AiOutlineSortAscending } from "react-icons/ai";
 import InputGroup from "react-bootstrap/InputGroup";
 import axios from "axios";
-import { DownloadOutlined } from '@ant-design/icons';
+import { DownloadOutlined } from "@ant-design/icons";
 import exportToExcel from "../../util/exportToExcel.js";
-
 
 export default function Customer() {
   const [users, setUsers] = useState([]);
@@ -143,7 +142,7 @@ export default function Customer() {
           </InputGroup>
         </Col>
         <Col xs={12} md={4} className="text-end">
-        <Button onClick={handleExport} style={{height: '38px'}}>
+          <Button onClick={handleExport} style={{ height: "38px" }}>
             <DownloadOutlined /> Export
           </Button>
         </Col>
@@ -176,36 +175,35 @@ export default function Customer() {
           </tr>
         </thead>
         <tbody>
-          {users && users.map((u) => (
-            <tr key={u.id}>
-              <td>{(currentPage - 1) * 10 + i++}</td>
-              <td>{u.email}</td>
-              <td>{u.name}</td>
-              <td>{u.phone}</td>
-              <td>
-
-              </td>
-              <td className="text-center">
-                {u.status === true ? (
-                  <Badge
-                    bg="primary"
-                    style={{ cursor: "pointer" }}
-                    onClick={() => changeStatus(u._id, u.status)}
-                  >
-                    Active
-                  </Badge>
-                ) : (
-                  <Badge
-                    bg="warning"
-                    style={{ cursor: "pointer" }}
-                    onClick={() => changeStatus(u._id, u.status)}
-                  >
-                    Inactive
-                  </Badge>
-                )}
-              </td>
-            </tr>
-          ))}
+          {users &&
+            users.map((u) => (
+              <tr key={u.id}>
+                <td>{(currentPage - 1) * 10 + i++}</td>
+                <td>{u.email}</td>
+                <td>{u.name}</td>
+                <td>{u.phone}</td>
+                <td></td>
+                <td className="text-center">
+                  {u.status === true ? (
+                    <Badge
+                      bg="primary"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => changeStatus(u._id, u.status)}
+                    >
+                      Active
+                    </Badge>
+                  ) : (
+                    <Badge
+                      bg="warning"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => changeStatus(u._id, u.status)}
+                    >
+                      Inactive
+                    </Badge>
+                  )}
+                </td>
+              </tr>
+            ))}
         </tbody>
       </Table>
 
