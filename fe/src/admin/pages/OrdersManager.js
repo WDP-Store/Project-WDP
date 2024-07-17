@@ -14,6 +14,9 @@ import { AiFillCaretRight } from "react-icons/ai";
 import axios from "axios";
 import { DatePicker } from "antd";
 import { GrView } from "react-icons/gr";
+import { DownloadOutlined } from "@ant-design/icons";
+import exportToExcel from "../../util/exportToExcel.js";
+import Swal from "sweetalert2";
 
 export default function OrdersManager() {
   const [orders, setOrders] = useState([]); //fetched orders
@@ -139,21 +142,51 @@ export default function OrdersManager() {
   };
 
   const updateStatus = (value, index, id) => {
-    console.log("status: ", value);
-    console.log("status: ", typeof value);
-    axios
-      .put(`https://wdp.bachgiaphat.vn/orders/${id}`, {
-        ...orders[index],
-        status: value,
-      })
-      .then(() => {
-        const updatedOrders = [...orders];
-        updatedOrders[index].status._id = value;
-        setOrders(updatedOrders);
-        setRefresh(!refresh);
-        toast.success("Order status updated successfully");
-      })
-      .catch((err) => toast.error(err));
+    Swal.fire({
+      title: "Are you sure?",
+      text: "This action cannot be undone.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#dc3545",
+      cancelButtonColor: "#6c757d",
+      confirmButtonText: "Change",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .put(`https://wdp.bachgiaphat.vn/orders/${id}`, {
+            ...orders[index],
+            status: value,
+          })
+          .then(() => {
+            const updatedOrders = [...orders];
+            updatedOrders[index].status._id = value;
+            setOrders(updatedOrders);
+            setRefresh(!refresh);
+            toast.success("Order status updated successfully");
+          })
+          .catch((err) => toast.error(err));
+      }
+    });
+  };
+
+  const handleExport = () => {
+    const exportData = orders.map((order, index) => ({
+      Id: user._id,
+      Name: user.name,
+      Email: user.email,
+      Phone: user.phone,
+      Address: user.address,
+      Status: user.status ? "Active" : "Inactive",
+    }));
+    console.log(exportData);
+
+    // exportToExcel(
+    //   "Danh Sách Đơn Đặt Hàng",
+    //   exportData,
+    //   "Danh Sách Đơn Đặt Hàng",
+    //   "orders.xlsx"
+    // );
   };
 
   return (
@@ -201,6 +234,11 @@ export default function OrdersManager() {
             }}
           />
         </Col>
+        {/* <Col xs={12} md={4} className="text-end">
+          <Button onClick={handleExport} style={{ height: "38px" }}>
+            <DownloadOutlined /> Export
+          </Button>
+        </Col> */}
       </Row>
       {/* {orders.map((o, index) => (
         <div key={index} className="m-2 mb-4">
@@ -306,28 +344,33 @@ export default function OrdersManager() {
                     {p?.status?.name}
                   </Badge>
                 </td>
-                <td><InputGroup>
-                  {/* <InputGroup.Text style={{ backgroundColor: "#008DDA", padding: "0.5rem"}}>
+                <td>
+                  <InputGroup>
+                    {/* <InputGroup.Text style={{ backgroundColor: "#008DDA", padding: "0.5rem"}}>
                           Edit
                         </InputGroup.Text> */}
-                  <Form.Select
-                    value={p.status._id}
-                    onChange={(e) =>
-                      updateStatus(e.target.value, index, p._id)
-                    }
-                  >
-                    {status?.map((s) => (
-                      <option key={s.id} value={s._id}>
-                        {s.name}
-                      </option>
-                    ))}
-                  </Form.Select>{" "}
-                </InputGroup></td>
+                    <Form.Select
+                      value={p.status._id}
+                      onChange={(e) =>
+                        updateStatus(e.target.value, index, p._id)
+                      }
+                    >
+                      {status?.map((s) => (
+                        <option key={s.id} value={s._id}>
+                          {s.name}
+                        </option>
+                      ))}
+                    </Form.Select>{" "}
+                  </InputGroup>
+                </td>
                 <td className="text-center" style={{ maxHeight: "50px" }}>
-                  <GrView className="primary" onClick={() => {
-                    setLgShow(true);
-                    openDetail(index);
-                  }} />
+                  <GrView
+                    className="primary"
+                    onClick={() => {
+                      setLgShow(true);
+                      openDetail(index);
+                    }}
+                  />
                   {/* <Button
                     variant="primary"
                     onClick={() => {
@@ -387,9 +430,10 @@ export default function OrdersManager() {
             </Card.Header>
             <Card.Body>
               <Card.Title>
-                {currentDetail.name} <br></br>
-                {currentDetail.phone}
+                Customer: {currentDetail.name} <br></br>
+                Phone: {currentDetail.phone} <br></br>
               </Card.Title>
+              <br></br>
               <Card.Text>
                 {"Zipcode: " +
                   currentDetail.address?.zipcode +
@@ -414,6 +458,8 @@ export default function OrdersManager() {
                       <th>Name</th>
                       <th>Quantity</th>
                       <th>Price</th>
+                      <th>Brand</th>
+                      <th>Category</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -435,6 +481,8 @@ export default function OrdersManager() {
                         <td>{p.productName}</td>
                         <td>{p.quantity}</td>
                         <td>{Number(p.unitPrice) * p.quantity}</td>
+                        <td>{p.brand}</td>
+                        <td>{p.category}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -445,6 +493,10 @@ export default function OrdersManager() {
                 <p style={{ fontWeight: "bold" }}>
                   $ {currentDetail.totalAmount}
                 </p>
+              </Card.Text>
+              <Card.Text>
+                <p style={{ fontWeight: "bold" }}>Payment: {currentDetail.isPaid ? 'Paid' : "Pending" } | {currentDetail.paymentMethod}</p>
+               
               </Card.Text>
             </Card.Body>
           </Card>
