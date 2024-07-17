@@ -178,32 +178,32 @@ const SingleProduct = () => {
   );
 
   const addToCart = () => { //cart fearture
-    // if (JSON.parse(localStorage.getItem("data"))) { //logged in
-    setCart(
-      // cart,
-      {
-        product: id,
-        color: recentColor,
-        quantity: quantity,
-      }
-    );
-    // }
-    // else {
-    //   Swal.fire({
-    //     icon: 'error',
-    //     title: 'Not logged in',
-    //     text: 'Log in to save this product in your cart',
-    //     showCancelButton: true,
-    //     confirmButtonColor: '#3085d6',
-    //     cancelButtonColor: '#d33',
-    //     cancelButtonText: "Cancel",
-    //     confirmButtonText: 'Login'
-    //   }).then((result) => {
-    //     if (result.isConfirmed) {
-    //       window.location = "/login";
-    //     }
-    //   })
-    // }
+    if (JSON.parse(localStorage.getItem("data"))) { //logged in
+      setCart(
+        // cart,
+        {
+          product: id,
+          color: recentColor,
+          quantity: quantity,
+        }
+      );
+    }
+    else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Not logged in',
+        text: 'Log in to save this product in your cart',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: "Cancel",
+        confirmButtonText: 'Login'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location = "/login";
+        }
+      });
+    }
     //localStorage.setItem("cart", JSON.stringify(cart));
   };
   return (
