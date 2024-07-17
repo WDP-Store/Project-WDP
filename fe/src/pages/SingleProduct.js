@@ -72,7 +72,7 @@ const SingleProduct = () => {
       if (JSON.parse(localStorage.getItem("data"))) {
         const user = JSON.parse(localStorage.getItem("data"));
         axios
-          .get(`https://wdp.bachgiaphat.vn/wishlists?user=` + user._id)
+          .get(`https://wdp.bachgiaphat.vn/wishlists?user=` + user?._id)
           .then((res) => res.data)
           .then(json => {
             setWishList(json);
@@ -83,7 +83,7 @@ const SingleProduct = () => {
 
   useEffect(() => {
     axios
-      .get(`https://wdp.bachgiaphat.vn/wishlists?product=${id}&user=${JSON.parse(localStorage.getItem("data"))._id}`)
+      .get(`https://wdp.bachgiaphat.vn/wishlists?product=${id}&user=${JSON.parse(localStorage.getItem("data"))?._id}`)
       .then((res) => res.data.docs[0])
       .then((data) => {
         setWishList(data);
@@ -102,7 +102,7 @@ const SingleProduct = () => {
     } else {
       axios
         .post(`https://wdp.bachgiaphat.vn/wishlists`, {
-          user: JSON.parse(localStorage.getItem("data"))._id,
+          user: JSON.parse(localStorage.getItem("data"))?._id,
           // user: "65c6e0400a9390c33d67b2c1",
           product: id
         }).then(() => {
