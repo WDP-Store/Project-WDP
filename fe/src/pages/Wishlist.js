@@ -13,7 +13,7 @@ const Wishlist = () => {
 
   const fetchData = () => {
     axios
-      .get(`https://wdp.bachgiaphat.vn/wishlists?user=${user._id}`)
+      .get(`https://wdp.bachgiaphat.vn/wishlists?user=${user?._id}`)
       .then((res) => res.data.docs)
       .then((data) => {
         setWishList(data);
@@ -66,9 +66,9 @@ const Wishlist = () => {
         <div className="row">
           {
             wishlist && wishlist.length > 0 && wishlist.map((p, index) =>
-              <div key={wishlist[index]._id} className="col-3">
+              <div key={wishlist[index]?._id} className="col-3">
                 <div className="wishlist-card d-flex flex-column justify-content-between position-relative p-2 mb-3" style={{ background: "white", height: "400px" }}>
-                  <button onClick={() => deleteWishList(wishlist[index]._id)} type="button" style={{ border: 0, right: "5%" }} className="btn position-absolute">
+                  <button onClick={() => deleteWishList(wishlist[index]?._id)} type="button" style={{ border: 0, right: "5%" }} className="btn position-absolute">
                     <img
                       src={cross}
                       alt="cross"
@@ -76,7 +76,7 @@ const Wishlist = () => {
                     />
                   </button>
                   <div className="wishlist-card-image">
-                    <Link to={"/product/" + wishlist[index].product._id}>
+                    <Link to={"/product/" + wishlist[index]?.product?._id}>
                       <img
                         src={wishlist[index].product.images[0]}
                         className="img-fluid w-100 p-5"
