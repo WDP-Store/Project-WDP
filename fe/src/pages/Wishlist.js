@@ -78,7 +78,7 @@ const Wishlist = () => {
                   <div className="wishlist-card-image">
                     <Link to={"/product/" + wishlist[index]?.product?._id}>
                       <img
-                        src={wishlist[index].product.images[0]}
+                        src={wishlist[index]?.product?.images[0]}
                         className="img-fluid w-100 p-5"
                         alt="product"
                       />
@@ -86,9 +86,9 @@ const Wishlist = () => {
                   </div>
                   <div className="py-3 px-3">
                     <h5 className="title">
-                      {wishlist[index].product.name}
+                      {wishlist[index]?.product?.name}
                     </h5>
-                    <h6 className="price">$ {wishlist[index].product.price}</h6>
+                    <h6 className="price">$ {wishlist[index]?.product?.price}</h6>
                   </div>
                 </div>
               </div>
