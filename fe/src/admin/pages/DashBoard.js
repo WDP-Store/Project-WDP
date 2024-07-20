@@ -187,8 +187,6 @@ export default function Dashboard() {
     );
   }, [yearlySelected, orders, brands, categories]);
 
-
-
   return (
     <div>
       <h2 className="mt-2 text-center">Dashboard</h2>
@@ -283,7 +281,7 @@ export default function Dashboard() {
           <div class="card bg-c-green order-card">
             <div class="card-block">
               <h6 class="m-b-20">Revenue</h6>
-              <h2 class="text-right d-flex justify-content-between"><DollarOutlined /><span>486</span></h2>
+              <h2 class="text-right d-flex justify-content-between"><DollarOutlined /><span>${currentMonthReport().revenue.toFixed(2)}</span></h2>
               <p class="m-b-0">&nbsp;<span class="f-right"></span></p>
             </div>
           </div>
