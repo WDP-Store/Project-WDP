@@ -14,7 +14,7 @@ import { AiFillCaretRight } from "react-icons/ai";
 import axios from "axios";
 import { DatePicker } from "antd";
 import { GrView } from "react-icons/gr";
-import { DownloadOutlined } from "@ant-design/icons";
+import { DownloadOutlined, PrinterOutlined } from "@ant-design/icons";
 import exportToExcel from "../../util/exportToExcel.js";
 import Swal from "sweetalert2";
 
@@ -140,6 +140,34 @@ export default function OrdersManager() {
       })
       .catch((err) => toast.error(err));
   };
+
+  const loadProducts = async (id) => {
+    try {
+      const response = await axios.get(`https://wdp.bachgiaphat.vn/products/${id}`);
+      const image = response.data?.images[0];
+      return image;
+    } catch (error) {
+      console.error("Error fetching product image:", error);
+      return "https://curie.pnnl.gov/sites/default/files/default_images/default-image_0.jpeg";
+    }
+  };
+
+  const [productImages, setProductImages] = useState([]);
+
+  // Within the component's JSX, use the useEffect hook to store the image URLs for each product
+  useEffect(() => {
+    // Map each product's ID to its respective image URL
+    const imagePromises = currentDetail?.productList?.map((product) => loadProducts(product.productId));
+    // Wait for all the promises to resolve
+    Promise.all(imagePromises)
+      .then((imageUrls) => {
+        // Update the state with the image URLs
+        setProductImages(imageUrls);
+      })
+      .catch((error) => {
+        console.error("Error loading product images:", error);
+      });
+  }, [currentDetail.productList]);
 
   const updateStatus = (value, index, id) => {
     Swal.fire({
@@ -320,7 +348,7 @@ export default function OrdersManager() {
             <th>Customer</th>
             <th>Email</th>
             <th>Phone</th>
-            <th>Product</th>
+            <th>Num of prod</th>
             <th>Total</th>
             <th>Date</th>
             <th className="text-center">Status</th>
@@ -336,7 +364,7 @@ export default function OrdersManager() {
                 <td>{p?.user?.name}</td>
                 <td>{p?.user?.email}</td>
                 <td>{p?.phone}</td>
-                <td>{p?.productList.length} x product</td>
+                <td className="text-center">{p?.productList.length}</td>
                 <td>{p?.totalAmount} $</td>
                 <td>{new Date(p?.date).toLocaleString()}</td>
                 <td className="text-center">
@@ -447,14 +475,14 @@ export default function OrdersManager() {
                   currentDetail.address?.country}
               </Card.Text>
               <Card.Text>
-                {currentDetail.productList?.length} x products
+                {/* {currentDetail.productList?.length} x products */}
               </Card.Text>
               <Card.Text>
                 <Table striped bordered hover>
                   <thead>
                     <tr>
                       <th>No.</th>
-                      <th>Product ID</th>
+                      <th>Image</th>
                       <th>Name</th>
                       <th>Quantity</th>
                       <th>Price</th>
@@ -467,6 +495,21 @@ export default function OrdersManager() {
                       <tr key={index}>
                         <td>{index + 1}</td>
                         <td>
+                          <img
+                            style={{
+                              width: "50px",
+                              height: "50px",
+                              borderRadius: "10px",
+                              objectFit: "cover",
+                            }}
+                            src={productImages[index]}
+                            onError={(event) => {
+                              event.target.src = "https://curie.pnnl.gov/sites/default/files/default_images/default-image_0.jpeg";
+                            }}
+                          // alt={product.productName}
+                          />
+                        </td>
+                        {/* <td>
                           <button
                             onClick={() => {
                               window.location = `/product/${p.productId}`;
@@ -477,7 +520,7 @@ export default function OrdersManager() {
                           >
                             {p.productId} <AiFillCaretRight className="m-0" />
                           </button>
-                        </td>
+                        </td> */}
                         <td>{p.productName}</td>
                         <td>{p.quantity}</td>
                         <td>{Number(p.unitPrice) * p.quantity}</td>
@@ -488,15 +531,20 @@ export default function OrdersManager() {
                   </tbody>
                 </Table>
               </Card.Text>
-              <Card.Text>
+              <Card.Text className="d-flex">
                 <p style={{ fontWeight: "bold" }}>Total:</p>
-                <p style={{ fontWeight: "bold" }}>
+                <p style={{ fontWeight: "bold" }} className="mx-2">
                   $ {currentDetail.totalAmount}
                 </p>
               </Card.Text>
               <Card.Text>
-                <p style={{ fontWeight: "bold" }}>Payment: {currentDetail.isPaid ? 'Paid' : "Pending" } | {currentDetail.paymentMethod}</p>
-               
+                <p style={{ fontWeight: "bold" }}>Status: {currentDetail.status?.name}</p>
+                <div className="d-flex justify-content-between">
+                  <p style={{ fontWeight: "bold" }}>Payment: {currentDetail.status?.name !== 'successful' && currentDetail.paymentMethod !== 'VNPAY' ? currentDetail.isPaid ? 'Paid' : "Pending" : "Paid"} | {currentDetail.paymentMethod}</p>
+                  <Link to={"/admin/order/" + currentDetail._id}> 
+                    <PrinterOutlined style={{ fontSize: "32px" }} onClick={() => { }} />
+                  </Link>
+                </div>
               </Card.Text>
             </Card.Body>
           </Card>

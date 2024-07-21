@@ -16,6 +16,7 @@ import Dashboard from '../admin/pages/DashBoard';
 import Contact from '../admin/pages/Contact';
 import Orders from '../admin/pages/Orders';
 import OrdersManager from '../admin/pages/OrdersManager';
+import Invoice from '../admin/pages/Invoice';
 import Productlist from '../admin/pages/Productlist';
 import ProductDetail from '../admin/pages/ProductDetail';
 import EditProduct from '../admin/pages/EditProduct';
@@ -26,6 +27,7 @@ import Bloglist from '../admin/pages/Bloglist';
 import Addblog from '../admin/pages/Addblog';
 import BlogDetails from '../admin/pages/BlogDetail';
 import EditBlog from '../admin/pages/EditBlog';
+import StateContext from '../admin/pages/context/stateContext';
 const allRoutes = createBrowserRouter([
   {
     path: '/admin',
@@ -47,6 +49,8 @@ const allRoutes = createBrowserRouter([
       { path: '/admin/contact', element: <Contact /> },
       // { path: '/admin/order', element: <Orders /> },
       { path: '/admin/order', element: <OrdersManager /> },
+      // { path: '/admin/order/:id', element: <Invoice /> }, 
+      { path: '/admin/order/:id', element: <StateContext><Invoice /></StateContext> },
 
       //product
       { path: '/admin/product', element: <Productlist /> },
@@ -55,7 +59,7 @@ const allRoutes = createBrowserRouter([
       { path: '/admin/product/add-product', element: <AddProduct /> },
       { path: '/admin/product/brand-list', element: <Brandlist /> },
       { path: '/admin/product/category-list', element: <Categorylist /> },
-    
+
       //blog
       { path: '/admin/blogs', element: <Bloglist /> },
       { path: '/admin/blogs/:id', element: <BlogDetails /> },

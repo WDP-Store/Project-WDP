@@ -81,7 +81,7 @@ export default function Feedback() {
       <Row className="my-4">
         <Col xs={12} md={4}>
           <InputGroup className="mb-3">
-            <InputGroup.Text>Product id</InputGroup.Text>
+            <InputGroup.Text>Product</InputGroup.Text>
             <Form.Control
               type="number"
               placeholder="product id..."
@@ -118,7 +118,7 @@ export default function Feedback() {
           <tr>
             <th>Id</th>
             <th>User</th>
-            <th>Product id</th>
+            <th>Product</th>
             <th>rating</th>
             <th>comment</th>
           </tr>
