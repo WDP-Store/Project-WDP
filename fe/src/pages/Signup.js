@@ -122,7 +122,7 @@ const Signup = () => {
                   </Form.Text>
                 </Form.Group>
                 <div className="mt-3 d-flex justify-content-center gap-15 align-items-center">
-                  <Button type="submit" className="button border-0">
+                  <Button type="submit" className="button border-0 text-decoration-none">
                     Sign Up
                   </Button>
                 </div>
