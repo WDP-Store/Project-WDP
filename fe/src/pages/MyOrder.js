@@ -133,6 +133,34 @@ export default function MyOrder() {
       .catch((err) => toast.error(err));
   };
 
+  const [productImages, setProductImages] = useState([]);
+
+  const loadProducts = async (id) => {
+    try {
+      const response = await axios.get(`https://wdp.bachgiaphat.vn/products/${id}`);
+      const image = response.data?.images[0];
+      return image;
+    } catch (error) {
+      console.error("Error fetching product image:", error);
+      return "https://curie.pnnl.gov/sites/default/files/default_images/default-image_0.jpeg";
+    }
+  };
+
+  useEffect(() => {
+    // Map each product's ID to its respective image URL
+    const imagePromises = currentDetail?.productList?.map((product) => loadProducts(product.productId));
+    // Wait for all the promises to resolve
+    Promise.all(imagePromises)
+      .then((imageUrls) => {
+        // Update the state with the image URLs
+        setProductImages(imageUrls);
+      })
+      .catch((error) => {
+        console.error("Error loading product images:", error);
+      });
+  }, [currentDetail.productList]);
+
+
   return (
     <Container lg={10}>
       <h3 className="mt-2">My orders</h3>
@@ -222,7 +250,7 @@ export default function MyOrder() {
       >
         <Modal.Header closeButton>
           <Modal.Title id="example-modal-sizes-title-lg">
-            Order id: {currentDetail._id}
+            Order Id: {currentDetail._id}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -233,18 +261,15 @@ export default function MyOrder() {
                 {currentDetail.name} <br></br>
                 {currentDetail.phone}
               </Card.Title>
-              <Card.Text>
+              <Card.Text className="mt-3">
                 {'zipcode: ' + currentDetail.address?.zipcode + '. Address' + currentDetail.address?.detailAddress + ', ' + currentDetail.address?.city + ", " + currentDetail.address?.state + ', ' + currentDetail.address?.country}
-              </Card.Text>
-              <Card.Text>
-                {currentDetail.productList?.length} x products
               </Card.Text>
               <Card.Text>
                 <Table striped bordered hover>
                   <thead>
                     <tr>
                       <th>No.</th>
-                      <th>Product ID</th>
+                      <th>Image</th>
                       <th>Name</th>
                       <th>Quantity</th>
                       <th>Price</th>
@@ -254,7 +279,22 @@ export default function MyOrder() {
                     {currentDetail?.productList?.map((p, index) =>
                       <tr key={index}>
                         <td>{index + 1}</td>
-                        <td><button onClick={() => { window.location = `/product/${p.productId}`; }} type='button' style={{ minWidth: "10ch" }} className='btn btn-dark'>{p.productId} <AiFillCaretRight className='m-0' /></button></td>
+                        {/* <td><button onClick={() => { window.location = `/product/${p.productId}`; }} type='button' style={{ minWidth: "10ch" }} className='btn btn-dark'>{p.productId} <AiFillCaretRight className='m-0' /></button></td> */}
+                        <td>
+                          <img
+                            style={{
+                              width: "50px",
+                              height: "50px",
+                              borderRadius: "10px",
+                              objectFit: "cover",
+                            }}
+                            src={productImages[index]}
+                            onError={(event) => {
+                              event.target.src = "https://curie.pnnl.gov/sites/default/files/default_images/default-image_0.jpeg";
+                            }}
+                          // alt={product.productName}
+                          />
+                        </td>
                         <td>{p.productName}</td>
                         <td>{p.quantity}</td>
                         <td>{Number(p.unitPrice) * p.quantity}</td>
@@ -263,9 +303,13 @@ export default function MyOrder() {
                   </tbody>
                 </Table>
               </Card.Text>
-              <Card.Text>
+              {/* <Card.Text>
                 <p style={{ fontWeight: "bold" }}>Total:</p>
                 <p style={{ fontWeight: "bold" }}>$ {currentDetail.totalAmount}</p>
+              </Card.Text> */}
+              <Card.Text>
+                <p style={{ fontWeight: "bold" }}>Status: {currentDetail.status?.name}</p>
+                <p style={{ fontWeight: "bold" }}>Total: $ {currentDetail.totalAmount}</p>
               </Card.Text>
             </Card.Body>
           </Card>
