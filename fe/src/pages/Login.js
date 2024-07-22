@@ -34,7 +34,8 @@ const Login = () => {
           navigate("/");
         })
         .catch((err) => {
-          toast.error(err?.message || "Something went wrong!");
+          console.log(err)
+          toast.error(err?.response?.data?.error?.message || "Something went wrong!");
         });
     }
   };
