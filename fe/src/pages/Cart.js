@@ -141,14 +141,14 @@ const Cart = () => {
           </div>
           <div style={{ position: "sticky", bottom: 0, background: "#ffcccc", borderRadius: "10px" }} className="col-12 py-2 mt-4">
             <div className="d-flex justify-content-between align-items-baseline">
-              <NavLink to="/product" className="button">
+              <NavLink to="/product" className="button text-decoration-none">
                 Continue To Shopping
               </NavLink>
               <div className="d-flex flex-column align-items-end">
                 <h4>SubTotal: $ {subTotal.toFixed(2)}</h4>
                 <p>Taxes and shipping calculated at checkout</p>
                 {
-                  cartQuantity > 0 ? <Link to="/checkout" className="button disable">
+                  cartQuantity > 0 ? <Link to="/checkout" className="button disable text-decoration-none">
                     Checkout
                   </Link> : ''
                 }

@@ -160,7 +160,7 @@ const Header = () => {
                   <div className="info">
                     <Link
                       to="/wishlist"
-                      className="d-flex align-items-center gap-2 text-white"
+                      className="d-flex align-items-center gap-2 text-white text-decoration-none"
                     >
                       <img src={wishlistIcon} alt="Wishlist" />
                       <span>Wishlist</span>
@@ -206,7 +206,7 @@ const Header = () => {
                           onClick={handleLogout}
                           className="dropdown-item"
                         >
-                          <BiLogOut className="me-2" /> Logout
+                          <BiLogOut className="me-2 text-decoration-none" /> Logout
                         </button>
                       </li>
                     </ul>
@@ -217,7 +217,7 @@ const Header = () => {
                   <div className="info">
                     <Link
                       to="/login"
-                      className="d-flex align-items-center gap-2 text-white"
+                      className="d-flex align-items-center gap-2 text-white text-decoration-none"
                     >
                       <img src={userIcon} alt="User" />
                       <span>Login</span>

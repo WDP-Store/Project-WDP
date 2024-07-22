@@ -106,12 +106,12 @@ const Login = () => {
                   </Form.Text>
                 </Form.Group>
                 <div>
-                  <Link to="/forgot-password">Forgot Password?</Link>
+                  <Link to="/forgot-password" className="text-decoration-none">Forgot Password?</Link>
                   <div className="mt-3 d-flex justify-content-center gap-15 align-items-center">
                     <button className="button signup" type="submit">
                       Login
                     </button>
-                    <Link to="/signup" className="button signup">
+                    <Link to="/signup" className="button signup text-decoration-none">
                       Sign Up
                     </Link>
                   </div>
