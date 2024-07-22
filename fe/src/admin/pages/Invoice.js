@@ -45,7 +45,7 @@ export default function Invoice() {
         }}>
         <div className="p-4 mt-6" ref={componentRef}>
           <div className="d-flex justify-content-between align-items-center">
-            <h3>WDP Store</h3>
+            <h3>Electronic shop</h3>
             <h1 style={{ fontWeight: 600 }}>INVOICE</h1>
           </div>
           <div>
