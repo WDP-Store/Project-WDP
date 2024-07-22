@@ -35,6 +35,10 @@ const login = async (data) => {
       throw { message: "User does not have _id", status: 401 };
     }
 
+    if (existingUser.status !== true) {
+      throw { message: "User is not active", status: 401 };
+    }
+
     const accessToken = generateAccessToken(existingUser);
     const refreshToken = generateRefreshToken(existingUser);
     // console.log("existingUser", existingUser);
@@ -53,14 +57,14 @@ const login = async (data) => {
 };
 
 const register = async (data) => {
-  console.log("RegisterRepository")
+  console.log("RegisterRepository");
   try {
     const { name, email, password } = data;
-  console.log("RegisterRepository data", data)
-  
-  //check duplicated (exec() hỗ trợ chuyển Query Object -> Promisse)
-  const existingUser = await User.findOne({ email }).exec();
-  console.log("RegisterRepository existingUser", existingUser)
+    console.log("RegisterRepository data", data);
+
+    //check duplicated (exec() hỗ trợ chuyển Query Object -> Promisse)
+    const existingUser = await User.findOne({ email }).exec();
+    console.log("RegisterRepository existingUser", existingUser);
     if (existingUser) throw { message: "DUPLICATE", status: 400 };
     //hashed password
     // const hashedPassword = await bcrypt.hash(
@@ -68,7 +72,7 @@ const register = async (data) => {
     //   parseInt(process.env.SALT_ROUNDS)
     // );
     const hashedPassword = bcrypt.hashSync(password, 10);
-  console.log("RegisterRepository existingUser", hashedPassword)
+    console.log("RegisterRepository existingUser", hashedPassword);
 
     //insert to db
     const newUser = await User.create({
@@ -80,9 +84,9 @@ const register = async (data) => {
       console.error("Error creating user:", error.message);
       throw new Error("Error creating user: " + error.message);
     });
-    
 
-  console.log("RegisterRepository", newUser)
+
+    console.log("RegisterRepository", newUser);
 
     console.log("new user => ", newUser);
     return newUser;
