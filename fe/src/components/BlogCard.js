@@ -20,7 +20,7 @@ const BlogCard = ({ blog }) => {
           dangerouslySetInnerHTML={{ __html: blog?.body }}
         >
         </p>
-        <Link to={`/blogs/${blog?._id}`} className="button">
+        <Link to={`/blogs/${blog?._id}`} className="button text-decoration-none">
           Read More
         </Link>
       </div>
