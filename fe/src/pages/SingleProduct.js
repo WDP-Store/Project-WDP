@@ -212,21 +212,26 @@ const SingleProduct = () => {
       <BreadCrumb title="Product Name" />
       <Container class1="main-product-wrapper py-5 home-wrapper-2">
         <div className="row">
-          <div className="col-7 row">
-
-            <div className="d-flex flex-column col-2">
-              {images && images.length > 0 && images.map((img) =>
-                <div key={img} className="mb-2" >
-                  <button className="btn" onClick={() => setMainImage(img)}>
-                    <img src={img} alt="product" style={{ width: "95%" }} />
-                  </button>
+          <div className="col-7">
+            <div className="row">
+              <div className="col-12">
+                <div className="row">
+                  <div className="d-flex flex-column col-2">
+                    {images && images.length > 0 && images.map((img) =>
+                      <div key={img} className="mb-2" >
+                        <button className="btn" onClick={() => setMainImage(img)}>
+                          <img src={img} alt="product" style={{ width: "95%" }} />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                  <div className="mb-5 col-10">
+                    {images && images.length > 0 && (
+                      <img src={mainImage} alt="product" style={{ width: "95%" }} />
+                    )}
+                  </div>
                 </div>
-              )}
-            </div>
-            <div className="mb-5 col-10">
-              {images && images.length > 0 && (
-                <img src={mainImage} alt="product" style={{ width: "95%" }} />
-              )}
+              </div>
             </div>
             <Container class1="description-wrapper py-5 home-wrapper-2">
               <div className="row">
