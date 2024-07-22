@@ -89,7 +89,7 @@ const Home = () => {
         class1="featured-wrapper py-5 home-wrapper-2"
         className="container block-item block-product-wrapper"
       >
-        <h3 className="section-heading">Featured Collection</h3>
+        <h3 className="section-heading pt-3">Featured Collection</h3>
         <div className="row">
           {last8Product.map((p, index) => (
             <div key={index} className="col-3" style={{ padding: "0.5rem" }}>
@@ -130,7 +130,7 @@ const Home = () => {
       >
         <div className="row">
           <div className="col-12">
-            <h3 className="section-heading">Our Latest Blogs</h3>
+            <h3 className="section-heading pt-3">Our Latest Blogs</h3>
           </div>
         </div>
         <div className="row">
