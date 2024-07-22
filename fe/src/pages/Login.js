@@ -34,7 +34,7 @@ const Login = () => {
           navigate("/");
         })
         .catch((err) => {
-          toast.error("Wrong email or password !");
+          toast.error(err?.message || "Something went wrong!");
         });
     }
   };

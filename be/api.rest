@@ -27,7 +27,7 @@ Content-Type: application/json
 ###
 GET http://localhost:9999/blogs
 Content-Type: application/json
-
+ 
 ###
 GET http://localhost:9999/users/count?status=true
 Content-Type: application/json

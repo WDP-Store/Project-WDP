@@ -1,7 +1,7 @@
 {
   "name": "ecommerce-app",
   "version": "0.1.0",
-  "private": true,
+  "private": true, 
   "dependencies": {
     "@ant-design/plots": "^1.2.5",
     "@auth0/auth0-react": "^2.2.4",

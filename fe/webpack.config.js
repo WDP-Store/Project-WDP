@@ -15,7 +15,7 @@ module.exports = {
     rules: [
       // Add any necessary loaders for your project
       // For example, if you're using Babel:
-      {
+      { 
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
