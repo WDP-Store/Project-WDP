@@ -309,6 +309,7 @@ export default function MyOrder() {
               </Card.Text> */}
               <Card.Text>
                 <p style={{ fontWeight: "bold" }}>Status: {currentDetail.status?.name}</p>
+                <p style={{ fontWeight: "bold" }}>Payment: {currentDetail.status?.name !== 'successful' ? currentDetail.isPaid ? 'Paid' : "Pending" : "Paid"} | {currentDetail.paymentMethod}</p>
                 <p style={{ fontWeight: "bold" }}>Total: $ {currentDetail.totalAmount}</p>
               </Card.Text>
             </Card.Body>

@@ -540,7 +540,8 @@ export default function OrdersManager() {
               <Card.Text>
                 <p style={{ fontWeight: "bold" }}>Status: {currentDetail.status?.name}</p>
                 <div className="d-flex justify-content-between">
-                  <p style={{ fontWeight: "bold" }}>Payment: {currentDetail.status?.name !== 'successful' && currentDetail.paymentMethod !== 'VNPAY' ? currentDetail.isPaid ? 'Paid' : "Pending" : "Paid"} | {currentDetail.paymentMethod}</p>
+                  {/* <p style={{ fontWeight: "bold" }}>Payment: {currentDetail.status?.name !== 'successful' && currentDetail.paymentMethod !== 'VNPAY' ? currentDetail.isPaid ? 'Paid' : "Pending" : "Paid"} | {currentDetail.paymentMethod}</p> */}
+                  <p style={{ fontWeight: "bold" }}>Payment: {currentDetail.status?.name !== 'successful' ? currentDetail.isPaid ? 'Paid' : "Pending" : "Paid"} | {currentDetail.paymentMethod}</p>
                   <Link to={"/admin/order/" + currentDetail._id}> 
                     <PrinterOutlined style={{ fontSize: "32px" }} onClick={() => { }} />
                   </Link>
